@@ -23,10 +23,28 @@ var ANCHOR_DATA = {
 },  ROOM_DATA = {
     title: '我收藏的房间',
     id: 'room-list',
+    needDel: true,
     list: [
         {
             roomid: 123,
-            name: '本色娱乐美女直播',
+            name: '本色娱乐美女直播1',
+            avatar: 'http://pub.idqqimg.com/pc/misc/files/20140911/88b01d92b2014207a151eba0bb1d11f4.jpg',
+            intro: '美女直播尽在本色娱乐'
+        },
+        {
+            roomid: 124,
+            name: '本色娱乐美女直播2',
+            avatar: 'http://pub.idqqimg.com/pc/misc/files/20140911/88b01d92b2014207a151eba0bb1d11f4.jpg',
+            intro: '美女直播尽在本色娱乐'
+        },
+        {
+            roomid: 125,
+            name: '本色娱乐美女直播3',
+            avatar: 'http://pub.idqqimg.com/pc/misc/files/20140911/88b01d92b2014207a151eba0bb1d11f4.jpg',
+            intro: '美女直播尽在本色娱乐'
+        },{
+            roomid: 126,
+            name: '本色娱乐美女直播4',
             avatar: 'http://pub.idqqimg.com/pc/misc/files/20140911/88b01d92b2014207a151eba0bb1d11f4.jpg',
             intro: '美女直播尽在本色娱乐'
         }
@@ -49,6 +67,9 @@ function _bindEvent() {
         }).on('show', function () {
             // to fix the list height
             $('.qtree__list', '#room-list').css({ height: 56 * ROOM_DATA.list.length });
+        }).on('click-del', function (e) {
+            var $this = $(e.triggerTarget);
+            alert('删除房间' + $this.data('roomid'));
         });
 }
 

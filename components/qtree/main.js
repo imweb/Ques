@@ -7,6 +7,7 @@ function Qtree(container) {
     container.data('qtree', this);
     this.container = container;
     this._init(container);
+    this.itemHeight = 56;
 }
 Qtree.prototype = {
     constructor: Qtree,
@@ -27,11 +28,23 @@ Qtree.prototype = {
             e.type = 'dblclick-item';
             e.triggerTarget = this;
             self.trigger(e);
+        }).on('click', '.$__del', function (e) {
+            e.type = 'click-del';
+            e.triggerTarget = this;
+            self.trigger(e);
+            $(this).parent('.$__item').remove();
+            setTimeout(function () {
+                self._fixHeight();
+            }, 0);
         });
         setTimeout(function () {
             container.find('.$__list').removeClass('$__list-hide');
-            self.trigger('show');
+            self._fixHeight();
         }, 0);
+    },
+    _fixHeight: function () {
+        var num = this.container.find('.$__item').length;
+        this.container.find('.$__list').css({ height: this.itemHeight * num });
     },
     trigger: function (event, data) {
         this.container.trigger(event, data);
@@ -40,6 +53,14 @@ Qtree.prototype = {
     on: function (event, cb) {
         this.container.on(event, cb);
         return this;
+    },
+    set: function (opts) {
+        var key;
+        for (key in opt) {
+            if (key in this) {
+                this[key] = opts[key];
+            }
+        }
     }
 }
 

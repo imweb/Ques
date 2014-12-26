@@ -16,6 +16,9 @@
                     <div class="$__name"><%=item.name%></div>
                     <div class="$__intro"><%=item.intro ? item.intro : (item.offline ? '[不在直播]' : '[直播]')%></div>
                 </div>
+                <% if (it.needDel) { %>
+                    <div class="$__del" data-roomid="<%=item.roomid%>" tabindex="0"><i class="$__delicon"></i>从列表删除此直播间/div&gt; </div>
+                <% } %>
             </li>
         <% } %>
     </ul>
