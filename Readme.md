@@ -3,6 +3,22 @@ qiqi
 
 > `[实验性质]` 基于`动态编译`和`线下打包`的 component 前端解决方案，尝试通过线下手段达到Polymer的变成体验
 
+试一试
+------
+
+* 安装依赖
+
+> npm install
+
+* 运行本地服务器
+
+> node app
+
+* 浏览DEMO
+
+打开浏览器，打开页面：http://localhost:3000/demo.html
+
+
 解决核心问题
 ------------
 
