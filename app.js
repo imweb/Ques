@@ -6,7 +6,7 @@ var connect = require('connect')
 connect()
   .use(
     '/components',
-    middlePipe(__dirname + '/components', /(\.html|\.css)\.js$/, function (url) {
+    middlePipe(__dirname + '/components', /(\.html\.js)|(\.css\.js)$/, function (url) {
       return url.replace(/\.js$/, '');
     }).pipe(qiqi.tpl())
   )

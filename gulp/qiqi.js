@@ -132,9 +132,9 @@ function _tpl() {
   return map(function (file, fn) {
     var string = file.contents.toString();
     file.contents = new Buffer([
-      'define(',
-      tpl(_fix(string, file.path)),
-      ');'
+      'define(function () {',
+      'return ' + tpl(_fix(string, file.path)) + ';',
+      '});'
     ].join('\n'));
     fn(null, file);
   });
