@@ -1,0 +1,22 @@
+<div class="$__container" id="<%=it.id%>">
+    <div class="$__title">
+        <i class="$__triangle $__triangle-rotate"></i>
+        <%=it.title%>
+        <span class="$__num"><%=it.num%></span>
+    </div>
+    <ul class="$__list">
+        <%
+            var item;
+            for (var i = 0, l = it.list.length; i < l; i++) {
+                item = it.list[i];
+        %>
+            <li class="$__item" tabindex="0" data-roomid="<%=item.roomid%>" data-anchorid="<%=item.anchorid%>">
+                <img class="$__avatar<%=item.offline ? ' $__avatar-offline' : ''%>" src="<%=item.avatar%>">
+                <div class="$__info">
+                    <div class="$__name"><%=item.name%></div>
+                    <div class="$__intro"><%=item.intro ? item.intro : (item.offline ? '[不在直播]' : '[直播]')%></div>
+                </div>
+            </li>
+        <% } %>
+    </ul>
+</div>

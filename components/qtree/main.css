@@ -1,0 +1,66 @@
+.$__title {
+    margin: 0 auto;
+    font-size: 14px;
+    cursor: default;
+    padding-left: 10px;
+    -webkit-user-select: none;
+}
+.$__triangle {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 5px;
+    overflow: hidden;
+    border-color: transparent transparent transparent #b6b6b6;
+    border-style: dotted dotted dotted solid;
+}
+.$__triangle-rotate {
+    -webkit-transform: rotate(90deg);
+}
+.$__num {
+    margin-left: 10px;
+    font-size: 10px;
+}
+
+.$__list {
+    padding: 0;
+    margin-top: 4px;
+    overflow: auto;
+}
+
+.$__item {
+    list-style-type: none;
+    position: relative;
+    padding-left: 10px;
+    outline: 0;
+    display: -webkit-box;
+}
+
+.$__avatar {
+    height: 42px;
+    width: 42px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.$__info {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    -webkit-box-flex: 1;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+.$__name {
+    font-size: 14px;
+    padding-bottom: 4px;
+}
+
+.$__intro {
+    color: gray;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
