@@ -39,7 +39,8 @@ function html() {
       , $ = cheerio.load(html)
       , tag = new Tag()
       , customTags = []
-      , uid = 0;
+      , uid = 0
+      , mainScript = $('script', 'body');
 
     $('body').append([
       '<script src="http://7.url.cn/edu/jslib/requirejs/2.1.6/require.min.js"></script>',
@@ -77,9 +78,16 @@ function html() {
       $('head').append('<link rel="stylesheet" href="' + _2Dep(customTag, 'main.css') + '"/>')
     });
 
+    var deps = customTags.map(_2DepJs);
+    // find the main script, max number is 1
+    if (mainScript.length) {
+      deps.push(mainScript.attr('src'));
+      mainScript.remove();
+    }
+
     $('body').append([
       '<script>',
-      "require(" + _makeDeps(customTags.map(_2DepJs)) + ", function () {",
+      "require(" + _makeDeps(deps) + ", function () {",
         'for (var i = 0, l = arguments.length; i < l; i++) {',
           "arguments[i].init && arguments[i].init('.component-' + (i + 1))",
         '}',
@@ -97,7 +105,7 @@ function js() {
     var js = file.contents.toString()
       , deps = ['require', 'module', 'exports'];
 
-    js.replace(/require\((['"])(\w+?)\1/g, function (all, quz, mod) {
+    js.replace(/require\((['"])(.+?)\1/g, function (all, quz, mod) {
       deps.push(mod);
     });
 
@@ -120,8 +128,21 @@ function css() {
   });
 }
 
+function _tpl() {
+  return map(function (file, fn) {
+    var string = file.contents.toString();
+    file.contents = new Buffer([
+      'define(',
+      tpl(_fix(string, file.path)),
+      ');'
+    ].join('\n'));
+    fn(null, file);
+  });
+}
+
 module.exports = {
   html: html,
   js: js,
-  css: css
+  css: css,
+  tpl: _tpl
 };
