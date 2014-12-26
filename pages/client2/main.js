@@ -77,8 +77,8 @@ function _bindEvent() {
 
 function init() {
     var container = $('#container').empty();
-    qtree.appendTo(container, ANCHOR_DATA, null, false);
-    qtree.appendTo(container, ROOM_DATA, null, false);
+    qtree.appendTo(container, ANCHOR_DATA, true);
+    qtree.appendTo(container, ROOM_DATA, true);
     _bindEvent();
 }
 
