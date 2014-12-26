@@ -4,10 +4,11 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "cheerio": "^0.18.0",
     "connect": "^3.3.3",
     "map-stream": "^0.0.5",
-    "middleware-pipe": "^1.0.1",
-    "cheerio": "^0.18.0"
+    "micro-tpl": "^0.4.0",
+    "middleware-pipe": "^1.0.1"
   },
   "devDependencies": {},
   "scripts": {

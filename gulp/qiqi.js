@@ -4,6 +4,7 @@ var map = require('map-stream')
   , cheerio = require('cheerio')
   , walker = require('./lib/walker')
   , Tag = require('./lib/tag')
+  , tpl = require('micro-tpl')
   , cwd = process.cwd();
 
 function _makeDeps(deps) {
@@ -26,6 +27,10 @@ function _fix(string, path) {
   var mod =  path.match(/components[\/\\](\w+?)[\/\\$]/);
   mod = (mod && mod[1]) || (path);
   return string.replace(/\$\_\_/g, mod + '__');
+}
+
+function _makeFragment($, $ele, tpl, uid) {
+  return $(tpl($ele.attr())).addClass('component-' + uid)
 }
 
 function html() {
@@ -51,21 +56,22 @@ function html() {
       var componentPath = path.join(cwd, 'components', customTag);
       if (fs.existsSync(componentPath)) {
         customTags.push(customTag);
-        var fragment = $(_fix(
-          fs.readFileSync(
-            path.join(componentPath, 'main.html'),
-            'utf-8'
+        ++uid;
+        var fragmentTpl = tpl(
+          _fix(
+            fs.readFileSync(
+              path.join(componentPath, 'main.html'),
+              'utf-8'
+            ),
+            customTag
           ),
-          customTag
-        )).addClass('component-' + ++uid)
-          , $customTag = $(customTag);
-        if ($customTag.length > 1) {
-          $customTag.each(function (i, ele) {
-            $(ele).replaceWith(fragment.clone());
-          });
-        } else {
-          $customTag.replaceWith(fragment);
-        }
+          { ret: 'function' }
+        ),  $customTag = $(customTag);
+
+        $customTag.each(function (i, ele) {
+          ele = $(ele);
+          ele.replaceWith(_makeFragment($, ele, fragmentTpl, uid));
+        });
       }
 
       $('head').append('<link rel="stylesheet" href="' + _2Dep(customTag, 'main.css') + '"/>')
