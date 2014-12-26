@@ -8,21 +8,14 @@ function Qtree(container) {
     this.container = container;
     this._init(container);
     this.itemHeight = 56;
+    this.isOpen = false;
 }
 Qtree.prototype = {
     constructor: Qtree,
     _init: function (container) {
-        var isOpen = true, self = this;
+        var self = this;
         container.find('.$__title').on('click', function () {
-            var $this = $(this);
-            if (isOpen) {
-                $this.siblings('.$__list').addClass('$__list-hide');
-                $this.children('.$__triangle').removeClass('$__triangle-rotate');
-            } else {
-                $this.siblings('.$__list').removeClass('$__list-hide');
-                $this.children('.$__triangle').addClass('$__triangle-rotate');
-            }
-            isOpen = !isOpen;
+            self._toggle();
         });
         container.on('dblclick', '.$__item', function (e) {
             e.type = 'dblclick-item';
@@ -38,9 +31,20 @@ Qtree.prototype = {
             }, 0);
         });
         setTimeout(function () {
-            container.find('.$__list').removeClass('$__list-hide');
+            self._toggle();
             self._fixHeight();
         }, 0);
+    },
+    _toggle: function () {
+        var container = this.container;
+        if (this.isOpen) {
+            container.find('.$__list').addClass('$__list-hide');
+            container.find('.$__triangle').removeClass('$__triangle-rotate');
+        } else {
+            container.find('.$__list').removeClass('$__list-hide');
+            container.find('.$__triangle').addClass('$__triangle-rotate');
+        }
+        this.isOpen = !this.isOpen;
     },
     _fixHeight: function () {
         var num = this.container.find('.$__item').length;
