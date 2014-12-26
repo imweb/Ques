@@ -70,6 +70,8 @@ function _bindEvent() {
         }).on('click-del', function (e) {
             var $this = $(e.triggerTarget);
             alert('删除房间' + $this.data('roomid'));
+        }).set({
+            'itemHeight': 58
         });
 }
 

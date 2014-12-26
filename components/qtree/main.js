@@ -56,11 +56,12 @@ Qtree.prototype = {
     },
     set: function (opts) {
         var key;
-        for (key in opt) {
+        for (key in opts) {
             if (key in this) {
                 this[key] = opts[key];
             }
         }
+        return this;
     }
 }
 
