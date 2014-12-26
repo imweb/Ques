@@ -25,7 +25,7 @@
 .$__list {
     padding: 0;
     margin-top: 4px;
-    overflow: auto;
+    overflow: hidden;
     transition: height 300ms, opacity 400ms;
     opacity: 1;
 }
