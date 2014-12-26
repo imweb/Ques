@@ -16,7 +16,7 @@ qiqi
 
 * 浏览DEMO
 
-打开浏览器，打开页面：http://localhost:3000/demo.html
+打开浏览器，打开页面：http://localhost:3000/index.html
 
 
 解决核心问题

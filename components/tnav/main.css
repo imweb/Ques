@@ -1,0 +1,14 @@
+.$__container {
+    background: #fff;
+    height: 50px;
+}
+.$__container li {
+    display: inline-block;
+}
+.$__container a {
+    color: #333;
+    text-decoration: none;
+}
+.$__container a:hover {
+    color: #188eee;
+}
