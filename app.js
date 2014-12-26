@@ -28,9 +28,13 @@ connect()
   )
   .use(
     '/pages',
-    middlePipe(__dirname + '/pages', function (url) {
-      return path.join(url.replace(/\.js$/, ''), 'main.js');
-    }).pipe(qiqi.js())
+    middlePipe(__dirname + '/pages', /\.js$/)
+      .pipe(qiqi.js())
+  )
+  .use(
+    '/pages',
+    middlePipe(__dirname + '/pages', /\.css$/)
+      .pipe(qiqi.css())
   )
   .use(
     middlePipe(__dirname, /\.html$/)
