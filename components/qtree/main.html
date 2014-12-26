@@ -4,10 +4,10 @@
         <%=it.title%>
         <span class="$__num"><%=it.num%></span>
     </div>
-    <ul class="$__list">
+    <ul class="$__list $__list-hide">
         <%
             var item;
-            for (var i = 0, l = it.list.length; i < l; i++) {
+            for (var i = 0, l = it.list ? it.list.length : 0; i < l; i++) {
                 item = it.list[i];
         %>
             <li class="$__item" tabindex="0" data-roomid="<%=item.roomid%>" data-anchorid="<%=item.anchorid%>">

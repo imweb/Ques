@@ -15,10 +15,10 @@ Qtree.prototype = {
         container.find('.$__title').on('click', function () {
             var $this = $(this);
             if (isOpen) {
-                $this.siblings('.$__list').hide();
+                $this.siblings('.$__list').addClass('$__list-hide');
                 $this.children('.$__triangle').removeClass('$__triangle-rotate');
             } else {
-                $this.siblings('.$__list').show();
+                $this.siblings('.$__list').removeClass('$__list-hide');
                 $this.children('.$__triangle').addClass('$__triangle-rotate');
             }
             isOpen = !isOpen;
@@ -28,6 +28,10 @@ Qtree.prototype = {
             e.triggerTarget = this;
             self.trigger(e);
         });
+        setTimeout(function () {
+            container.find('.$__list').removeClass('$__list-hide');
+            self.trigger('show');
+        }, 0);
     },
     trigger: function (event, data) {
         this.container.trigger(event, data);

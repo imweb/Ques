@@ -12,14 +12,14 @@ function loadCss() {
     loadCss = function () {};
 }
 
-main.appendTo = function (container, data) {
-    loadCss();
+main.appendTo = function (container, data, nocss) {
+    !nocss && loadCss();
     var fragment = $(tpl(data))
     fragment.appendTo(container);
     main.init && main.init(fragment);
 };
-main.html = function (container, data) {
-    loadCss();
+main.html = function (container, data, nocss) {
+    !nocss && loadCss();
     container = $(container);
     container.html(tpl(data));
     main.init && main.init(container);
