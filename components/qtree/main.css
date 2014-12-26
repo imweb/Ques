@@ -50,6 +50,10 @@
     padding-bottom: 6px;
 }
 
+.$__avatar-offline {
+    -webkit-filter: grayscale(100%);
+}
+
 .$__info {
     padding-top: 6px;
     padding-bottom: 6px;
