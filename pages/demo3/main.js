@@ -5,8 +5,7 @@ var $ = require('jquery'),
     tnav = require('components/tnav/render');
 
 function init() {
-    theader.appendTo('#container', { text: '我是头啊' });
-    theader.appendTo('#container', { text: '我也是头啊' });
+    theader.appendTo('#container', { title: 'qiqi', text: 'Road to the future.' });
     helloworld.appendTo('#container');
 }
 

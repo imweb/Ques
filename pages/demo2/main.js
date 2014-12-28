@@ -6,8 +6,7 @@ var $ = require('jquery'),
 
 function init() {
     tnav.appendTo('#container');
-    theader.appendTo('#container', { text: '我是头啊' });
-    theader.appendTo('#container', { text: '我也是头啊' });
+    theader.appendTo('#container', { title: 'qiqi', text: 'Road to the future.' });
     helloworld.appendTo('#container');
     tfooter.appendTo('#container', { text: '异步绑定的自定义元素会导致页面闪动' });
 }
