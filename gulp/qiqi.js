@@ -43,9 +43,9 @@ function html() {
       , mainScript = $('script', 'body');
 
     $('body').append([
-      '<script src="http://7.url.cn/edu/jslib/requirejs/2.1.6/require.min.js"></script>',
+      '<script src="/lib/require.min.js"></script>',
       '<script>',
-      "require.config({ paths: { 'jquery': 'http://1.url.cn/jslib/jquery/1.9.1/jquery.min' }});"
+      "require.config({ paths: { 'jquery': '/lib/jquery.min' }});"
     ].join('\n'));
 
     // find all targets in body
