@@ -5,6 +5,10 @@ var connect = require('connect')
 
 connect()
   .use(
+    '/lib',
+    middlePipe(__dirname + '/lib')
+  )
+  .use(
     '/components',
     middlePipe(__dirname + '/components', /(\.html\.js)|(\.css\.js)$/, function (url) {
       return url.replace(/\.js$/, '');
