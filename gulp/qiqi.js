@@ -4,7 +4,7 @@ var map = require('map-stream')
   , cheerio = require('cheerio')
   , walker = require('./lib/walker')
   , Tag = require('./lib/tag')
-  , tpl = require('micro-tpl')
+  , tpl = require('./lib/tpl')
   , cwd = process.cwd();
 
 function _makeDeps(deps) {
@@ -45,7 +45,7 @@ function html() {
     $('body').append([
       '<script src="/lib/require.min.js"></script>',
       '<script>',
-      "require.config({ paths: { 'jquery': '/lib/jquery.min' }});"
+      "require.config({ paths: { 'jquery': '/lib/jquery.min', 'Q': '/lib/Q' }});"
     ].join('\n'));
 
     // find all targets in body
