@@ -1,14 +1,10 @@
-var Q = require('Q'), iclick, itext;
-
-function _setElements() {
-    iclick = Q('#iclick')[0];
-    itext = Q('#itext')[0];
-}
+var Q = require('Q');
 
 function init() {
-    _setElements();
-    iclick.on('change', function (e, value) {
-        itext.set('text', 'You have change to ' + value);
+    var iclick = Q.get('#iclick'),
+        itext = Q.get('#itext');
+    iclick.$on('change', function (msg) {
+        itext.data('text', 'You have change to ' + msg + '.');
     });
 }
 
