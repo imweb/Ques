@@ -6,7 +6,7 @@ function init(container) {
         data: {},
         methods: {
             setMessage: function (e) {
-                var value = prompt('现在值为:' + this.data.message + '; 要设置成:', '');
+                var value = prompt('要设置成:', '');
                 if (value) {
                     this.$emit('change', value);
                 }
