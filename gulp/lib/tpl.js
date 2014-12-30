@@ -16,6 +16,15 @@ function tpl(str) {
       node.data = node.data.replace(MARK, '<%=it.' + match[1] + ' + "' + _makeMark(match[1]) + '"%>');
     }
   });
+  walker.tags(dom, function (node) {
+    var id = node.attribs.id;
+    if (id) {
+      var match = id.match(MARK);
+      if (match) {
+        node.attribs.id = id.replace(MARK, '<%=it.' + match[1] + '%>');
+      }
+    }
+  });
   return mtpl(stringify(dom), { ret: 'function' });
 }
 
