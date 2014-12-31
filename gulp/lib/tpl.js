@@ -23,7 +23,6 @@ function _markValue(key) {
       ')'
     ].join('');
   });
-  console.log(res);
   return res;
 }
 
