@@ -8,12 +8,28 @@ function _makeMark(mark) {
   return "<i class='q-mark'>{{" + mark + "}}</i>"
 }
 
+function _markValue(key) {
+  var res = 'it.' + key;
+  if (arguments.length === 1) return res;
+  var filters = [].slice.call(arguments, 1);
+  filters.forEach(function (filter) {
+    res = [
+      'opt.filters["' + filter + '"](',
+      res,
+      ')'
+    ].join('');
+  });
+  return res;
+}
+
 function tpl(str) {
   var dom = htmlparser.parseDOM(str);
   walker.text(dom[0], function (node) {
-    var match = node.data.match(MARK);
+    var match = node.data.match(MARK)
+      , params;
     if (match) {
-      node.data = node.data.replace(MARK, '<%=it.' + match[1] + ' + "' + _makeMark(match[1]) + '"%>');
+      params = match[1].trim().split(/\s*\|\s*/);
+      node.data = node.data.replace(MARK, '<%=' + _markValue.apply(this, params) + ' + "' + _makeMark(match[1]) + '"%>');
     }
   });
   walker.tags(dom, function (node) {

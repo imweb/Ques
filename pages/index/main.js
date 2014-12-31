@@ -4,7 +4,7 @@ function init() {
     var iclick = Q.get('#iclick'),
         itext = Q.get('#itext');
     iclick.$on('change', function (msg) {
-        itext.data('text', 'You have change to ' + msg + '.');
+        itext.data('text', msg);
     });
 }
 

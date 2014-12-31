@@ -5,7 +5,14 @@ var map = require('map-stream')
   , walker = require('./lib/walker')
   , Tag = require('./lib/tag')
   , tpl = require('./lib/tpl')
-  , cwd = process.cwd();
+  , cwd = process.cwd()
+  , filters = require('../lib/cjs/filters')
+  , _filters = {}
+  , _turnback = function (s) { return s; };
+
+Object.keys(filters).forEach(function (key) {
+  _filters[key] = filters[key].write || _turnback;
+});
 
 function _makeDeps(deps) {
   var i = 0 , l = deps.length;
@@ -30,7 +37,7 @@ function _fix(string, path) {
 }
 
 function _makeFragment($, $ele, tpl, uid) {
-  return $(tpl($ele.attr())).addClass('component-' + uid)
+  return $(tpl($ele.attr(), { filters: _filters })).addClass('component-' + uid)
 }
 
 function html() {
@@ -45,7 +52,7 @@ function html() {
     $('body').append([
       '<script src="/lib/require.min.js"></script>',
       '<script>',
-      "require.config({ paths: { 'jquery': '/lib/jquery.min', 'Q': '/lib/Q' }});"
+      "require.config({ paths: { 'jquery': '/lib/jquery.min', 'Q': '/lib/Q', 'filters': '/lib/cjs/filters' }});"
     ].join('\n'));
 
     // find all targets in body

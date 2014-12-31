@@ -5,6 +5,11 @@ var connect = require('connect')
 
 connect()
   .use(
+    '/lib/cjs',
+    middlePipe(__dirname + '/lib/cjs')
+      .pipe(qiqi.js())
+  )
+  .use(
     '/lib',
     middlePipe(__dirname + '/lib')
   )
