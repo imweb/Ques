@@ -11,7 +11,7 @@ var map = require('map-stream')
   , _turnback = function (s) { return s; };
 
 Object.keys(filters).forEach(function (key) {
-  _filters[key] = filters[key].write || _turnback;
+  _filters[key] = filters[key].read || filters[key] || _turnback;
 });
 
 function _makeDeps(deps) {

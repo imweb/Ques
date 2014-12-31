@@ -13,12 +13,17 @@ function _markValue(key) {
   if (arguments.length === 1) return res;
   var filters = [].slice.call(arguments, 1);
   filters.forEach(function (filter) {
+    var params = filter.split(' ');
+    "a", "b", "b"
+    filter = params.shift();
     res = [
       'opt.filters["' + filter + '"](',
       res,
+      params.length ? (', "' + params.join('", "') + '"') : undefined,
       ')'
     ].join('');
   });
+  console.log(res);
   return res;
 }
 
