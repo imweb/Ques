@@ -10,7 +10,7 @@
                 <div class="view">
                     <input class="toggle" type="checkbox" q-value="completed">
                     <label q-text="title" q-on="dblclick:editTodo(this)"></label>
-                    <button class="destroy"></button>
+                    <button class="destroy" q-on="click:removeTodo(this)"></button>
                 </div>
                 <input class="edit" type="text">
             </li>

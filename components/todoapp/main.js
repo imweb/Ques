@@ -58,6 +58,15 @@ function init(container) {
                     if (obj === todo) index = i;
                 });
                 // this.data('todos.' + index + '.title', 'hello');
+            },
+            removeTodo: function (obj) {
+                var todos = this.data('todos');
+                todos.forEach(function (todo, i) {
+                    if (obj === todo) {
+                        todos.splice(i, 1);
+                    }
+                });
+                this.data('todos', todos);
             }
         }
     });
