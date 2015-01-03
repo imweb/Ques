@@ -1,0 +1,32 @@
+<section id="todoapp">
+    <header id="header">
+        <h1>todos</h1>
+        <input id="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?" q-on="keyup:addTodo | key enter">
+    </header>
+    <section id="main" class="hide" q-show="todos | size">
+        <input id="toggle-all" type="checkbox">
+        <ul id="todo-list">
+            <li class="todo" q-repeat="todos | filterTodos">
+                <div class="view">
+                    <input class="toggle" type="checkbox" q-value="completed">
+                    <label q-text="title" q-on="dblclick:editTodo(this)"></label>
+                    <button class="destroy"></button>
+                </div>
+                <input class="edit" type="text">
+            </li>
+        </ul>
+    </section>
+    <footer id="footer" class="hide" q-show="todos | size">
+        <span id="todo-count">
+            <strong></strong> <i>{{todos | calRemaining | pluralize item}}</i> left
+        </span>
+        <ul id="filters">
+            <li><a href="#/all">All</a></li>
+            <li><a href="#/active">Active</a></li>
+            <li><a href="#/completed">Completed</a></li>
+        </ul>
+        <button id="clear-completed">
+            Clear completed (<i>{{todos | calCompleted}}</i>)
+        </button>
+    </footer>
+</section>

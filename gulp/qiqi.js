@@ -37,7 +37,12 @@ function _fix(string, path) {
 }
 
 function _makeFragment($, $ele, tpl, uid) {
-  return $(tpl($ele.attr(), { filters: _filters })).addClass('component-' + uid)
+  var attrs = $ele.attr();
+  if (!Object.keys(attrs).length) {
+    return $(tpl.tpl).addClass('component-' + uid);
+  } else {
+    return $(tpl(attrs, { filters: _filters })).addClass('component-' + uid);
+  }
 }
 
 function html() {

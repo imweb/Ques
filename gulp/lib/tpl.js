@@ -27,7 +27,7 @@ function _markValue(key) {
 }
 
 function tpl(str) {
-  var dom = htmlparser.parseDOM(str);
+  var dom = htmlparser.parseDOM(str), res;
   walker.text(dom[0], function (node) {
     var match = node.data.match(MARK)
       , params;
@@ -45,7 +45,9 @@ function tpl(str) {
       }
     }
   });
-  return mtpl(stringify(dom), { ret: 'function' });
+  res = mtpl(stringify(dom), { ret: 'function' });
+  res.tpl = str;
+  return res;
 }
 
 module.exports = tpl;
