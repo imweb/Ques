@@ -18,7 +18,7 @@
     </section>
     <footer id="footer" class="hide" q-show="todos | size">
         <span id="todo-count">
-            <strong q-text="todos | calRemaining"></strong> <i>{{todos | calRemaining | pluralize item}}</i> left
+            <strong q-text="todos | calRemaining"></strong> <i q-text="todos | calRemaining | pluralize item"></i> left
         </span>
         <ul id="filters">
             <li><a href="#/all" q-class="selected: activeFilter | checkActive all">All</a></li>
@@ -26,7 +26,7 @@
             <li><a href="#/completed" q-class="selected: activeFilter |  checkActive completed">Completed</a></li>
         </ul>
         <button id="clear-completed" q-show="todos | calCompleted">
-            Clear completed (<i>{{todos | calCompleted}}</i>)
+            Clear completed (<i q-text="todos | calCompleted"></i>)
         </button>
     </footer>
 </section>

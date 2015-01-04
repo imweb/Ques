@@ -47,7 +47,7 @@ function init(container) {
         ready: function () {
             var self = this;
             this.$watch('todos', function () {
-                storage.save(self.data('todos'));
+                storage.save(self.data('todos').get());
             }, true);
         },
 
@@ -60,7 +60,7 @@ function init(container) {
             key: filters.key,
             pluralize: filters.pluralize,
             filterTodos: function (todos) {
-                return todos.filter(this.data('filters')[this.data('activeFilter')]);
+                return todos.filter(this.data('filters').get()[this.data('activeFilter').get()]);
             },
             checkActive: function (value, type) {
                 return value === type;
@@ -71,49 +71,35 @@ function init(container) {
 
         methods: {
             addTodo: function (e) {
-                var todos = this.data('todos');
+                var todos = this.data('todos').get();
                 todos.push({ title: e.target.value, completed: false });
-                this.data('todos', todos);
+                this.data('todos').set(todos);
                 e.target.value = '';
             },
             editTodo: function (obj) {
-                var index;
-                this.data('todos').forEach(function (todo, i) {
-                    if (obj === todo) index = i;
-                });
-                this.data('todos.' + index + '.editing', true);
+                this.data('todos', obj).set('editing', true);
             },
             removeTodo: function (obj) {
-                var todos = this.data('todos');
-                todos.forEach(function (todo, i) {
-                    if (obj === todo) {
-                        todos.splice(i, 1);
-                    }
-                });
-                this.data('todos', todos);
+                var todos = this.data('todos').get(), i = todos.indexOf(obj);
+                if (~i) {
+                    todos.splice(i, 1);
+                    this.data('todos').set(todos);
+                }
             },
             doneEdit: function (obj) {
-                var index;
-                this.data('todos').forEach(function (todo, i) {
-                    if (obj === todo) index = i;
-                });
-                this.data('todos.' + index + '.editing', false);
+                this.data('todos', obj).set('editing', false);
             },
             toggleItem: function (obj) {
-                var index;
-                this.data('todos').forEach(function (todo, i) {
-                    if (obj === todo) index = i;
-                });
-                this.data('todos.' + index + '.completed', !obj.completed);
+                this.data('todos', obj).set('completed', !obj.completed);
             },
             toggleAll: function (obj) {
-                var todos = this.data('todos'),
+                var todos = this.data('todos').get(),
                     completed = true;
                 if (_isAllSelect(todos)) completed = false;
                 todos.forEach(function (todo) {
                     todo.completed = completed;
                 });
-                this.data('todos', todos);
+                this.data('todos').set(todos);
             }
         }
     });
