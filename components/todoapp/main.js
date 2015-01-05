@@ -44,6 +44,18 @@ function init(container) {
             }
         },
 
+        directives: {
+            'todo-focus': function (value, options) {
+                if (!value) {
+                    return;
+                }
+                var el = options.node;
+                setTimeout(function () {
+                    el.focus();
+                }, 0);
+            }
+        },
+
         ready: function () {
             var self = this;
             this.$watch('todos', function () {

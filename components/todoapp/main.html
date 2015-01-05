@@ -12,7 +12,7 @@
                     <label q-text="title" q-on="dblclick:editTodo(this)"></label>
                     <button class="destroy" q-on="click:removeTodo(this)"></button>
                 </div>
-                <input class="edit" type="text" q-model="title" q-on="blur: doneEdit(this)">
+                <input class="edit" type="text" q-model="title" q-todo-focus="editing" q-on="blur: doneEdit(this)">
             </li>
         </ul>
     </section>
