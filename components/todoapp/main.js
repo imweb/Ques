@@ -112,6 +112,13 @@ function init(container) {
                     todo.completed = completed;
                 });
                 this.data('todos').set(todos);
+            },
+            removeCompleted: function () {
+                var todos = this.data('todos').get();
+                todos.forEach(function (todo) {
+                    todo.completed = false;
+                });
+                this.data('todos').set(todos);
             }
         }
     });

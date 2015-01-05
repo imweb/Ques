@@ -25,7 +25,7 @@
             <li><a href="#/active" q-class="selected: activeFilter |  checkActive active">Active</a></li>
             <li><a href="#/completed" q-class="selected: activeFilter |  checkActive completed">Completed</a></li>
         </ul>
-        <button id="clear-completed" q-show="todos | calCompleted">
+        <button id="clear-completed" q-show="todos | calCompleted" q-on="click:removeCompleted">
             Clear completed (<i q-text="todos | calCompleted"></i>)
         </button>
     </footer>
