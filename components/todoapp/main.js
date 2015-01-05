@@ -83,6 +83,7 @@ function init(container) {
 
         methods: {
             addTodo: function (e) {
+                if (!e.target.value) return;
                 var todos = this.data('todos').get();
                 todos.push({ title: e.target.value, completed: false });
                 this.data('todos').set(todos);
