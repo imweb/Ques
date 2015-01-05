@@ -72,6 +72,7 @@ function init(container) {
             key: filters.key,
             pluralize: filters.pluralize,
             filterTodos: function (todos) {
+                console.log(todos.filter(this.data('filters').get()[this.data('activeFilter').get()]));
                 return todos.filter(this.data('filters').get()[this.data('activeFilter').get()]);
             },
             checkActive: function (value, type) {
