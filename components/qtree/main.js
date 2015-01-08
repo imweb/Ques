@@ -15,8 +15,7 @@ function init(container) {
                     (options.node.src = value);
             },
             height: function (value, options) {
-                value &&
-                    (options.node.style.height = value + 'px');
+                options.node.style.height = (value || 0) + 'px';
             }
         },
         filters: {
