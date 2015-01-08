@@ -31,16 +31,12 @@ function init(container) {
                 this.$set('hide', !this.hide);
             },
             enterRoom: function (obj) {
-                obj.anchorid ?
-                    alert('进入直播间id:' + obj.roomid + ', 主播id:' + obj.anchorid) :
-                    alert('进入直播间id:' + obj.roomid);
+                this.$emit('enter', obj);
             },
             del: function (obj) {
-                obj.anchorid ?
-                    alert('删除直播间id:' + obj.roomid + ', 主播id:' + obj.anchorid) :
-                    alert('删除直播间id:' + obj.roomid);
                 var i = this.list.indexOf(obj);
                 this.list.splice(i, 1);
+                this.$emit('delete', obj);
             }
         }
     });

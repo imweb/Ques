@@ -23,6 +23,15 @@ function init() {
         anchorid: 3
     }]);
     anchorList.$set('hide', false);
+    anchorList.$on('enter', function (obj) {
+        alert('进入直播间id:' + obj.roomid + ', 主播id:' + obj.anchorid);
+        // 这里做上报
+        console.log(arguments);
+    }).$on('delete', function (obj) {
+        alert('删除直播间id:' + obj.roomid + ', 主播id:' + obj.anchorid);
+        // 这里做上报
+        console.log(arguments);
+    });
 
     roomList.list.push({
         roomid: 4,
@@ -37,6 +46,15 @@ function init() {
         intro: '美女直播尽在本色娱乐'
     });
     roomList.$set('hide', false);
+    roomList.$on('enter', function (obj) {
+        alert('进入直播间id:' + obj.roomid);
+        // 这里做上报
+        console.log(arguments);
+    }).$on('delete', function (obj) {
+        alert('删除直播间id:' + obj.roomid);
+        // 这里做上报
+        console.log(arguments);
+    });
 }
 
 return {
