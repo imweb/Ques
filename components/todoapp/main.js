@@ -84,8 +84,7 @@ function init(container) {
         methods: {
             addTodo: function (e) {
                 if (!e.target.value) return;
-                var todos = this.todos;
-                todos.push({ title: e.target.value, completed: false });
+                this.todos.push({ title: e.target.value, completed: false });
                 e.target.value = '';
             },
             editTodo: function (obj) {
@@ -102,8 +101,8 @@ function init(container) {
                 obj.$set('completed', !obj.completed);
             },
             toggleAll: function (obj) {
-                var todos = this.todos,
-                    completed = true;
+                var completed = true,
+                    todos = this.todos;
                 if (_isAllSelect(todos)) completed = false;
                 todos.forEach(function (todo) {
                     todo.completed !== completed &&
@@ -111,8 +110,7 @@ function init(container) {
                 });
             },
             removeCompleted: function () {
-                var todos = this.todos;
-                todos.forEach(function (todo) {
+                this.todos.forEach(function (todo) {
                     todo.completed !== false &&
                         todo.$set('completed', false);
                 });
