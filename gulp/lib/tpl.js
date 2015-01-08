@@ -5,7 +5,7 @@ var htmlparser = require('htmlparser2')
   , MARK = /\{\{(.+?)\}\}/;
 
 function _makeMark(mark) {
-  return "<i class='q-mark'>{{" + mark + "}}</i>"
+  return "";// "<i class='q-mark'>{{" + mark + "}}</i>"
 }
 
 function _markValue(key) {
