@@ -59,7 +59,7 @@ function init(container) {
         ready: function () {
             var self = this;
             this.$watch('todos', function () {
-                storage.save(self.data('todos').get());
+                storage.save(self.todos.$get());
             }, true);
         },
 
@@ -72,7 +72,7 @@ function init(container) {
             key: filters.key,
             pluralize: filters.pluralize,
             filterTodos: function (todos) {
-                return todos.filter(this.data('filters').get()[this.data('activeFilter').get()]);
+                return todos.filter(this.filters[this.activeFilter]);
             },
             checkActive: function (value, type) {
                 return value === type;
@@ -84,42 +84,38 @@ function init(container) {
         methods: {
             addTodo: function (e) {
                 if (!e.target.value) return;
-                var todos = this.data('todos').get();
+                var todos = this.todos;
                 todos.push({ title: e.target.value, completed: false });
-                this.data('todos').set(todos);
                 e.target.value = '';
             },
             editTodo: function (obj) {
-                this.data('todos', obj).set('editing', true);
+                obj.$set('editing', true);
             },
             removeTodo: function (obj) {
-                var todos = this.data('todos').get(), i = todos.indexOf(obj);
-                if (~i) {
-                    todos.splice(i, 1);
-                    this.data('todos').set(todos);
-                }
+                var todos = this.todos, i = todos.indexOf(obj);
+                ~i && todos.splice(i, 1);
             },
             doneEdit: function (obj) {
-                this.data('todos', obj).set('editing', false);
+                obj.$set('editing', false);
             },
             toggleItem: function (obj) {
-                this.data('todos', obj).set('completed', !obj.completed);
+                obj.$set('completed', !obj.completed);
             },
             toggleAll: function (obj) {
-                var todos = this.data('todos').get(),
+                var todos = this.todos,
                     completed = true;
                 if (_isAllSelect(todos)) completed = false;
                 todos.forEach(function (todo) {
-                    todo.completed = completed;
+                    todo.completed !== completed &&
+                        todo.$set('completed', completed);
                 });
-                this.data('todos').set(todos);
             },
             removeCompleted: function () {
-                var todos = this.data('todos').get();
+                var todos = this.todos;
                 todos.forEach(function (todo) {
-                    todo.completed = false;
+                    todo.completed !== false &&
+                        todo.$set('completed', false);
                 });
-                this.data('todos').set(todos);
             }
         }
     });
