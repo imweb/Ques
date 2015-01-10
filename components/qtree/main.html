@@ -1,25 +1,17 @@
-<div class="$__container" id="<%=it.id%>">
-    <div class="$__title">
+<div class="$__container" id="{{id}}">
+    <div class="$__title" q-on="click: toggle">
         <i class="$__triangle"></i>
-        <%=it.title%>
-        <span class="$__num"><%=it.num%></span>
+        <span>{{title}}</span>
+        <span class="$__num" q-text="num"></span>
     </div>
-    <ul class="$__list $__list-hide">
-        <%
-            var item;
-            for (var i = 0, l = it.list ? it.list.length : 0; i < l; i++) {
-                item = it.list[i];
-        %>
-            <li class="$__item" tabindex="0" data-roomid="<%=item.roomid%>" data-anchorid="<%=item.anchorid%>">
-                <img class="$__avatar<%=item.offline ? ' $__avatar-offline' : ''%>" src="<%=item.avatar%>">
-                <div class="$__info">
-                    <div class="$__name"><%=item.name%></div>
-                    <div class="$__intro"><%=item.intro ? item.intro : (item.offline ? '[不在直播]' : '[直播]')%></div>
-                </div>
-                <% if (it.needDel) { %>
-                    <div class="$__del" data-roomid="<%=item.roomid%>" tabindex="0"><i class="$__delicon"></i>从列表删除此直播间/div&gt; </div>
-                <% } %>
-            </li>
-        <% } %>
+    <ul class="$__list $__list-hide" q-height="list | calHeight" q-class="$__list-hide: hide">
+        <li class="$__item" tabindex="0" q-repeat="list" q-on="dblclick: enterRoom(this)">
+            <img q-class="$__avatar-offline: offline" class="$__avatar" src="" q-src="avatar">
+            <div class="$__info">
+                <div class="$__name" q-text="name"></div>
+                <div class="$__intro" q-text="offline | showIntro"></div>
+            </div>
+            <div class="$__del" tabindex="0" q-on="click: del(this)"><i class="$__delicon"></i>从列表删除此直播间/div&gt; </div>
+        </li>
     </ul>
 </div>

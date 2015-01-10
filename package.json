@@ -1,11 +1,13 @@
 {
   "name": "lab",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "app.js",
   "dependencies": {
     "cheerio": "^0.18.0",
     "connect": "^3.3.3",
+    "dom-serializer": "0.0.1",
+    "htmlparser2": "^3.8.2",
     "map-stream": "^0.0.5",
     "micro-tpl": "^0.4.0",
     "middleware-pipe": "^1.0.1"

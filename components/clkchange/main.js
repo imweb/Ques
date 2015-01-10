@@ -5,8 +5,11 @@ function init(container) {
         el: container,
         data: {},
         methods: {
-            enterLive: function () {
-                alert('假设我们进入齐齐的直播大厅');
+            setMessage: function (e) {
+                var value = prompt('要设置成:', '');
+                if (value) {
+                    this.$emit('change', value);
+                }
             }
         }
     });
