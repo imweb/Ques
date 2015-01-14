@@ -15,15 +15,7 @@ insert_final_newline = true
 indent_style = space
 indent_size = 2
 
-[components/**.js]
-indent_style = space
-indent_size = 4
-
-[pages/**.js]
-indent_style = space
-indent_size = 4
-
-[lib/**.js]
+[src/**.js]
 indent_style = space
 indent_size = 4
 

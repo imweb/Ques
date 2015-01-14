@@ -1,0 +1,22 @@
+.$__container {
+    background-color: #fff;
+    min-height: 40px;
+    border: 1px solid transparent;
+}
+.$__container li {
+    display: inline-block;
+}
+.$__container a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #563d7c;
+    font-size: 14px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.$__container a:hover {
+    color: #188eee;
+}

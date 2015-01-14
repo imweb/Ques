@@ -1,52 +1,54 @@
 var connect = require('connect')
   , middlePipe = require('middleware-pipe')
   , path = require('path')
-  , qiqi = require('./gulp/qiqi');
+  , qiqi = require('./lib/qiqi')
+  , config = require('./config')
+  , src = path.resolve(config.src);
 
 connect()
   .use(
     '/lib/cjs',
-    middlePipe(__dirname + '/lib/cjs')
+    middlePipe(src + '/lib/cjs')
       .pipe(qiqi.js())
   )
   .use(
     '/lib',
-    middlePipe(__dirname + '/lib')
+    middlePipe(src + '/lib')
   )
   .use(
     '/components',
-    middlePipe(__dirname + '/components', /(\.html\.js)|(\.css\.js)$/, function (url) {
+    middlePipe(src + '/components', /(\.html\.js)|(\.css\.js)$/, function (url) {
       return url.replace(/\.js$/, '');
     }).pipe(qiqi.tpl())
   )
   .use(
     '/components',
-    middlePipe(__dirname + '/components', /\.js$/)
+    middlePipe(src + '/components', /\.js$/)
       .pipe(qiqi.js())
   )
   .use(
     '/components',
-    middlePipe(__dirname + '/components', /\.css$/)
+    middlePipe(src + '/components', /\.css$/)
       .pipe(qiqi.css())
   )
   .use(
     '/components',
-    middlePipe(__dirname + '/components', /render\.js$/, function () {
+    middlePipe(src + '/components', /render\.js$/, function () {
       return 'render.js';
     }).pipe(qiqi.js())
   )
   .use(
     '/pages',
-    middlePipe(__dirname + '/pages', /\.js$/)
+    middlePipe(src + '/pages', /\.js$/)
       .pipe(qiqi.js())
   )
   .use(
     '/pages',
-    middlePipe(__dirname + '/pages', /\.css$/)
+    middlePipe(src + '/pages', /\.css$/)
       .pipe(qiqi.css())
   )
   .use(
-    middlePipe(__dirname, /\.html$/)
+    middlePipe(src, /\.html$/)
       .pipe(qiqi.html())
   )
-  .listen(3000);
+  .listen(config.port);
