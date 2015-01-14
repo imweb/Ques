@@ -1,9 +1,10 @@
 module.exports = {
+  port: 80,
   src: './src',
-  loader: '/lib/require.min.js',
+  loader: '/lib/parallel-require.js',
   paths: {
-    'jquery': '/lib/jquery.min',
-    'Q': '/lib/Q',
-    'filters': '/lib/cjs/filters'
+    'jquery': '/lib/jquery.min.js',
+    'Q': '/lib/Q.js',
+    'filters': '/lib/cjs/filters.js'
   }
 };
