@@ -51,4 +51,4 @@ connect()
     middlePipe(src, /\.html$/)
       .pipe(qiqi.html())
   )
-  .listen(3000);
+  .listen(config.port);
