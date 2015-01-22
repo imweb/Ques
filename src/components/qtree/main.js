@@ -10,12 +10,12 @@ function init(container) {
             height: 56
         },
         directives: {
-            src: function (value, options) {
+            src: function (value) {
                 value &&
-                    (options.node.src = value);
+                    (this.el.src = value);
             },
-            height: function (value, options) {
-                options.node.style.height = (value || 0) + 'px';
+            height: function (value) {
+                this.el.style.height = (value || 0) + 'px';
             }
         },
         filters: {
