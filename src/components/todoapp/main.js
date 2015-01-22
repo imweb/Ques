@@ -49,7 +49,7 @@ function init(container) {
                 if (!value) {
                     return;
                 }
-                var el = options.node;
+                var el = this.el;
                 setTimeout(function () {
                     el.focus();
                 }, 0);
