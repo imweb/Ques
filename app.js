@@ -9,7 +9,7 @@ connect()
   .use(
     '/lib/cjs',
     middlePipe(src + '/lib/cjs')
-      .pipe(qiqi.js())
+      .pipe(qiqi.js(true))
   )
   .use(
     '/lib',
