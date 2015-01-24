@@ -14,15 +14,19 @@
 <clkchange id="test" message="change me"></clkchange>
 <ttext id="mytext"></ttext>
 <script>
-var Q = require('Q'),
-    test = Q.get('#test'),
-    mytext = Q.get('#mytext');
-    
-test.$on('change', function (value) {
-    mytext.$set('text', value);
+// require Q.js
+require(['Q'], function (Q) {
+    // get the Q instance of #test element
+    var changeMe = Q.get('#test'),
+    // get the Q instance of #mytext element
+        myText = Q.get('#mytext');
+    // bind change event
+    changeMe.$on('change', function (value) {
+        // when change event trigger, 
+        // set the #mytext element's property
+        myText.$set('text', value); 
+    });
 });
-
-console.log(test, mytext);
 </script>
 </body>
 </html>
