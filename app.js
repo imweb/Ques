@@ -2,7 +2,7 @@ var connect = require('connect')
   , middlePipe = require('middleware-pipe')
   , path = require('path')
   , qiqi = require('./lib/qiqi')
-  , config = require('./config')
+  , config = require('./lib/appConfig')(require('./config'))
   , src = path.resolve(config.src);
 
 connect()
@@ -51,4 +51,6 @@ connect()
     middlePipe(src, /\.html$/)
       .pipe(qiqi.html())
   )
-  .listen(config.port);
+  .listen(config.port, function () {
+    console.log('app listen: ' + config.port);
+  });

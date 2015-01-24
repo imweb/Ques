@@ -1,4 +1,7 @@
 var grab = require('./lib/grab');
 
-grab('client.html')
-  .output('./dist');
+grab('todomvc.html')
+    .output('./dist')
+    .done(function () {
+      console.log('done');
+    });

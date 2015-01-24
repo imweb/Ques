@@ -1,5 +1,6 @@
 module.exports = {
   port: 80,
+  distPort: 3000,
   src: './src',
   loader: '/lib/parallel-require.js',
   paths: {
