@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "cheerio": "^0.18.0",
+    "commander": "^2.6.0",
     "connect": "^3.3.3",
     "dom-serializer": "0.0.1",
     "dom.tpl": "0.0.2",

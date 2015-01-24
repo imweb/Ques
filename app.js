@@ -2,11 +2,20 @@ var connect = require('connect')
   , middlePipe = require('middleware-pipe')
   , path = require('path')
   , qiqi = require('./lib/qiqi')
-  , config = require('./config')
+  , config = require('./lib/appConfig')(require('./config'))
   , src = path.resolve(config.src);
 
-connect()
-  .use(
+var app = connect();
+
+config.addon &&
+config.addon.forEach(function (addon) {
+  addon = require('./lib/addon/' + addon)
+  addon.router ?
+    app.use(addon.router, addon.middleware) :
+    app.use(addon);
+});
+
+app.use(
     '/lib/cjs',
     middlePipe(src + '/lib/cjs')
       .pipe(qiqi.js(true))
@@ -50,5 +59,6 @@ connect()
   .use(
     middlePipe(src, /\.html$/)
       .pipe(qiqi.html())
-  )
-  .listen(config.port);
+  ).listen(config.port, function () {
+    console.log('app listen: ' + config.port);
+  });
