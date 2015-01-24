@@ -1,0 +1,130 @@
+<!DOCTYPE>
+<html>
+<head>
+<title>Learn Ques</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    margin: 20px 0;
+}
+.container {
+    position: absolute;
+    width: 50%;
+    height: 400px;
+    float: left;
+    position: relative;
+}
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+#preview {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    outline: 1px solid #ddd;
+}
+#submit {
+    padding: 13px 35px 17px;
+    -webkit-box-shadow: inset 0 -4px 0 #2a6496;
+    box-shadow: inset 0 -4px 0 #2a6496;
+    border: 0;
+    color: #fff;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 6px;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    outline: 0;
+    display: block;
+    margin: 20px auto 0;
+}
+#submit:hover,
+#submit:focus,
+#submit:active {
+    background-color: #286090;
+    border-color: #204d74;
+}
+</style>
+</head>
+<body>
+<h1>Learn Ques</h1>
+
+<div class="clearfix">
+    <div class="container" id="editor"></div>
+
+    <div class="container">
+    <iframe src="/test.html" id="preview"></iframe>
+    </div>
+</div>
+
+<div>
+<button id="submit">Save</button>
+</div>
+<script src="http://ace.c9.io/build/src/ace.js" data-ace-base="src" type="text/javascript" charset="utf-8"></script>
+<script src="http://ace.c9.io/build/src/worker-html.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ace.c9.io/build/src/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ace.c9.io/build/src/mode-html.js" type="text/javascript" charset="utf-8"></script>
+<script>
+var editor = ace.edit("editor"),
+    htmlMode = require('ace/mode/html').Mode,
+    submit = document.getElementById('submit'),
+    preview = document.getElementById('preview');
+
+function _save() {
+    var xhr = new XMLHttpRequest(),
+        value = encodeURI(editor.getValue());
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                preview.src = '/test.html';
+            } else {
+                alert('Couldn\'t save the code');
+            }
+        }
+    }
+    xhr.open('GET', '/learn/submit?value=' + value, true);
+    xhr.send(null);
+}
+
+require('ace/config')
+    .setModuleUrl('ace/mode/html_worker', 'http://ace.c9.io/build/src/worker-html.js');
+
+editor.setTheme("ace/theme/tomorrow_night_bright");
+editor.getSession().setMode(new htmlMode);
+editor.setValue('{{result}}');
+
+editor.commands.addCommand({
+    name: "savePreview",
+    bindKey: {win: "Ctrl-s", mac: "Command-s"},
+    exec: function(editor) {
+        _save();
+    }
+})
+
+submit.addEventListener('click', _save);
+
+</script>
+</body>
+</html>
