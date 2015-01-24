@@ -13,7 +13,7 @@ h1 {
 .container {
     position: absolute;
     width: 50%;
-    height: 400px;
+    height: 80%;
     float: left;
     position: relative;
 }
@@ -94,7 +94,7 @@ var editor = ace.edit("editor"),
 
 function _save() {
     var xhr = new XMLHttpRequest(),
-        value = encodeURI(editor.getValue());
+        value = editor.getValue();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -104,8 +104,8 @@ function _save() {
             }
         }
     }
-    xhr.open('GET', '/learn/submit?value=' + value, true);
-    xhr.send(null);
+    xhr.open('POST', '/learn/submit', true);
+    xhr.send(value);
 }
 
 require('ace/config')

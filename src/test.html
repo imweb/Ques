@@ -6,10 +6,23 @@
     margin: 0;
     padding: 0;
 }
-</style>    
+</style>
 </head>
 <body>
 <tnav></tnav>
 <theader title="Ques" text="Hello world"></theader>
+<clkchange id="test" message="change me"></clkchange>
+<ttext id="mytext"></ttext>
+<script>
+var Q = require('Q'),
+    test = Q.get('#test'),
+    mytext = Q.get('#mytext');
+    
+test.$on('change', function (value) {
+    mytext.$set('text', value);
+});
+
+console.log(test, mytext);
+</script>
 </body>
 </html>
