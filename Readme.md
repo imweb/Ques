@@ -3,7 +3,9 @@ qiqi
 
 > `[实验性质]` 基于`动态编译`和`线下打包`的 component 前端解决方案，尝试通过线下手段达到Polymer的变成体验
 
-![i](https://cloud.githubusercontent.com/assets/2239584/5889906/bf180eac-a479-11e4-9564-0a9d8da22793.gif)
+![i](https://cloud.githubusercontent.com/assets/2239584/5889955/d24e8814-a47b-11e4-9a6e-0b2abf03b14c.gif)
+
+[大图](https://cloud.githubusercontent.com/assets/2239584/5889906/bf180eac-a479-11e4-9564-0a9d8da22793.gif)
 
 试一试
 ------
