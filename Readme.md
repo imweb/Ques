@@ -3,6 +3,8 @@ Ques
 
 > An new architecture which deal with how to implement and use a component
 
+`[Warning] This project is under heavy development. Not ready for primetime.`
+
 ### 演示
 
 * 编辑过程
@@ -68,3 +70,43 @@ require(['Q'], function (Q) {
 
 * 浏览DEMO
 打开浏览器，打开页面：http://localhost:3000/learn
+
+### 基本命令
+
+* 启动学习环境
+
+> gulp lean
+
+打开浏览器，打开页面：http://localhost:3000/learn
+
+* 启动开发环境
+
+> gulp app
+
+打开浏览器，打开页面：http://localhost/index.html
+
+* 构建
+
+> gulp
+
+生成到dist文件夹，具体请参见`gulpfile.js`。
+
+### 简介
+
+> `Ques` 是一个基于`动态构建`、`MVVM`，解决如何实现组件、使用组件的整体解决方案。
+
+* 动态构建
+
+即通过`本地服务器`，实现源代码动态生成，有别于通常的`watch`方式构建，详情请参考：
+
+https://github.com/miniflycn/middleware-pipe/issues/3
+
+* MVVM
+
+为了满足自身业务需求，我们实现了自己的`伪MVVM`库：[Q.js](https://github.com/miniflycn/Q.js)，通过Q.js，我们实现`MV`与`Controller`，`节点操作`与`数据`的分离。
+
+### 基本思想
+
+* 编码越自由，代码越难预测
+* 代码越可预测，分离越清晰，越可维护
+* 大部分线上的问题（例如：`Web Component性能问题`、`代码组织与上线代码问题`）都可以通过线下解决
