@@ -7,13 +7,9 @@ module.exports = {
     'jquery': '/lib/jquery.min.js',
     'Q': '/lib/Q.js',
     'filters': '/lib/cjs/filters.js',
-    'utils': '/lib/cjs/utils.js',
-    'commonapi': '/lib/commonapi.js',
-    'jquery.contextMenu': '/lib/jquery.contextMenu.js'
+    'utils': '/lib/cjs/utils.js'
   },
   realPaths: {
-    'jquery': 'http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min.js',
-    'commonapi': '/lib/commonapi.js',
-    'jquery.contextMenu': '/lib/jquery.contextMenu.js'
+    'jquery': 'http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min.js'
   }
 };
