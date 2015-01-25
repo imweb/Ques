@@ -1,22 +1,33 @@
 var path = require('path')
   , fs = require('fs')
   , url = require('url')
-  , config = require('../../config')
+  , config = require('../config')
   , cwd = process.cwd();
 
-var testFile = path.join(cwd, config.src, 'test.html');
+function _getFile(query) {
+  if (!query) query = '';
+  var file = query.match(/path\=(.+?)(\&|$)/);
+  file ?
+    (file = file[1]) :
+    (file = 'test.html');
+  return path.join(cwd, config.src, file);
+}
 
-function index(req, res, next) {
-  var file = path.resolve(__dirname, 'learn/index.html')
+function index(req, res, next, urlObj) {
+
+  var openFile = _getFile(urlObj.query)
+    , file = path.resolve(__dirname, 'learn/index.html')
     , test = path.join(cwd)
     , str = fs.readFileSync(file, 'utf-8');
 
   str = str.replace(
     /\{\{result\}\}/,
-    fs.readFileSync(testFile, 'utf-8')
-      .replace(/\r?\n/g, '\\n')
-      .replace(/'/g, "\\'")
-      .replace(/\<\/script\>/g, "</' + 'script>")
+    fs.existsSync(openFile) ?
+      fs.readFileSync(openFile, 'utf-8')
+        .replace(/\r?\n/g, '\\n')
+        .replace(/'/g, "\\'")
+        .replace(/\<\/script\>/g, "</' + 'script>") :
+      ''
   );
 
   res.writeHead(200, {
@@ -32,7 +43,7 @@ function submit(req, res, next, urlObj) {
   });
   req.on('end', function () {
     data = Buffer.concat(data);
-    fs.writeFileSync(testFile, data, 'utf-8');
+    fs.writeFileSync(_getFile(urlObj.query), data, 'utf-8');
     res.end();
   });
 }
