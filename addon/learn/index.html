@@ -75,7 +75,7 @@ h1 {
     <div class="container" id="editor"></div>
 
     <div class="container">
-    <iframe src="/test.html" id="preview"></iframe>
+    <iframe src="about:blank" id="preview"></iframe>
     </div>
 </div>
 
@@ -86,45 +86,85 @@ h1 {
 <script src="http://ace.c9.io/build/src/worker-html.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://ace.c9.io/build/src/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://ace.c9.io/build/src/mode-html.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ace.c9.io/build/src/ext-searchbox.js" type="text/javascript" charset="utf-8"></script>
 <script>
 var editor = ace.edit("editor"),
     htmlMode = require('ace/mode/html').Mode,
     submit = document.getElementById('submit'),
     preview = document.getElementById('preview');
 
-function _save() {
-    var xhr = new XMLHttpRequest(),
-        value = editor.getValue();
+function ajax(url, data, succ, fail) {
+    var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                preview.src = '/test.html';
+                succ();
             } else {
-                alert('Couldn\'t save the code');
+                fail();
             }
         }
     }
-    xhr.open('POST', '/learn/submit', true);
-    xhr.send(value);
+    xhr.open('POST', url, true);
+    xhr.send(data);
+}
+
+function _reload() {
+    var file = location.search.match(/path\=(.+?)(\&|$)/);
+    file ?
+        (file = '/' + file[1]) :
+        (file = '/test.html');
+    preview.src = file;
+}
+_reload();
+
+function _save() {
+    ajax(
+        '/learn/submit' + location.search,
+        editor.getValue(),
+        function () {
+            _reload();
+        },
+        function () {
+            alert('Couldn\'t save the code');
+        }
+    );
+}
+
+function _open() {
+    var value = prompt('打开文件', 'test.html');
+    if (value) {
+        location.search = '?path=' + value;
+    }
 }
 
 require('ace/config')
     .setModuleUrl('ace/mode/html_worker', 'http://ace.c9.io/build/src/worker-html.js');
 
-editor.setTheme("ace/theme/tomorrow_night_bright");
+editor.setTheme('ace/theme/tomorrow_night_bright');
 editor.getSession().setMode(new htmlMode);
 editor.setValue('{{result}}');
 
 editor.commands.addCommand({
-    name: "savePreview",
-    bindKey: {win: "Ctrl-s", mac: "Command-s"},
-    exec: function(editor) {
+    name: 'savePreview',
+    bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
+    exec: function (editor) {
         _save();
     }
-})
+});
+
+editor.commands.addCommand({
+    name: 'openFile',
+    bindKey: { win: 'Ctrl-o', mac: 'Command-o' },
+    exec: function (editor) {
+        _open();
+    }
+});
 
 submit.addEventListener('click', _save);
 
+setTimeout(function () {
+    editor.focus();
+}, 200);
 </script>
 </body>
 </html>

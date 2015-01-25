@@ -8,12 +8,14 @@ var connect = require('connect')
 var app = connect();
 
 config.addon &&
-config.addon.forEach(function (addon) {
-  addon = require('./lib/addon/' + addon)
-  addon.router ?
-    app.use(addon.router, addon.middleware) :
-    app.use(addon);
-});
+  config.addon.forEach(function (addon) {
+    addon = require('./addon/' + addon);
+    addon.init ?
+      addon.init(app) :
+      addon.router ?
+        app.use(addon.router, addon.middleware) :
+        app.use(addon);
+  });
 
 app.use(
     '/lib/cjs',
