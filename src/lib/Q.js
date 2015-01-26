@@ -76,7 +76,7 @@ define("Q", ["jquery"], function(__WEBPACK_EXTERNAL_MODULE_6__) { return /******
 	    if (ele) {
 	        return _.data(ele, 'QI');
 	    } else {
-	        return null;
+	        return new Q({ el: selector });
 	    }
 	};
 	Q.all = function (options) {
@@ -555,7 +555,7 @@ define("Q", ["jquery"], function(__WEBPACK_EXTERNAL_MODULE_6__) { return /******
 	 */
 	function Data(options) {
 	    var data = options.data,
-	        keys = Object.keys(options.data)
+	        keys = Object.keys(options.data || {})
 	            .filter(function (key) { return key.indexOf('_') !== 0; }),
 	        self = this;
 	    _.extend(this, data);
