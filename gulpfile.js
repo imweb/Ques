@@ -58,7 +58,7 @@ gulp.task('learn', function (done) {
 // build task
 gulp.task('default', ['distApp'], function () {
   // files need to be grab
-  grab('todomvc.html', {
+  grab(['todomvc.html', 'client.html', 'index.html'], {
     host: 'http://localhost:' + config.distPort
   }).output('./dist')
     // gulp stream for css
