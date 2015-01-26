@@ -15,6 +15,7 @@
     "gulp-uglify": "^1.1.0",
     "map-stream": "^0.0.5",
     "middleware-pipe": "^1.0.1",
+    "run-parallel": "^1.0.0",
     "url-dom": "0.0.2",
     "url-valid": "^0.3.0",
     "utils-merge": "^1.0.0"
