@@ -10,7 +10,7 @@ module.exports = {
   // loader paths config in development
   paths: {
     'jquery': '/lib/jquery.min.js',
-    'Q': '/lib/Q.js',
+    'Q': '/lib/bower_components/q.js/dist/Q.js',
     'filters': '/lib/cjs/filters.js',
     'utils': '/lib/cjs/utils.js'
   },
