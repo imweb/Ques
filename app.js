@@ -18,13 +18,9 @@ config.addon &&
   });
 
 app.use(
-    '/lib/cjs',
-    middlePipe(src + '/lib/cjs')
-      .pipe(qiqi.js(true))
-  )
-  .use(
     '/lib',
     middlePipe(src + '/lib')
+      .pipe(qiqi.js(true))
   )
   .use(
     '/components',
