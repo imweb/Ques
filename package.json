@@ -8,7 +8,7 @@
     "commander": "^2.6.0",
     "connect": "^3.3.3",
     "dom-serializer": "0.0.1",
-    "dom.tpl": "0.0.2",
+    "dom.tpl": "0.0.3",
     "each-series": "^1.0.0",
     "gulp-htmlmin": "^1.0.0",
     "gulp-minify-css": "^0.4.2",

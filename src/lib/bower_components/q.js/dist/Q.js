@@ -1,5 +1,5 @@
 /*!
- * Q.js v0.0.10
+ * Q.js v0.2.1
  * Inspired from vue.js
  * (c) 2015 Daniel Yang
  * Released under the MIT License.
@@ -21,7 +21,7 @@
 		exports["Q"] = factory(require("jquery"));
 	else
 		root["Q"] = factory(root["jQuery"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -68,31 +68,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(1),
+	var utils = __webpack_require__(1),
+	    _ = __webpack_require__(3),
 	    factory = __webpack_require__(2)
 
-	module.exports = factory(_);
+	_.extend(utils, _);
+	module.exports = factory(utils);
 
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(3),
-	    noop = function () {},
+	var noop = function () {},
 	    defer = window.requestAnimationFrame ||
 	        window.webkitRequestAnimationFrame ||
 	        setTimeout;
 
 	module.exports = {
-	    find: $.find,
-	    contains: $.contains,
-	    data: $.data,
-	    cleanData: $.cleanData,
-	    add: $.event.add,
-	    remove: $.event.remove,
-	    clone: $.clone,
-	    extend: $.extend,
 	    slice: [].slice,
 	    noop: noop,
 	    /**
@@ -151,10 +144,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (_) {
-	    var Data = __webpack_require__(4),
+	    var Data = __webpack_require__(5),
 	        MARK = /\{\{(.+?)\}\}/,
-	        mergeOptions = __webpack_require__(5).mergeOptions,
-	        clas = __webpack_require__(6),
+	        mergeOptions = __webpack_require__(6).mergeOptions,
+	        clas = __webpack_require__(7),
 	        _doc = document;
 
 	    function _inDoc(ele) {
@@ -165,7 +158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._init(options);
 	    }
 	    Q.options = {
-	        directives: __webpack_require__(7)
+	        directives: __webpack_require__(8)
 	    };
 	    Q.get = function (selector) {
 	        var ele = _.find(selector)[0];
@@ -204,6 +197,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // events bookkeeping
 	            this._events = {};
 	            this._watchers = {};
+
+	            // components
+	            this._children = [];
+	            // components references
+	            this.$ = {};
+
 	            Data.call(this, options);
 	            // this._data = options.data;
 	            // initialize data and scope inheritance.
@@ -226,6 +225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @returns {Data}
 	         */
 	        data: function (key, value) {
+	            if (key === undefined) return this;
 	            var i = 0, l, data = this;
 	            if (~key.indexOf('.')) {
 	                var keys = key.split('.');
@@ -237,7 +237,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 	            l && (key = keys[i]);
-	            if (value === undefined) return data[key];
+	            if (value === undefined) return key ? data[key] : data;
 	            data.$set(key, value);
 	        },
 	        /**
@@ -381,6 +381,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _emit.apply(self, args);
 	                keys.pop();
 	            }
+	            // emit vm is change
+	            _emit.apply(self, ['**deep**', this]);
 	        },
 	        /**
 	         * Setup the scope of an instance, which contains:
@@ -480,7 +482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        /**
 	         * bind rendered template
 	         */
-	        _templateBind: __webpack_require__(8),
+	        _templateBind: __webpack_require__(9),
 
 	        /**
 	         * bind rendered template
@@ -550,10 +552,28 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+	var $ = __webpack_require__(4);
+
+	module.exports = {
+	    find: $.find,
+	    contains: $.contains,
+	    data: $.data,
+	    cleanData: $.cleanData,
+	    add: $.event.add,
+	    remove: $.event.remove,
+	    clone: $.clone,
+	    extend: $.extend
+	};
+
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(1);
@@ -757,7 +777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(1);
@@ -827,40 +847,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Modules map
 	var modules = {},
-	    mergeOptions = __webpack_require__(5).mergeOptions,
-	    define = window.define,
-	    require = window.require,
-	    _define,
-	    _require;
+	    mergeOptions = __webpack_require__(6).mergeOptions,
+	    listeners = {};
 
-	if (define && require) {
-	    _define = function (name, options) {
-	        var res = this.extend(options);
-	        define(name, res);
-	        return res;
-	    };
-	    _require = function (name, callback) {
-	        return require(name, callback);
-	    };
-	} else {
-	    _define = function (name, options) {
-	        modules[name] = this.extend(options);
-	        return modules[name];
-	    };
-	    _require = function (name, callback) {
-	        var self = this;
-	        if (callback)
-	            return callback.apply(
-	                window,
-	                name.map(function (name) { return modules[name] || self; })
-	            );
-	        return modules[name] || this;
-	    };
+	function _define(name, options) {
+	    var module = modules[name] = this.extend(options || {});
+	    listeners[name] &&
+	        listeners[name].forEach(function (cb) {
+	            cb(module);
+	        });
+	    return module;
+	}
+
+	function _require(name, callback) {
+	    var module = modules[name];
+	    if (module) return callback(module);
+	    (listeners[name] || (listeners[name] = []))
+	        .push(callback);
 	}
 
 	function _extend(extendOptions) {
@@ -915,7 +923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(1);
@@ -986,35 +994,52 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // stop walk
 	            this.setting.stop = true;
 
-	            var arg = this.arg,
+	            // which component
+	            var name = this.target,
 	                vm = this.vm,
-	                key = this.target,
+	                el = this.el,
+	                // component reference
+	                ref = el.getAttribute('q-ref') || false,
+	                key = el.getAttribute('q-with') || '',
 	                namespace = this.namespace,
 	                target = namespace ? ([namespace, key].join('.')) : key,
 	                data = vm.data(target),
-	                childVm = new (vm.constructor.require(arg))({
-	                    el: this.el,
+	                childVm;
+
+	            // async bind
+	            vm.constructor.require(name, function (VM) {
+	                childVm = new VM({
+	                    el: el,
 	                    data: data.$get()
 	                });
-	            vm._children = vm._children || [];
-	            vm._children.push(childVm);
 
-	            // unidirectional binding
-	            vm.$watch(target, function (value) {
-	                vm.$set(key, value);
-	            }, true, false);
+	                vm._children.push(childVm);
+	                ref && !function () {
+	                    var refs = vm.$[ref];
+	                    refs ?
+	                        refs.length ?
+	                            (refs.push(childVm)) :
+	                            (vm.$[ref] = [refs, childVm]) :
+	                        (vm.$[ref] = childVm);
+	                }();
+
+	                // unidirectional binding
+	                vm.$watch(target, function (value) {
+	                    vm.$set(key, value);
+	                }, true, false);
+	            });
 	        }
 	    }
 	};
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var parse = __webpack_require__(9),
+	var parse = __webpack_require__(10),
 	    _ = __webpack_require__(1),
-	    cache = new (__webpack_require__(10))(1000),
+	    cache = new (__webpack_require__(11))(1000),
 	    _qtid = 0;
 
 	function _walk($el, cb, setting) {
@@ -1146,11 +1171,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(1),
-	    cache = new (__webpack_require__(10))(1000);
+	var cache = new (__webpack_require__(11))(1000);
 	/**
 	 * click: onclick | filter1 | filter2
 	 * click: onclick , keydown: onkeydown
@@ -1190,7 +1214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
