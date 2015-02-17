@@ -11,9 +11,11 @@
 <body>
 <tnav></tnav>
 <theader title="Ques" text="下面两个相同的功能使用不同方式实现的。"></theader>
+<!-- 两个Component交互 -->
 <clkchange id="test" message="change me(两个Component交互)"></clkchange>
 <ttext id="mytext"></ttext>
-<clickchange message="change me, too(通过子Component交互)"></clickchange>
+<!-- 子Component交互 -->
+<clickchange message="change me, too(通过子Component交互)" text="我原本就有！"></clickchange>
 <script>
 // require Q.js
 require(['Q'], function (Q) {
