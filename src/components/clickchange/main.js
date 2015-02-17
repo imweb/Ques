@@ -1,10 +1,3 @@
-var Q = require('Q'),
-    clkchange = require('../clkchange/main'),
-    ttext = require('../ttext/main');
-
-Q.define('clkchange', clkchange);
-Q.define('ttext', ttext);
-
 module.exports = {
     data: {},
     // when vm init complied bind the data

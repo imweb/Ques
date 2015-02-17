@@ -13,6 +13,7 @@
 <theader title="Ques" text="Hello world"></theader>
 <clkchange id="test" message="change me"></clkchange>
 <ttext id="mytext"></ttext>
+<clickchange message="change me, too"></clickchange>
 <script>
 // require Q.js
 require(['Q'], function (Q) {
@@ -22,9 +23,9 @@ require(['Q'], function (Q) {
         myText = Q.get('#mytext');
     // bind change event
     changeMe.$on('change', function (value) {
-        // when change event trigger, 
+        // when change event trigger,
         // set the #mytext element's property
-        myText.$set('text', value); 
+        myText.$set('text', value);
     });
 });
 </script>
