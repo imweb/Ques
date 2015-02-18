@@ -2,12 +2,13 @@ var Q = require('Q'),
     $ = require('jquery'),
     filters = require('filters');
 
-function Render(el, opts, data, options) {
+function Render(el, opts, tpl, data, options) {
     var self = this;
     this.el = el;
     this.options = $.extend({}, { filters: filters }, { filters: opts.filters }, options);
     this.opts = opts
     this.data = data;
+    this.tpl = tpl;
     this.render(data);
     this.timeout = setTimeout(function () {
         self.bind();
@@ -16,7 +17,7 @@ function Render(el, opts, data, options) {
 var p = Render.prototype;
 p.render = function (data, options) {
     this.data = data;
-    $(this.el).html(tpl(data, options || this.options));
+    $(this.el).html(this.tpl(data, options || this.options));
     return this;
 };
 p.bind = function () {
