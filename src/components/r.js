@@ -7,14 +7,15 @@ function Render(el, opts, data, options) {
     this.el = el;
     this.opts = opts;
     this.data = data;
-    this.render();
+    this.render(data);
     this.timeout = setTimeout(function () {
         self.bind();
     }, 0);
 }
 var p = Render.prototype;
-p.render = function () {
-    $(this.el).html(tpl(this.data, this.opts));
+p.render = function (data, opts) {
+    this.data = data;
+    $(this.el).html(tpl(data, opts || this.opts));
     return this;
 };
 p.bind = function () {

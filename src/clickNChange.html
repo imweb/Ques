@@ -13,11 +13,16 @@
 <script>
 require(['./components/clickchange/render', 'filters'], function (clickchange, filters) {
     // 如果要做列表的渲染优化，可以用这个东东来做，比如像这样子，先调unbind阻止绑定
-    var render = clickchange('#test', { message: 'hello' }, { filters: filters }).unbind();
+    var view = clickchange('#test', { message: 'hello' }, { filters: filters }).unbind();
+
+    setTimeout(function () {
+        // 现重新刷新下view
+        view.render({ message: 'hahah', text: 'I\'m here!' });
+    }, 1000);
 
     setTimeout(function () {
         // 渲染完了，开始绑定
-        render.bind();
+        view.bind();
     }, 2000);
 });
 </script>
