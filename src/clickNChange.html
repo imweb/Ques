@@ -4,6 +4,7 @@
 <title>Test</title>
 </head>
 <body>
+<tnav></tnav>
 <div style="display: none;">
 <!-- 没想好怎么实现，先这样弄下，等同于先用HTML声明会启用这个componenet，然后再异步渲染，主要为了解决css多次加载问题，不知道有没有方案解决 -->
 <clickchange></clickchange>
@@ -11,7 +12,13 @@
 <div id="test"></div>
 <script>
 require(['./components/clickchange/render', 'filters'], function (clickchange, filters) {
-    clickchange('#test', { message: 'hello' }, filters);
+    // 如果要做列表的渲染优化，可以用这个东东来做，比如像这样子，先调unbind阻止绑定
+    var render = clickchange('#test', { message: 'hello' }, { filters: filters }).unbind();
+
+    setTimeout(function () {
+        // 渲染完了，开始绑定
+        render.bind();
+    }, 2000);
 });
 </script>
 </body>
