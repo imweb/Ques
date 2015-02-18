@@ -1,11 +1,12 @@
 var Q = require('Q'),
-    $ = require('jquery');
+    $ = require('jquery'),
+    filters = require('filters');
 
 function Render(el, opts, data, options) {
     var self = this;
-    $.extend((opts.filters = opts.filters || {}), options.filters);
     this.el = el;
-    this.opts = opts;
+    this.options = $.extend({}, { filters: filters }, { filters: opts.filters }, options);
+    this.opts = opts
     this.data = data;
     this.render(data);
     this.timeout = setTimeout(function () {
@@ -13,9 +14,9 @@ function Render(el, opts, data, options) {
     }, 0);
 }
 var p = Render.prototype;
-p.render = function (data, opts) {
+p.render = function (data, options) {
     this.data = data;
-    $(this.el).html(tpl(data, opts || this.opts));
+    $(this.el).html(tpl(data, options || this.options));
     return this;
 };
 p.bind = function () {

@@ -11,9 +11,9 @@
 </div>
 <div id="test"></div>
 <script>
-require(['./components/clickchange/render', 'filters'], function (clickchange, filters) {
+require(['./components/clickchange/render'], function (clickchange) {
     // 如果要做列表的渲染优化，可以用这个东东来做，比如像这样子，先调unbind阻止绑定
-    var view = clickchange('#test', { message: 'hello' }, { filters: filters }).unbind();
+    var view = clickchange('#test', { message: 'hello' }).unbind();
 
     setTimeout(function () {
         // 现重新刷新下view
