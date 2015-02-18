@@ -24,7 +24,7 @@ app.use(
   )
   .use(
     '/components',
-    middlePipe(src + '/components', /(\.html\.js)|(\.css\.js)$/, function (url) {
+    middlePipe(src + '/components', /(\.html\.js)$/, function (url) {
       return url.replace(/\.js$/, '');
     }).pipe(qiqi.tpl())
   )
@@ -38,12 +38,12 @@ app.use(
     middlePipe(src + '/components', /\.css$/)
       .pipe(qiqi.css())
   )
-  // .use(
-  //   '/components',
-  //   middlePipe(src + '/components', /render\.js$/, function () {
-  //     return 'render.js';
-  //   }).pipe(qiqi.js())
-  // )
+  .use(
+    '/components',
+    middlePipe(src + '/components', /render\.js$/, function () {
+      return 'render.js';
+    }).pipe(qiqi.js())
+  )
   .use(
     '/pages',
     middlePipe(src + '/pages', /\.js$/)
