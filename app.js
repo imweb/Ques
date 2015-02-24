@@ -1,7 +1,7 @@
 var connect = require('connect')
   , middlePipe = require('middleware-pipe')
   , path = require('path')
-  , qiqi = require('./lib/qiqi')
+  , ques = require('./lib/ques')
   , config = require('./lib/appConfig')(require('./config'))
   , src = path.resolve(config.src);
 
@@ -20,43 +20,43 @@ config.addon &&
 app.use(
     '/lib',
     middlePipe(src + '/lib')
-      .pipe(qiqi.js(true))
+      .pipe(ques.js(true))
   )
   .use(
     '/components',
     middlePipe(src + '/components', /(\.html\.js)$/, function (url) {
       return url.replace(/\.js$/, '');
-    }).pipe(qiqi.tpl())
+    }).pipe(ques.tpl())
   )
   .use(
     '/components',
     middlePipe(src + '/components', /\.js$/)
-      .pipe(qiqi.js(false, true))
+      .pipe(ques.js(false, true))
   )
   .use(
     '/components',
     middlePipe(src + '/components', /\.css$/)
-      .pipe(qiqi.css())
+      .pipe(ques.css())
   )
   .use(
     '/components',
     middlePipe(src + '/components', /render\.js$/, function () {
       return 'render.js';
-    }).pipe(qiqi.js())
+    }).pipe(ques.js())
   )
   .use(
     '/pages',
     middlePipe(src + '/pages', /\.js$/)
-      .pipe(qiqi.js())
+      .pipe(ques.js())
   )
   .use(
     '/pages',
     middlePipe(src + '/pages', /\.css$/)
-      .pipe(qiqi.css())
+      .pipe(ques.css())
   )
   .use(
     middlePipe(src, /\.html$/)
-      .pipe(qiqi.html())
+      .pipe(ques.html())
   ).listen(config.port, function () {
     console.log('app listen: ' + config.port);
   });
