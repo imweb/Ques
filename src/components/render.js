@@ -4,5 +4,5 @@ var Render = require('../r'),
 
 // the render factory
 module.exports = function (el, data, options) {
-    return Render(el, opts, tpl, data, options)
+    return Render(el, opts, tpl, data, options);
 };
