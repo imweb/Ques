@@ -9,12 +9,24 @@ function Render(el, opts, tpl, data, options) {
     this.opts = opts
     this.data = data;
     this.tpl = tpl;
+    // if nostyle, just not append style to head
+    this.options.nostyle ||
+        this.style();
     this.render(data);
     this.timeout = setTimeout(function () {
         self.bind();
     }, 0);
 }
 var p = Render.prototype;
+p.style = function () {
+    this.tpl.css &&
+        $('head').append([
+            '<style>',
+            this.tpl.css,
+            '</style>'
+        ].join(''));
+    this.tpl.css = undefined;
+};
 p.render = function (data, options) {
     this.data = data;
     $(this.el).html(this.tpl(data, options || this.options));
@@ -32,6 +44,6 @@ p.unbind = function () {
     return this;
 };
 
-module.exports = function (el, opts, data, options) {
-    return new Render(el, opts, data, options);
+module.exports = function (el, opts, tpl, data, options) {
+    return new Render(el, opts, tpl, data, options);
 };

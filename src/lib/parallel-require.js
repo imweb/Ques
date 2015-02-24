@@ -70,13 +70,13 @@
             path = _normalize(base, name),
             mod;
         return (mod = Cache[path]) ?
-            mod.exports : false;
+            mod.exports : false; 
     }
 
     function _initCache(path) {
         return Cache[path] = {
-            dones: [],
-            url: _sim[path] || path,
+            dones: [], 
+            url: _sim[path] || path, 
             loaded: false
         };
     }
@@ -117,7 +117,7 @@
             if (_isFunction(factory)) {
                 var module = { exports: {} }, mods;
                 mod.factory = mod.factory || factory;
-                mod.exports = mod.exports ||
+                mod.exports = mod.exports || 
                     factory.apply(this, _dealKeywords(arguments, makeRequire({ base: mod.url }), module)) ||
                         module.exports;
             } else {
@@ -194,7 +194,7 @@
             if (!mod) {
                 mod = _initCache(path);
                 mod.dones.push(done);
-                if (!db) {
+                if (!db) { 
                     _loadScript(path);
                 } else {
                     db.get(MODULE_CACHE_KEY, path, function (e) {
@@ -304,7 +304,7 @@
         var paths = config.paths;
         Object.keys(paths)
             .forEach(function (path) {
-                _sim[path] = paths[path];
+                _sim[path] = paths[path] + '.js';
             });
     };
 

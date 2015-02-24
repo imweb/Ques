@@ -5,10 +5,6 @@
 </head>
 <body>
 <tnav></tnav>
-<div style="display: none;">
-<!-- 没想好怎么实现，先这样弄下，等同于先用HTML声明会启用这个componenet，然后再异步渲染，主要为了解决css多次加载问题，不知道有没有方案解决 -->
-<clickchange></clickchange>
-</div>
 <div id="test"></div>
 <script>
 require(['./components/clickchange/render'], function (clickchange) {

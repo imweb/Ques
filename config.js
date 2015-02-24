@@ -9,19 +9,24 @@ module.exports = {
   loader: '/lib/parallel-require.js',
   // loader paths config in development
   paths: {
-    'jquery': '/lib/jquery.min.js',
-    'Q': '/lib/bower_components/q.js/dist/Q.js',
-    'filters': '/lib/cjs/filters.js',
-    'utils': '/lib/cjs/utils.js'
+    'jquery': '/lib/jquery.min',
+    'Q': '/lib/bower_components/q.js/dist/Q',
+    'filters': '/lib/cjs/filters',
+    'utils': '/lib/cjs/utils'
   },
   // loader paths config in real world
   realPaths: {
-    'jquery': 'http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min.js'
+    'jquery': 'http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min'
   },
   // feature flag
   disabled: {
     // for example
     // ttext: true
     // means the ttext component will be disabled
+  },
+
+  // file config
+  'test.html': {
+    loader: '/lib/require.min.js'
   }
 };
