@@ -1,4 +1,4 @@
-var TagSet = require('../lib/lib/tagSet')
+var TagSet = require('../lib/utils/tagSet')
   , Set = require('set-component');
 
 describe('TagSet()', function(){
@@ -10,5 +10,11 @@ describe('TagSet()', function(){
   it('should filter the custom elements', function () {
     new TagSet(['a', 'custom', 'div'])
       .custom().should.eql(['custom']);
+  });
+
+  it('should add a value & return whether or not', function () {
+    var tag = new TagSet();
+    tag.add('test').should.equal('test');
+    tag.add('test').should.not.be.true;
   });
 });
