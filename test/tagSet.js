@@ -13,8 +13,15 @@ describe('TagSet()', function(){
   });
 
   it('should add a value & return whether or not', function () {
-    var tag = new TagSet();
-    tag.add('test').should.equal('test');
-    tag.add('test').should.not.be.true;
+    var set = new TagSet();
+    set.add('test').should.equal('test');
+    set.add('test').should.not.be.true;
+  });
+
+  it('should return values of a set', function () {
+    var set = new TagSet();
+    set.add('test');
+    set.add('tencent');
+    set.values().should.eql(['test', 'tencent']);
   });
 });
