@@ -1,6 +1,6 @@
 {
   "name": "Q.js",
-  "version": "0.0.10",
+  "version": "0.2.6",
   "main": "dist/Q.js",
   "description": "fake-MVVM library",
   "authors": [
@@ -20,14 +20,14 @@
     "*.md"
   ],
   "homepage": "https://github.com/miniflycn/Q.js",
-  "_release": "0.0.10",
+  "_release": "0.2.6",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.10",
-    "commit": "5cb1af6cf93db6a23cdf0baa991e104f2f9ad487"
+    "tag": "0.2.6",
+    "commit": "c90dc02545184d51d3162318bc04504b41e77e61"
   },
   "_source": "git://github.com/miniflycn/Q.js.git",
-  "_target": "~0.0.10",
+  "_target": "~0.2.6",
   "_originalSource": "q.js",
   "_direct": true
 }

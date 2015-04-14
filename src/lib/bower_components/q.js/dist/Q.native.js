@@ -6,22 +6,19 @@
  */
 
 /**
- * from: http://kangax.github.io/compat-table/es5
- * We can find almost all es5 features have been supported after IE9,
- * so we suggest under IE8 just use:
- * https://github.com/es-shims/es5-shim
+ * Just support modern browser
  */
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jquery"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["jquery"], factory);
+		define(factory);
 	else if(typeof exports === 'object')
-		exports["Q"] = factory(require("jquery"));
+		exports["Q"] = factory();
 	else
-		root["Q"] = factory(root["jQuery"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_4__) {
+		root["Q"] = factory();
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -84,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    defer = window.requestAnimationFrame ||
 	        window.webkitRequestAnimationFrame ||
 	        setTimeout,
-	    cache = new (__webpack_require__(5))(1000),
+	    cache = new (__webpack_require__(4))(1000),
 	    _qtid = 0;
 
 	function walk($el, cb, setting) {
@@ -183,10 +180,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (_) {
-	    var Data = __webpack_require__(6),
+	    var Data = __webpack_require__(5),
 	        MARK = /\{\{(.+?)\}\}/,
-	        mergeOptions = __webpack_require__(7).mergeOptions,
-	        clas = __webpack_require__(8),
+	        mergeOptions = __webpack_require__(6).mergeOptions,
+	        clas = __webpack_require__(7),
 	        _doc = document;
 
 	    function _inDoc(ele) {
@@ -197,7 +194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._init(options);
 	    }
 	    Q.options = {
-	        directives: __webpack_require__(9),
+	        directives: __webpack_require__(8),
 	        filters: {}
 	    };
 	    Q.get = function (selector) {
@@ -524,7 +521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        /**
 	         * bind rendered template
 	         */
-	        _templateBind: __webpack_require__(10),
+	        _templateBind: __webpack_require__(9),
 
 	        /**
 	         * bind rendered template
@@ -594,28 +591,62 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(4);
+	var _extend = function (target, srcs) {
+	        srcs = [].splice.call(arguments, 1);
+	        var i = 0, l = srcs.length, src, key;
+	        for (; i < l; i++) {
+	            src = srcs[i];
+	            for (key in src) {
+	                target[key] = src[key];
+	            }
+	        }
+	        return target;
+	    },
+	    _expando = 'QDataUid',
+	    _uid = 0,
+	    _map = {};
 
 	module.exports = {
-	    find: $.find,
-	    contains: $.contains,
-	    data: $.data,
-	    cleanData: $.cleanData,
-	    add: $.event.add,
-	    remove: $.event.remove,
-	    clone: $.clone,
-	    extend: $.extend
+	    find: function (selector) {
+	        return this.slice.call(document.querySelectorAll(selector), 0);
+	    },
+	    contains: function (a, b){
+	        return a !== b && a.contains(b);
+	    },
+	    data: function (el, key, value) {
+	        var uid = el[_expando] = el[_expando] || ++_uid,
+	            data = _map[uid] = _map[uid] || {};
+	        // set Data
+	        if (value === undefined) return data[key];
+	        return (data[key] = value);
+	    },
+	    cleanData: function (els) {
+	        var uid
+	        els.forEach(function (el) {
+	            var uid = el[_expando];
+	            // has data
+	            uid && (uid in _map) &&
+	                (delete _map[uid]);
+	        });
+	    },
+	    add: function (el, evt, fn) {
+	        el.addEventListener(evt, fn, false);
+	    },
+	    remove: function (el, evt, fn) {
+	        el.removeEventListener(evt, fn, false);
+	    },
+	    clone: function (ele) {
+	        return ele.cloneNode(true);
+	    },
+	    extend: function (target) {
+	        if (arguments.length === 1) return _extend(this, target);
+	        return _extend.apply(this, arguments);
+	    }
 	};
 
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-
-/***/ },
-/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -727,7 +758,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(1);
@@ -942,7 +973,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(1);
@@ -1012,12 +1043,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Modules map
 	var modules = {},
-	    mergeOptions = __webpack_require__(7).mergeOptions,
+	    mergeOptions = __webpack_require__(6).mergeOptions,
 	    listeners = {};
 
 	function _define(name, options) {
@@ -1081,7 +1112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(1);
@@ -1190,15 +1221,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	    },
-	    repeat: __webpack_require__(11)
+	    repeat: __webpack_require__(10)
 	};
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var parse = __webpack_require__(12),
+	var parse = __webpack_require__(11),
 	    _ = __webpack_require__(1);
 
 	module.exports = function (el, options) {
@@ -1244,7 +1275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _ = __webpack_require__(1);
@@ -1335,10 +1366,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var cache = new (__webpack_require__(5))(1000);
+	var cache = new (__webpack_require__(4))(1000);
 	/**
 	 * click: onclick | filter1 | filter2
 	 * click: onclick , keydown: onkeydown
