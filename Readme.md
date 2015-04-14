@@ -105,6 +105,12 @@ require(['Q'], function (Q) {
 
 生成到dist文件夹，具体请参见`gulpfile.js`。
 
+* 升级
+
+> gulp update
+
+更新到`miniflycn/Ques`主干的最新版本。
+
 ### 简介
 
 > `Ques` 是一个基于`动态构建`、`MVVM`，解决如何实现组件、使用组件的整体解决方案。
