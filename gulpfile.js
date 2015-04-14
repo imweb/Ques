@@ -83,14 +83,14 @@ gulp.task('default', ['distApp'], function () {
 gulp.task('update', function () {
   var path = require('path')
     , src = './.tmp/Ques-master'
-    , files = require(path.join(src, './update'));
+    , files;
   new Download({ 
     mode: '755',
     extract: true 
   }).get('https://github.com/miniflycn/Ques/archive/master.zip')
     .dest('.tmp')
     .run(function () {
-      files.forEach(function (file) {
+      require('./' + path.join(src, './update')).forEach(function (file) {
         gulp.src(path.join(src, file))
           .pipe(gulp.dest(file));
       });

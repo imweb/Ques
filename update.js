@@ -1,5 +1,5 @@
 module.exports = [
-  './addon'
+  './addon',
   './lib',
   './test',
   './app.js',
