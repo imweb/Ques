@@ -91,8 +91,13 @@ gulp.task('update', function () {
     .dest('.tmp')
     .run(function () {
       require('./' + path.join(src, './update')).forEach(function (file) {
-        gulp.src(path.join(src, file))
-          .pipe(gulp.dest(file));
+        if (Array.isArray(file)) {
+          gulp.src(path.join(src, file[0]))
+            .pipe(gulp.dest(file[1]));
+        } else {
+          gulp.src(path.join(src, file))
+            .pipe(gulp.dest(file));
+        }
       });
     });
 });
