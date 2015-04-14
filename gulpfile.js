@@ -102,6 +102,8 @@ gulp.task('update', function () {
     });
 });
 
+require('./tasks');
+
 // if process is exit, kill the app
 process.on('exit', function(code) {
   app && app.pid &&
