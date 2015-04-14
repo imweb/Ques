@@ -4,7 +4,8 @@ var gulp = require('gulp')
   , config = require('./config')
   , cssmin = require('gulp-minify-css')
   , htmlmin = require('gulp-htmlmin')
-  , uglify = require('gulp-uglify');
+  , uglify = require('gulp-uglify')
+  , Download = require('download');
 
 var app;
 
@@ -79,7 +80,25 @@ gulp.task('default', ['distApp'], function () {
     });
 });
 
+gulp.task('update', function () {
+  var path = require('path')
+    , src = './.tmp/Ques-master'
+    , files = require(path.join(src, './update'));
+  new Download({ 
+    mode: '755',
+    extract: true 
+  }).get('https://github.com/miniflycn/Ques/archive/master.zip')
+    .dest('.tmp')
+    .run(function () {
+      files.forEach(function (file) {
+        gulp.src(path.join(src, file))
+          .pipe(gulp.dest(file));
+      });
+    });
+});
+
 // if process is exit, kill the app
 process.on('exit', function(code) {
-  process.kill(app.pid)
+  app && app.pid &&
+    process.kill(app.pid)
 });
