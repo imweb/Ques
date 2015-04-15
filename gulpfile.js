@@ -60,7 +60,8 @@ gulp.task('learn', function (done) {
 gulp.task('default', ['distApp'], function () {
   // files need to be grab
   grab(['todomvc.html', 'client.html', 'index.html'], {
-    host: 'http://localhost:' + config.distPort
+    host: 'http://localhost:' + config.distPort,
+    cdn: config.cdn
   }).output('./dist')
     // gulp stream for css
     .suffix('css')
@@ -84,9 +85,9 @@ gulp.task('update', function () {
   var path = require('path')
     , src = './.tmp/Ques-master'
     , files;
-  new Download({ 
+  new Download({
     mode: '755',
-    extract: true 
+    extract: true
   }).get('https://github.com/miniflycn/Ques/archive/master.zip')
     .dest('.tmp')
     .run(function () {
