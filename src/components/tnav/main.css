@@ -3,6 +3,14 @@
     min-height: 40px;
     border: 1px solid transparent;
 }
+
+.$__container .$__logo {
+    width: 297px;
+    height: 52px;
+    display: inline-block;
+    background-image: url(../../img/logo.png);
+}
+
 .$__container li {
     display: inline-block;
 }

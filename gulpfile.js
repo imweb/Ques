@@ -3,6 +3,7 @@ var gulp = require('gulp')
   , grab = require('./lib/grab')
   , config = require('./config')
   , cssmin = require('gulp-minify-css')
+  , fixUrl = require('./lib/fix-url')
   , htmlmin = require('gulp-htmlmin')
   , uglify = require('gulp-uglify')
   , Download = require('download');
@@ -59,13 +60,14 @@ gulp.task('learn', function (done) {
 // build task
 gulp.task('default', ['distApp'], function () {
   // files need to be grab
-  grab(['todomvc.html', 'client.html', 'index.html'], {
+  grab(['index.html'], {
     host: 'http://localhost:' + config.distPort,
     cdn: config.cdn,
     loader: config.loader
   }).output('./dist')
     // gulp stream for css
     .suffix('css')
+    .pipe(fixUrl({ cdn: config.cdn }))
     .pipe(cssmin())
     // gulp stream for html
     .suffix('html')

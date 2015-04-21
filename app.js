@@ -45,6 +45,10 @@ app.use(
     }).pipe(ques.js())
   )
   .use(
+    '/img',
+    middlePipe(src + '/img')
+  )
+  .use(
     '/pages',
     middlePipe(src + '/pages', /\.js$/)
       .pipe(ques.js())

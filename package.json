@@ -17,6 +17,7 @@
     "map-stream": "^0.0.5",
     "middleware-pipe": "^1.0.3",
     "mocha": "^2.1.0",
+    "postcss": "^4.1.5",
     "run-parallel": "^1.0.0",
     "set-component": "^1.0.0",
     "should": "^5.0.1",
