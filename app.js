@@ -19,8 +19,12 @@ config.addon &&
 
 app.use(
     '/lib',
-    middlePipe(src + '/lib')
+    middlePipe(src + '/lib', /(\.js)$/)
       .pipe(ques.js(true))
+  )
+  .use(
+    '/lib',
+    middlePipe(src + '/lib')
   )
   .use(
     '/components',

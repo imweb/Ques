@@ -68,7 +68,9 @@ gulp.task('default', ['distApp'], function () {
     // gulp stream for css
     .suffix('css')
     .pipe(fixUrl({ cdn: config.cdn }))
-    .pipe(cssmin())
+    .pipe(cssmin({
+      compatibility: 'ie8'
+    }))
     // gulp stream for html
     .suffix('html')
     .pipe(htmlmin({
