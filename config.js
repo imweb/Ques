@@ -7,6 +7,10 @@ module.exports = {
   src: './src',
   // loader path
   loader: '/lib/parallel-require.js',
+  // cssnext config, see http://cssnext.io/usage/
+  cssnext: {
+    browsers: ['> 1%', 'IE 8']
+  },
   // loader paths config in development
   paths: {
     'jquery': '/lib/jquery.min',
