@@ -14,6 +14,10 @@ module.exports = {
   // css url: http://cdn.com/css/
   // image url: http://cdn.com/img/
   cdn: undefined,
+  // which files need to build
+  // (files: '*') -> means all *.html in src
+  // (files: ['index.html']) -> means just build index.html
+  files: ['client.html', 'index.html', 'clickNChange.html', 'test.html', 'todomvc.html'],
   // cssnext config, see http://cssnext.io/usage/
   cssnext: {
     browsers: ['> 1%', 'IE 8']

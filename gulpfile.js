@@ -60,7 +60,7 @@ gulp.task('learn', function (done) {
 // build task
 gulp.task('default', ['distApp'], function () {
   // files need to be grab
-  grab(['index.html'], {
+  grab(config.files, {
     host: 'http://localhost:' + config.distPort,
     cdn: config.cdn,
     loader: config.loader
