@@ -5,8 +5,15 @@ module.exports = {
   distPort: 3000,
   // source path
   src: './src',
+  // web server proxy path: so you can use http://localhost/dev
+  proxyPath: '/dev',
   // loader path
   loader: '/lib/parallel-require.js',
+  // cdn url, for example http://cdn.com/ ->
+  // js url: http://cdn.com/js/
+  // css url: http://cdn.com/css/
+  // image url: http://cdn.com/img/
+  cdn: undefined,
   // cssnext config, see http://cssnext.io/usage/
   cssnext: {
     browsers: ['> 1%', 'IE 8']
@@ -21,6 +28,9 @@ module.exports = {
   // loader paths config in real world
   realPaths: {
     'jquery': 'http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min'
+  },
+  shim: {
+    // some shim
   },
   // feature flag
   disabled: {

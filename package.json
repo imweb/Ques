@@ -25,7 +25,8 @@
     "should": "^5.0.1",
     "url-dom": "0.0.2",
     "url-valid": "^0.3.0",
-    "utils-merge": "^1.0.0"
+    "utils-merge": "^1.0.0",
+    "proxy-middleware": "^0.13.0"
   },
   "devDependencies": {
     "gulp": "^3.8.10"

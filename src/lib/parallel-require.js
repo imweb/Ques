@@ -2,7 +2,8 @@
     'use strict';
 
     var Cache = {},
-        _sim = {},
+        _paths = {},
+        _shim,
         _stack = [],
         _head = document.getElementsByTagName('head')[0],
         _require,
@@ -70,13 +71,13 @@
             path = _normalize(base, name),
             mod;
         return (mod = Cache[path]) ?
-            mod.exports : false; 
+            mod.exports : false;
     }
 
     function _initCache(path) {
         return Cache[path] = {
-            dones: [], 
-            url: _sim[path] || path, 
+            dones: [],
+            url: _paths[path] || path,
             loaded: false
         };
     }
@@ -117,7 +118,7 @@
             if (_isFunction(factory)) {
                 var module = { exports: {} }, mods;
                 mod.factory = mod.factory || factory;
-                mod.exports = mod.exports || 
+                mod.exports = mod.exports ||
                     factory.apply(this, _dealKeywords(arguments, makeRequire({ base: mod.url }), module)) ||
                         module.exports;
             } else {
@@ -141,6 +142,16 @@
     }
 
     function _makeMod(src) {
+        var url = Cache[src].url,
+            shim = _shim[src];
+        // do something for sim
+        if (shim) {
+            _stack.push({
+                m: src,
+                d: [],
+                f: function () { return root[shim.exports] }
+            });
+        }
         var url = Cache[src].url;
         _stack.forEach(function (o) {
             if (!o.m) o.m = src;
@@ -194,7 +205,7 @@
             if (!mod) {
                 mod = _initCache(path);
                 mod.dones.push(done);
-                if (!db) { 
+                if (!db) {
                     _loadScript(path);
                 } else {
                     db.get(MODULE_CACHE_KEY, path, function (e) {
@@ -301,11 +312,15 @@
     root.define = define;
     root.require = require;
     require.config = function (config) {
-        var paths = config.paths;
+        var paths = config.paths, tmp;
         Object.keys(paths)
             .forEach(function (path) {
-                _sim[path] = paths[path] + '.js';
+                tmp = _paths[path] = paths[path];
+                // need to add .js or not
+                !(~tmp.indexOf('.js?')) &&
+                    (_paths[path] = tmp + '.js');
             });
+        _shim = config.shim || {};
     };
 
 })(window);

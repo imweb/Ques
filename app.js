@@ -3,7 +3,8 @@ var connect = require('connect')
   , path = require('path')
   , ques = require('./lib/ques')
   , config = require('./lib/appConfig')(require('./config'))
-  , src = path.resolve(config.src);
+  , src = path.resolve(config.src)
+  , proxy = require('proxy-middleware');
 
 var app = connect();
 
@@ -65,6 +66,8 @@ app.use(
   .use(
     middlePipe(src, /\.html$/)
       .pipe(ques.html())
-  ).listen(config.port, function () {
+  )
+  .use(config.proxyPath, proxy('http://127.0.0.1:' + config.port + '/'))
+  .listen(config.port, function () {
     console.log('app listen: ' + config.port);
   });
