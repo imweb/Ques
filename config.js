@@ -8,6 +8,7 @@ module.exports = {
   // web server proxy path: so you can use http://localhost/dev
   proxyPath: '/dev',
   // loader path
+  // if loader is local file, it will just inline
   loader: '/lib/parallel-require.js',
   // cdn url, for example http://cdn.com/ ->
   // js url: http://cdn.com/js/
