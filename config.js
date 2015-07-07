@@ -28,7 +28,8 @@ module.exports = {
     'jquery': '/lib/jquery.min',
     'Q': '/lib/bower_components/q.js/dist/Q',
     'filters': '/lib/cjs/filters',
-    'utils': '/lib/cjs/utils'
+    'utils': '/lib/cjs/utils',
+    'a.b': '/lib/a.b'
   },
   // loader paths config in real world
   realPaths: {
