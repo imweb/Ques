@@ -26,10 +26,11 @@ module.exports = {
   // loader paths config in development
   paths: {
     'jquery': '/lib/jquery.min',
-    'Q': '/lib/bower_components/q.js/dist/Q',
+    'Q.core': '/lib/bower_components/q.js/dist/Q',
+    'Q': '/lib/Q',
+    'third.party': '/lib/third.party',
     'filters': '/lib/cjs/filters',
-    'utils': '/lib/cjs/utils',
-    'a.b': '/lib/a.b'
+    'utils': '/lib/cjs/utils'
   },
   // loader paths config in real world
   realPaths: {
