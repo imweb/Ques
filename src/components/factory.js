@@ -1,4 +1,5 @@
-var Q = require('Q');
+var Q = require('Q'),
+    Third = require('third');
 
 // the instance factory
 module.exports = function (el, opts) {
@@ -9,11 +10,7 @@ module.exports = function (el, opts) {
         !('data' in opts)
     ) {
         Q._.find(el).forEach(function (el) {
-            opts.bind.call({
-                // mock viewModel
-                vm: new Q(),
-                el: el
-            })
+            new Third(el, opts);
         });
         return;
     } else {

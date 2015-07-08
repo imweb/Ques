@@ -28,7 +28,7 @@ module.exports = {
     'jquery': '/lib/jquery.min',
     'Q.core': '/lib/bower_components/q.js/dist/Q',
     'Q': '/lib/Q',
-    'third.party': '/lib/third.party',
+    'third': '/lib/third',
     'filters': '/lib/cjs/filters',
     'utils': '/lib/cjs/utils'
   },
