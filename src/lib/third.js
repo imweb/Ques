@@ -17,12 +17,8 @@ function Third(el, opts, q) {
     this.el = el;
     // if q is undefined, just mock a ViewModel
     this.vm = q || new Q;
-    var that = {
-        el: el,
-        vm: this.vm
-    }
-    this.bind = opts.bind.bind(that);
-    this.unbind = opts.unbind.bind(that);
+    // just extend options all methods
+    _.extend(this, opts);
     // cache the instance
     data(el, this);
     this.bind();
