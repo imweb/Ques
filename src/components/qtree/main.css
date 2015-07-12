@@ -35,57 +35,7 @@
     opacity: 0;
 }
 
-.$__item {
-    list-style-type: none;
-    position: relative;
-    padding-left: 10px;
-    outline: 0;
-    display: -webkit-box;
-}
-.$__item:focus,
-.$__item:hover,
-.$__item:visited {
-    background-color: #FCF0C1;
-}
-
-.$__avatar {
-    height: 42px;
-    width: 42px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-
-.$__avatar-offline {
-    -webkit-filter: grayscale(100%);
-}
-
-.$__info {
-    padding-top: 6px;
-    padding-bottom: 6px;
-    padding-left: 10px;
-    -webkit-box-flex: 1;
-    -webkit-user-select: none;
-    cursor: default;
-}
-
-.$__name {
-    font-size: 14px;
-    padding-bottom: 4px;
-}
-
-.$__intro {
-    color: gray;
-    font-size: 12px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.$__item:hover .$__del {
-    opacity: 1;
-}
-
-.$__del {
+.$__list .extend {
     text-indent: -2000px;
     position: relative;
     opacity: 0;
@@ -96,7 +46,11 @@
     z-index: 1;
 }
 
-.$__delicon {
+.$__list .ui-card:hover .extend {
+    opacity: 1;
+}
+
+.$__list .extend i {
     width: 21px;
     height: 21px;
     border: 1px solid transparent;
@@ -108,7 +62,7 @@
     -webkit-transform: translate(-50%,-50%);
 }
 
-.$__delicon:after {
+.$__list .extend i:after {
     content: '';
     width: 17px;
     height: 18px;
