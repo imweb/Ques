@@ -12,7 +12,7 @@ Ques
     2. Model层负责`数据`和`业务逻辑`的处理
 * 基于`EventEmitter`的通讯机制，高度`解耦`
 * CommonJS式编程，纯正的NodeJS编程体验，可非常简单地对Model层做更适当的`分离`
-* 一次引用，线下手段实现`Custom Element`，使得只需在HTML中一次引入，便可使用，无需像从前那样在分别在引用模版、样式、脚本。像拼乐高一样，拼装页面
+* 一次引用，线下手段实现`Custom Element`，使得只需在HTML中一次引入，便可使用，无需像从前那样在分别在引用模版、样式、脚本。像拼乐高一样，拼装页面。配合模拟Shadow DOM可以很方便的对组件进行扩展
 * 细粒度打包机制，可以页面力度进行打包，即发布可以页面为粒度进行发布
 * `Feature Flag`机制，可以任意关闭`Component`，但不会引起程序异常
 * 基于约定的`Component`命名空间，用`$__`表征`Component`的命名空间，通过线下手段动态生成相应的命名空间，例如：对于一个名为`mytext`的Component，路径应当为`components/mytext`，则Ques自动将其源代码中的`$__`替换成`mytext`：
