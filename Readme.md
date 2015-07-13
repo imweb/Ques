@@ -125,8 +125,92 @@ https://github.com/miniflycn/middleware-pipe/issues/3
 
 为了满足自身业务需求，我们实现了自己的`伪MVVM`库：[Q.js](https://github.com/miniflycn/Q.js)，通过Q.js，我们实现`MV`与`Controller`，`节点操作`与`数据`的分离。
 
-### 基本思想
+### 快速开始
 
-* 编码越自由，代码越难预测
-* 代码越可预测，分离越清晰，越可维护
-* 大部分线上的问题（例如：`Web Component性能问题`、`代码组织与上线代码问题`）都可以通过线下解决
+* 目录结构
+
+```
+/src
+    /components                 组件的目录
+        /my
+            /btn                my-btn(我的按钮标签)组件目录
+                main.js         my-btn组件的逻辑
+                main.css        my-btn组件的样式
+                main.html       my-btn组件的模版
+    /lib                        通用库放置的地方
+    /pages                      controller目录
+        /hello                  hello页面的controller目录
+            main.js             hello页面的controller逻辑
+    hello.html                  hello页面
+```
+
+* 创建一个组件
+
+1. /src/components/my/p/main.html
+
+```html
+<button class="ui-button ui-info" q-on="click: showAlert">
+    <content></content>
+</button>
+```
+
+2. /src/components/my/p/main.js
+
+```javascript
+// 这是一个Q.js的参数，具体可参考：
+// https://github.com/imweb/Q.js
+module.exports = {
+    data: {
+        msg: 'hello world'
+    },
+    methods: {
+        showAlert: function () {
+            // 打印出msg的值，上面设置成了hello world
+            alert(this.msg);
+        }
+    }
+};
+```
+
+这样则完成了一个按钮component，即点击的时候弹出hello world。
+
+* 在页面上引用该组件
+
+/src/hello.html
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>qiqi</title>
+</head>
+<body>
+<!-- 引入my-button组件，其模版中的content标签被替换成“请按我”，当点击该按钮弹出'hello world' -->
+<my-button id="my-button">请按我</my-button>
+
+<!-- 声明入口文件是：/pages/hello/main.js -->
+<script src="./pages/hello/main"></script>
+</body>
+</html>
+```
+
+* 现在我希望五秒钟后点击不再显示'hello world'，而显示”你好“。
+
+/src/pages/hello/main.js
+
+```javascript
+var Q = require('Q');
+
+function init() {
+    var myButton = Q.get('#my-button');
+
+    setTimeout(function () {
+        myButton.$set('msg', '你好');
+    }, 5000);
+}
+
+module.exports = {
+    init: init
+};
+```
