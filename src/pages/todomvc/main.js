@@ -15,7 +15,7 @@ function init() {
     router.configure({
         notfound: function () {
             window.location.hash = '';
-            q.activeFilter.$set('all');
+            q.$set('activeFilter', 'all');
         }
     });
 
