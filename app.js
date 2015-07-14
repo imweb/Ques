@@ -64,7 +64,9 @@ app.use(
       .pipe(ques.css())
   )
   .use(
-    middlePipe(src, /\.html$/)
+    middlePipe(src, /(\.html$)|(\.html\?(.+))/, function(url) {
+      return url.replace(/\?([\s\S]*)/, '');
+    })
       .pipe(ques.html())
   )
   .use(config.proxyPath, proxy('http://127.0.0.1:' + config.port + '/'))
