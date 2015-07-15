@@ -9,6 +9,7 @@ module.exports = function (opts) {
         mainScript = this.mainScript,
         mainPath = mainScript.attr('src');
 
+    // CGI need to preload
     var needPreload = [];
 
     function findPreload(file) {
@@ -16,6 +17,10 @@ module.exports = function (opts) {
             ast = esprima.parse(fs.readFileSync(file, 'utf-8')),
             matches = esquery(ast, '[type="VariableDeclaration"]')
 
+        // find DB reference
+        // for example
+        // var db = require('db');
+        // so 'db' is the DB reference
         matches.forEach(function (decl) {
             var _matches = esquery(decl, '[type="CallExpression"]');
             _matches.forEach(function (_decl) {
@@ -31,6 +36,7 @@ module.exports = function (opts) {
         });
 
         if (DBRef) {
+            // find DB.httpMethod
             matches = esquery(ast, '[type="CallExpression"][callee.object.name="' + DBRef + '"][callee.property.name="httpMethod"]');
 
             matches.forEach(function (decl) {
@@ -39,6 +45,7 @@ module.exports = function (opts) {
                 properties.forEach(function (prop) {
                     data[prop.key.name] = prop.value.value;
                 });
+                // if need preload
                 if (data.preload) needPreload.push(data);
             });
         } else {
@@ -46,12 +53,15 @@ module.exports = function (opts) {
         }
     }
 
-    // if pages controller is exist
+    // if page's controller is exist
     if (mainPath) {
         mainPath = mainPath.replace(/[^\/]+$/, '');
+        // this is the page's controller file dirname
         mainPath = path.join(process.cwd(), opts.config().src, mainPath);
+        // find db.*.js
         fs.readdirSync(mainPath).forEach(function (filename) {
             if (/db\.([^\.]+\.js)/.test(filename)) {
+                // find the which CGI need preload
                 findPreload(path.join(mainPath, filename))
             }
         });
