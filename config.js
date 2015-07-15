@@ -30,7 +30,10 @@ module.exports = {
     'Q': '/lib/Q',
     'third': '/lib/third',
     'filters': '/lib/cjs/filters',
-    'utils': '/lib/cjs/utils'
+    'utils': '/lib/cjs/utils',
+    'db.core': '/lib/db.core',
+    'db': '/lib/db',
+    'db.feeder': '/lib/feeder'
   },
   // loader paths config in real world
   realPaths: {
