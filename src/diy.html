@@ -16,29 +16,50 @@
     <p>DIY组件是通过markup的方式，引入Nodejs插件，使得Nodejs可以对该页面进行处理。</p>
 </ui-header>
 
-<h2>制作一个diy-preload组件</h2>
-<p>新建/src/components/diy/preload/main.js</p>
-<third-code>
-    module.exports = function (opts) {
-        // 拿到组件的容器，然后replaceWith成下面脚本
-        opts.container.replaceWith('&lt;script&gt;alert("Just do it yourself!");&lt;/script&gt;');
-    };
-</third-code>
-
-<h2>引入diy-preload组件</h2>
+<h2>面向未来的CGI预加载方案</h2>
+<p>在页面引用&lt;diy-preload&gt;</p>
 <third-code>
     &lt;diy-preload&gt;&lt;/diy-preload&gt;
 </third-code>
 
-<h2>则页面将会像打印Just do it yourself!</h2>
+<p>在页面目录如对应的db配置文件加上preload属性：/src/pages/diy/db.diy.js</p>
+<third-code>
+    var DB = require('db');
 
-<h2>可能的应用场景</h2>
+    DB.extend({
+        ke: DB.httpMethod({
+            url: 'http://ke.qq.com/cgi-bin/index_json',
+            type: 'JSONP',
+            preload: true
+        })
+    })
 
-<ul>
-    <li>CGI预加载方案，例如markup一个&lt;diy-preload&gt;则自动扫描脚本分析出需要预加载的CGI，然后打入页面中</li>
-    <li>通用页面处理，打点上报等等</li>
-    <li>底部的版权所有，例如版权所有© 2008-2015，2016的时候自动替换</li>
-</ul>
+    module.exports = DB;
+</third-code>
+
+<p>在controller调用preload的CGI</p>
+
+<third-code>
+    var DB = require('./db.diy');
+
+    function init() {
+        DB.ke({
+            succ: function (data) {
+                console.log(data)
+            },
+            err: function (data) {
+                console.log(data)
+            }
+        })
+    }
+
+    return {
+        init: init
+    };
+</third-code>
+
+<p>简简单单实现CGI预加载，就是这么简单</p>
+
 <diy-preload></diy-preload>
 <script src="./pages/diy/main"></script>
 </body>

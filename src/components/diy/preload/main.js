@@ -92,6 +92,8 @@ module.exports = function (opts) {
             }
 
             container.replaceWith(result.join('\n'));
+        } else {
+            container.remove();
         }
     }
 };
