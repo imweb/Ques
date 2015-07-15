@@ -3,7 +3,8 @@ module.exports = function (opts) {
         path = require('path'),
         esprima = require('esprima'),
         esquery = require('esquery');
-    var $ = opts.$,
+    var self = this,
+        $ = opts.$,
         container = opts.container,
         mainScript = this.mainScript,
         mainPath = mainScript.attr('src');
@@ -41,7 +42,7 @@ module.exports = function (opts) {
                 if (data.preload) needPreload.push(data);
             });
         } else {
-            throw new Error('you should require db first');
+            self.logError('you should require db in ' + mainPath + ' first');
         }
     }
 
