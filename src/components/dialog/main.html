@@ -1,0 +1,17 @@
+<div class="$__mask" q-class="show: isShow">
+    <div class="$__$">
+        <div class="header">
+            <content select="header *"></content>
+        </div>
+        <div class="body">
+            <div class="icon-info-large"></div>
+            <div class="msg">
+                <content select="article *"></content>
+            </div>
+        </div>
+        <div class="bottom">
+            <ui-button class="ui-info" q-on="click: submit">确定</ui-button>
+            <ui-button class="ui-default" q-on="click: cancel">取消</ui-button>
+        </div>
+    </div>
+</div>

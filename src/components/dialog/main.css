@@ -1,0 +1,76 @@
+.$__mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    left: 0px;
+    top: 0px;
+    z-index: 999;
+    background-color: #000!important;
+    opacity: .6;
+    display: none;
+}
+
+.$__mask.show {
+    display: block;
+}
+
+.$__$ {
+    position: fixed;
+    top: 10%;
+    opacity: .5;
+    left: 50%;
+    width: 490px;
+    margin-left: -245px;
+    z-index: 999;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 200ms ease-in-out;
+}
+
+.$__mask .$__$.show {
+    top: 50%;
+    opacity: 1;
+}
+
+.$__$ .header {
+    height: 30px;
+    line-height: 30px;
+    text-indent: 12px;
+    background: #039ae3;
+    color: #fff;
+    font-size: 14px;
+}
+
+.$__$ .body {
+    padding: 30px 40px;
+    position: relative;
+    line-height: 24px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.$__$ .msg {
+    margin-left: 66px;
+    position: relative;
+    top: 10px;
+    word-break: break-all;
+}
+
+.$__$ .bottom {
+    margin: 20px;
+    text-align: right;
+}
+
+.icon-info-large {
+    background: url(http://9.url.cn/edu/img/sprite/common.a8642.png) -41px -276px no-repeat;
+    width: 36px;
+    height: 36px;
+    display: block;
+    float: left;
+    margin-top: 4px;
+}
