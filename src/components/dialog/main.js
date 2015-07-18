@@ -20,7 +20,7 @@ module.exports = {
         }
     },
     ready: function () {
-        var dialog = _.find('.dialog', this.$el)[0];
+        var dialog = _.find('.$__$', this.$el)[0];
         this.$watch('isShow', function (val) {
             if (val) {
                 setTimeout(function () {
