@@ -14,11 +14,12 @@ module.exports = function (el, opts) {
         });
         return;
     } else {
-        var extend = opts.__extend__
-            F = extend ?
-                Q.require(extend) :
-                Q;
-        opts.el = el;
-        return F.all(opts);
+        var extend = opts.__extend__;
+        if (opts.__extend__) {
+            return Q.require(opts.name).all({ el: el });
+        } else {
+            opts.el = el;
+            return Q.all(opts);
+        }
     }
 };
