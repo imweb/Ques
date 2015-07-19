@@ -1,7 +1,7 @@
 <div class="$__container">
     <div class="$__title" q-on="click: toggle">
         <i class="$__triangle"></i>
-        <content select="span[title]"></content>
+        <content select="title *"></content>
         <span class="$__num" q-text="num"></span>
     </div>
     <ul class="$__list $__list-hide" q-height="list | calHeight" q-class="$__list-hide: hide">
