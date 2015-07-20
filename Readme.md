@@ -820,3 +820,12 @@ module.exports = {
 ```
 
 * 则`diy-preload`组件会找到`db.*.js`，然后分析出什么CGI需要预加载，在`<diy-preload>`标签对应的位置插入预加载脚本。整个过程开发人员感知不到，体验上还是调取一个CGI，但是实际上在页面文档打开后CGI请求立刻发出，而不是等待Javascript加载完后才发出。
+
+用户
+----
+
+[![齐齐互动视频](http://www.qxiu.com/2014/images/logo_qi.jpg)](http://www.qxiu.com/)
+
+[![QQ群](http://qplus3.idqqimg.com/qun/portal/img/logo2.png)](http://qun.qq.com/)
+
+[![家校群](https://cloud.githubusercontent.com/assets/2239584/7838577/283888ca-04c0-11e5-98a2-adc49360eb2a.png)](http://qun.qq.com/homework/)
