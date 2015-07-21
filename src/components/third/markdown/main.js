@@ -7,8 +7,9 @@ marked.setOptions({
 
 module.exports = {
     bind: function () {
-        var content = this.el.getElementsByClassName('markdown-body')[0];
-        content.innerHTML = marked(content.textContent.replace(/\|\|/g, '\n'));
+        var text = _.find('.markdown-body pre')[0].textContent,
+            content = _.find('.markdown-body')[0];
+        content.innerHTML = marked(text);
         _.addClass(this.el, 'show');
     },
     unbind: function () {}

@@ -9,7 +9,7 @@ module.exports = {
   proxyPath: '/dev',
   // loader path
   // if loader is local file, it will just inline
-  loader: '/lib/require.min.js',
+  loader: 'http://7.url.cn/edu/jslib/requirejs/2.1.6/require.min.js',
   // cdn url, for example http://cdn.com/ ->
   // js url: http://cdn.com/js/
   // css url: http://cdn.com/css/
