@@ -1,0 +1,286 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Ques</title><script>var _T=[+new Date];</script><link rel="stylesheet" href="css/components.6b97c.css"></head><body><ul class="ui-nav__container"><li class="ui-nav__logo"></li><li><a href="./index.html">Why Ques</a></li><li><a href="./components.html">Our Components</a></li><li><a href="./todomvc.html">todoMVC</a></li><li><a href="./client.html" target="_blank">&#x9F50;&#x9F50;</a></li></ul><div class="ui-header"><h1>Ques</h1><p>Road to the future.</p></div><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+### UI&#x7EC4;&#x4EF6;
+
+&gt; `UI&#x7EC4;&#x4EF6;`&#x662F;&#x7528;&#x6765;&#x4E13;&#x95E8;&#x505A;UI&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x5176;&#x7279;&#x70B9;&#x4E3A;&#x53EA;&#x6709;&#x6A21;&#x7248;&#x3001;&#x6837;&#x5F0F;&#x6587;&#x4EF6;&#x3002;&#x7CFB;&#x7EDF;&#x4F1A;&#x6839;&#x636E;&#x7528;&#x6237;&#x5728;&#x9875;&#x9762;&#x5DF2;&#x4F7F;&#x7528;&#x7684;`UI&#x7EC4;&#x4EF6;`&#x52A8;&#x6001;&#x5F15;&#x7528;&#x5176;&#x4F9D;&#x8D56;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x6CE8;&#x610F;&#xFF0C;`UI&#x7EC4;&#x4EF6;`&#x7684;&#x524D;&#x7F00;&#x5FC5;&#x987B;&#x662F;`ui-`&#x3002;
+
+&#x4E0B;&#x9762;&#x662F;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;`ui-button`&#x7684;&#x4F8B;&#x5B50;&#xFF1A;
+
+##### &#x5B9A;&#x4E49;
+
+* CSS&#x6587;&#x4EF6;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+.ui-button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-transform: none;
+    -webkit-appearance: button;
+    overflow: visible;
+    margin: 0;
+}
+
+.ui-default {
+    color:#333;
+    background-color:#fff;
+    border-color:#ccc
+}
+.ui-default.focus,.ui-default:focus {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#8c8c8c
+}
+.ui-default:hover {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#adadad
+}
+
+// &#x540E;&#x9762;&#x53EF;&#x6DFB;&#x52A0;&#x66F4;&#x591A;&#x6837;&#x5F0F;&#x7684;&#x6309;&#x94AE;
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+* &#x6A21;&#x7248;&#x6587;&#x4EF6;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+&lt;button class=&quot;ui-button&quot;&gt;
+    &lt;content&gt;&lt;/content&gt;
+&lt;/button&gt;
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+##### &#x6548;&#x679C;
+
+* &#x5728;&#x9875;&#x9762;&#x4E0A;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+    &lt;ui-button class=&quot;ui-default&quot;&gt;DEFAULT&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-success&quot;&gt;SUCCESS&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-info&quot;&gt;INFO&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-warning&quot;&gt;WARNING&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-danger&quot;&gt;DANGER&lt;/ui-button&gt;
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+* &#x5C55;&#x793A;
+ </pre></div></div><div class="ui-content"><button class="ui-button ui-default">DEFAULT</button> <button class="ui-button ui-success">SUCCESS</button> <button class="ui-button ui-info">INFO</button> <button class="ui-button ui-warning">WARNING</button> <button class="ui-button ui-danger">DANGER</button></div><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+&#x8FD9;&#x6837;&#x6211;&#x4EEC;&#x5C31;&#x5B9E;&#x73B0;&#x4E86;&#x4E00;&#x4E2A;`ui-button`&#x7EC4;&#x4EF6;&#xFF0C;&#x5176;&#x53EF;&#x4EE5;&#x5728;&#x4EFB;&#x610F;&#x5176;&#x4ED6;&#x7EC4;&#x4EF6;&#x4E2D;&#x5D4C;&#x5957;&#x4F7F;&#x7528;&#x3002;&#x5176;&#x4F9D;&#x8D56;&#x7684;&#x8D44;&#x6E90;&#x4F1A;&#x52A8;&#x6001;&#x5F15;&#x7528;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#xFF0C;&#x53EA;&#x6709;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4E86;`ui-button`&#x4ED6;&#x7684;&#x6A21;&#x7248;&#x548C;&#x6837;&#x5F0F;&#x624D;&#x4F1A;&#x88AB;&#x5F15;&#x5165;&#x3002;
+
+##### &#x5907;&#x6CE8;
+
+* &#x7531;&#x4E8E;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4E86;&#x5F3A;&#x5927;&#x7684;[cssnext](https://github.com/cssnext/cssnext)&#xFF0C;&#x6240;&#x4EE5;CSS&#x5410;&#x51FA;&#x6765;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x6839;&#x636E;&#x914D;&#x7F6E;&#x8F6C;&#x6362;&#x6210;&#x517C;&#x5BB9;&#x7248;&#x672C;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x6211;&#x4EEC;&#x53EA;&#x9700;&#x8981;&#x6309;&#x7167;&#x6807;&#x51C6;&#x53BB;&#x5199;CSS&#xFF0C;&#x7CFB;&#x7EDF;&#x4F1A;&#x81EA;&#x52A8;&#x5E2E;&#x6211;&#x4EEC;&#x9002;&#x914D;&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+.ui-button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-transform: none;
+    -webkit-appearance: button;
+    overflow: visible;
+    margin: 0;
+}
+
+.ui-default {
+    color:#333;
+    background-color:#fff;
+    border-color:#ccc
+}
+.ui-default.focus,.ui-default:focus {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#8c8c8c
+}
+.ui-default:hover {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#adadad
+}
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+* &#x6CE8;&#x610F;&#x5230;&#x6211;&#x4EEC;&#x5F15;&#x5165;&#x4E86;Shadow DOM&#x4E2D;&#x7684;`&lt;content&gt;`&#x6807;&#x7B7E;&#xFF0C;`&lt;content&gt;`&#x6807;&#x7B7E;&#x4F5C;&#x4E3A;Component&#x5185;&#x90E8;&#x7684;&#x63D2;&#x5165;&#x70B9;&#xFF08;&#x6216;&#x8005;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x6210;&#x5360;&#x4F4D;&#x7B26;&#xFF09;&#xFF0C;&#x5F53;&#x5916;&#x90E8;&#x5F15;&#x7528;&#x8BE5;Component&#x65F6;&#x53EF;&#x4EE5;&#x4ECE;&#x5916;&#x90E8;&#x5411;&#x5185;&#x90E8;&#x63D2;&#x5165;&#x8282;&#x70B9;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+&lt;ui-button class=&quot;ui-default&quot;&gt;DEFAULT&lt;/ui-button&gt;
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+&#x5219;&#x8868;&#x793A;&#x5411;Component&#x7684;&#x63D2;&#x5165;&#x70B9;&#x63D2;&#x5165;DEFAULT&#x8FD9;&#x4E2A;&#x6587;&#x5B57;&#x8282;&#x70B9;&#x3002;&#x5173;&#x4E8E;`&lt;content&gt;`&#x6807;&#x7B7E;&#x6211;&#x4EEC;&#x540E;&#x9762;&#x8FD8;&#x4F1A;&#x63D0;&#x5230;&#x5176;&#x9AD8;&#x7EA7;&#x5E94;&#x7528;&#x3002;
+
+### Component
+
+&gt; Component&#x662F;&#x6700;&#x5E38;&#x89C1;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x5176;&#x62E5;&#x6709;&#x6A21;&#x7248;&#x3001;&#x6837;&#x5F0F;&#x4EE5;&#x53CA;&#x903B;&#x8F91;&#x6587;&#x4EF6;&#xFF0C;&#x4F7F;&#x5F97;&#x8FD9;&#x79CD;Component&#x66F4;&#x50CF;&#x4E00;&#x4E2A;&#x81EA;&#x5B9A;&#x4E49;&#x7684;&#x5143;&#x7D20;(Custom Element)&#x3002;&#x4F53;&#x9A8C;&#x4E0A;&#x50CF;&#x5F15;&#x5165;&#x4E00;&#x4E2A;`&lt;input&gt;`&#x6807;&#x7B7E;&#x4E00;&#x6837;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x8BBE;&#x7F6E;&#x5979;&#x7684;&#x503C;&#xFF0C;&#x7ED1;&#x5B9A;&#x5979;&#x7684;&#x4E8B;&#x4EF6;&#xFF0C;&#x8C03;&#x7528;&#x5979;&#x7684;&#x51FD;&#x6570;&#x3002;
+
+&#x4E0B;&#x9762;&#x662F;&#x4E00;&#x4E2A;`dialog`&#x7EC4;&#x4EF6;&#x7684;&#x4F8B;&#x5B50;&#xFF1A;
+
+##### &#x5B9A;&#x4E49;
+
+* CSS&#x6587;&#x4EF6;&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+.$__mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    left: 0px;
+    top: 0px;
+    z-index: 999;
+    background-color: rgba(0,0,0,.6) !important;
+    display: none;
+}
+
+.$__mask.show {
+    display: block;
+}
+
+.$__$ {
+    position: fixed;
+    top: 10%;
+    opacity: .5;
+    left: 50%;
+    width: 490px;
+    margin-left: -245px;
+    z-index: 999;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 200ms ease-in-out;
+}
+
+.$__mask .$__$.show {
+    top: 50%;
+    opacity: 1;
+}
+
+.$__$ .header {
+    height: 30px;
+    line-height: 30px;
+    text-indent: 12px;
+    background: #039ae3;
+    color: #fff;
+    font-size: 14px;
+}
+
+.$__$ .body {
+    padding: 30px 40px;
+    position: relative;
+    line-height: 24px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.$__$ .msg {
+    margin-left: 66px;
+    position: relative;
+    top: 10px;
+    word-break: break-all;
+}
+
+.$__$ .bottom {
+    margin: 20px;
+    text-align: right;
+}
+
+.icon-info-large {
+    background: url(http://9.url.cn/edu/img/sprite/common.a8642.png) -41px -276px no-repeat;
+    width: 36px;
+    height: 36px;
+    display: block;
+    float: left;
+    margin-top: 4px;
+}
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+* &#x6A21;&#x7248;&#x6587;&#x4EF6;&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+&lt;div class=&quot;$__mask&quot; q-class=&quot;show: isShow&quot;&gt;
+    &lt;div class=&quot;$__$&quot;&gt;
+        &lt;div class=&quot;header&quot;&gt;
+            &lt;content select=&quot;header *&quot;&gt;&lt;/content&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;body&quot;&gt;
+            &lt;div class=&quot;icon-info-large&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;msg&quot;&gt;
+                &lt;content select=&quot;article *&quot;&gt;&lt;/content&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;bottom&quot;&gt;
+            &lt;ui-button class=&quot;ui-info&quot; q-on=&quot;click: submit&quot;&gt;&#x786E;&#x5B9A;&lt;/ui-button&gt;
+            &lt;ui-button class=&quot;ui-default&quot; q-on=&quot;click: cancel&quot;&gt;&#x53D6;&#x6D88;&lt;/ui-button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+* Javascript&#x6587;&#x4EF6;&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+var $ = require(&apos;jquery&apos;);
+
+module.exports = {
+    data: {
+        isShow: false
+    },
+    methods: {
+        submit: function () {
+            this.$emit(&apos;submit&apos;);
+        },
+        cancel: function () {
+            this.$emit(&apos;cancel&apos;)
+                .hide();
+        },
+        show: function () {
+            this.$set(&apos;isShow&apos;, true);
+        },
+        hide: function () {
+            this.$set(&apos;isShow&apos;, false);
+        }
+    },
+    ready: function () {
+        var dialog = $(&apos;.$__$&apos;, this.$el);
+        this.$watch(&apos;isShow&apos;, function (val) {
+            if (val) {
+                setTimeout(function () {
+                    dialog.addClass(&apos;show&apos;);
+                }, 20);
+            } else {
+                dialog.removeClass(dialog, &apos;show&apos;);
+            }
+        }, false, true);
+    }
+}
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+##### &#x6548;&#x679C;
+
+* &#x5728;&#x9875;&#x9762;&#x76F4;&#x63A5;&#x5F15;&#x5165;`&lt;dialog&gt;`&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+&lt;dialog id=&quot;my-dialog&quot;&gt;
+    &lt;header&gt;
+        &#x6B22;&#x8FCE;&#x4F7F;&#x7528;Ques
+    &lt;/header&gt;
+    &lt;article&gt;
+        Hello World!
+    &lt;/article&gt;
+&lt;/dialog&gt;
+ </code></pre><div class="third-markdown__wrapper component-1"><div class="markdown-body"><pre> 
+* &#x5219;&#x53EF;&#x4EE5;&#x5728;Controller&#x4E2D;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#xFF0C;&#x4F8B;&#x5982;&#x62FF;&#x5230;&#x5176;&#x5B9E;&#x4F8B;&#xFF0C;&#x518D;&#x8C03;&#x7528;&#x5176;`show`&#x65B9;&#x6CD5;&#xFF0C;&#x5C06;&#x5176;&#x5C55;&#x793A;&#xFF1A;
+ </pre></div></div><pre class="third-code__pre component-2"> <code> 
+var Q = require(&apos;Q&apos;);
+
+Q.get(&apos;#my-dialog&apos;)
+    .show();
+ </code></pre><div class="ui-content"><button class="ui-button ui-info component-3" q-on="click: click" id="click1">&#x70B9;&#x51FB;&#x6211;&#x67E5;&#x770B;&#x6548;&#x679C;</button></div><div class="dialog__mask component-4" q-class="show: isShow" id="dialog1"><div class="dialog"><div class="header">&#x6B22;&#x8FCE;&#x4F7F;&#x7528;Ques</div><div class="body"><div class="icon-info-large"></div><div class="msg">Hello World!</div></div><div class="bottom"><button class="ui-button ui-info" q-on="click: submit">&#x786E;&#x5B9A;</button> <button class="ui-button ui-default" q-on="click: cancel">&#x53D6;&#x6D88;</button></div></div></div><script>_T.push(+new Date);</script><script src="http://7.url.cn/edu/jslib/requirejs/2.1.6/require.min.js"></script><script>require.config({paths:{jquery:"http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min",main:"./js/components.6437c"},shim:{}}),require(["jquery","main"],function(){});</script><script>_T.push(+new Date);</script></body></html>
