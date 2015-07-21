@@ -18,7 +18,7 @@ module.exports = {
   // which files need to build
   // (files: '*') -> means all *.html in src
   // (files: ['index.html']) -> means just build index.html
-  files: ['index.html', 'todomvc.html', 'client.html'],
+  files: ['index.html', 'todomvc.html', 'client.html', 'components.html'],
   // cssnext config, see http://cssnext.io/usage/
   cssnext: {
     browsers: ['> 1%', 'IE 8']
