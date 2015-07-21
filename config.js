@@ -9,7 +9,7 @@ module.exports = {
   proxyPath: '/dev',
   // loader path
   // if loader is local file, it will just inline
-  loader: '/lib/parallel-require.js',
+  loader: '/lib/require.min.js',
   // cdn url, for example http://cdn.com/ ->
   // js url: http://cdn.com/js/
   // css url: http://cdn.com/css/
@@ -18,7 +18,7 @@ module.exports = {
   // which files need to build
   // (files: '*') -> means all *.html in src
   // (files: ['index.html']) -> means just build index.html
-  files: ['client.html', 'index.html', 'clickNChange.html', 'test.html', 'todomvc.html'],
+  files: ['index.html', 'todomvc.html', 'client.html'],
   // cssnext config, see http://cssnext.io/usage/
   cssnext: {
     browsers: ['> 1%', 'IE 8']
@@ -33,7 +33,8 @@ module.exports = {
     'utils': '/lib/cjs/utils',
     'db.core': '/lib/db.core',
     'db': '/lib/db',
-    'db.feeder': '/lib/feeder'
+    'db.feeder': '/lib/feeder',
+    'marked': '/lib/marked'
   },
   // loader paths config in real world
   realPaths: {
@@ -51,6 +52,6 @@ module.exports = {
 
   // file config
   'test.html': {
-    loader: '/lib/require.min.js'
+    loader: '/lib/parallel-require.js'
   }
 };
