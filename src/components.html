@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Ques</title>
+<link rel="stylesheet" href="./pages/reset.css">
+</head>
+<body>
+<ui-nav></ui-nav>
+<ui-header>
+    <h1>Ques</h1>
+    <p>Road to the future.</p>
+</ui-header>
+<third-markdown>
+### UI组件
+
+> `UI组件`是用来专门做UI的组件，其特点为只有模版、样式文件。系统会根据用户在页面已使用的`UI组件`动态引用其依赖的资源。注意，`UI组件`的前缀必须是`ui-`。
+
+下面是一个简单的`ui-button`的例子：
+
+##### 定义
+
+* CSS文件
+</third-markdown>
+<third-code>
+.ui-button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-transform: none;
+    -webkit-appearance: button;
+    overflow: visible;
+    margin: 0;
+}
+
+.ui-default {
+    color:#333;
+    background-color:#fff;
+    border-color:#ccc
+}
+.ui-default.focus,.ui-default:focus {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#8c8c8c
+}
+.ui-default:hover {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#adadad
+}
+
+// 后面可添加更多样式的按钮
+</third-code>
+<third-markdown>
+* 模版文件
+</third-markdown>
+<third-code>
+&lt;button class="ui-button"&gt;
+    &lt;content&gt;&lt;/content&gt;
+&lt;/button&gt;
+</third-code>
+<third-markdown>
+##### 效果
+
+* 在页面上直接引用：
+</third-markdown>
+<third-code>
+    &lt;ui-button class=&quot;ui-default&quot;&gt;DEFAULT&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-success&quot;&gt;SUCCESS&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-info&quot;&gt;INFO&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-warning&quot;&gt;WARNING&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-danger&quot;&gt;DANGER&lt;/ui-button&gt;
+</third-code>
+<third-markdown>
+* 展示
+</third-markdown>
+<ui-content>
+    <ui-button class="ui-default">DEFAULT</ui-button>
+    <ui-button class="ui-success">SUCCESS</ui-button>
+    <ui-button class="ui-info">INFO</ui-button>
+    <ui-button class="ui-warning">WARNING</ui-button>
+    <ui-button class="ui-danger">DANGER</ui-button>
+</ui-content>
+<third-markdown>
+这样我们就实现了一个`ui-button`组件，其可以在任意其他组件中嵌套使用。其依赖的资源会动态引用，也就是说，只有我们使用了`ui-button`他的模版和样式才会被引入。
+
+##### 备注
+
+* 由于我们使用了强大的[cssnext](https://github.com/cssnext/cssnext)，所以CSS吐出来的时候会根据配置转换成兼容版本，也就是说我们只需要按照标准去写CSS，系统会自动帮我们适配：
+</third-markdown>
+<third-code>
+.ui-button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-transform: none;
+    -webkit-appearance: button;
+    overflow: visible;
+    margin: 0;
+}
+
+.ui-default {
+    color:#333;
+    background-color:#fff;
+    border-color:#ccc
+}
+.ui-default.focus,.ui-default:focus {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#8c8c8c
+}
+.ui-default:hover {
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#adadad
+}
+</third-code>
+<third-markdown>
+* 注意到我们引入了Shadow DOM中的`&lt;content&gt;`标签，`&lt;content&gt;`标签作为Component内部的插入点（或者可以理解成占位符），当外部引用该Component时可以从外部向内部插入节点，例如：
+</third-markdown>
+<third-code>
+&lt;ui-button class="ui-default"&gt;DEFAULT&lt;/ui-button&gt;
+</third-code>
+<third-markdown>
+则表示向Component的插入点插入DEFAULT这个文字节点。关于`&lt;content&gt;`标签我们后面还会提到其高级应用。
+
+### Component
+
+> Component是最常见的组件，其拥有模版、样式以及逻辑文件，使得这种Component更像一个自定义的元素(Custom Element)。体验上像引入一个`&lt;input&gt;`标签一样，我们可以设置她的值，绑定她的事件，调用她的函数。
+
+下面是一个`dialog`组件的例子：
+
+##### 定义
+
+* CSS文件：
+</third-markdown>
+<third-code>
+.$__mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    left: 0px;
+    top: 0px;
+    z-index: 999;
+    background-color: rgba(0,0,0,.6) !important;
+    display: none;
+}
+
+.$__mask.show {
+    display: block;
+}
+
+.$__$ {
+    position: fixed;
+    top: 10%;
+    opacity: .5;
+    left: 50%;
+    width: 490px;
+    margin-left: -245px;
+    z-index: 999;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 200ms ease-in-out;
+}
+
+.$__mask .$__$.show {
+    top: 50%;
+    opacity: 1;
+}
+
+.$__$ .header {
+    height: 30px;
+    line-height: 30px;
+    text-indent: 12px;
+    background: #039ae3;
+    color: #fff;
+    font-size: 14px;
+}
+
+.$__$ .body {
+    padding: 30px 40px;
+    position: relative;
+    line-height: 24px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.$__$ .msg {
+    margin-left: 66px;
+    position: relative;
+    top: 10px;
+    word-break: break-all;
+}
+
+.$__$ .bottom {
+    margin: 20px;
+    text-align: right;
+}
+
+.icon-info-large {
+    background: url(http://9.url.cn/edu/img/sprite/common.a8642.png) -41px -276px no-repeat;
+    width: 36px;
+    height: 36px;
+    display: block;
+    float: left;
+    margin-top: 4px;
+}
+</third-code>
+<third-markdown>
+* 模版文件：
+</third-markdown>
+<third-code>
+&lt;div class=&quot;$__mask&quot; q-class=&quot;show: isShow&quot;&gt;
+    &lt;div class=&quot;$__$&quot;&gt;
+        &lt;div class=&quot;header&quot;&gt;
+            &lt;content select=&quot;header *&quot;&gt;&lt;/content&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;body&quot;&gt;
+            &lt;div class=&quot;icon-info-large&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;msg&quot;&gt;
+                &lt;content select=&quot;article *&quot;&gt;&lt;/content&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;bottom&quot;&gt;
+            &lt;ui-button class=&quot;ui-info&quot; q-on=&quot;click: submit&quot;&gt;确定&lt;/ui-button&gt;
+            &lt;ui-button class=&quot;ui-default&quot; q-on=&quot;click: cancel&quot;&gt;取消&lt;/ui-button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</third-code>
+<third-markdown>
+* Javascript文件：
+</third-markdown>
+<third-code>
+var $ = require('jquery');
+
+module.exports = {
+    data: {
+        isShow: false
+    },
+    methods: {
+        submit: function () {
+            this.$emit('submit');
+        },
+        cancel: function () {
+            this.$emit('cancel')
+                .hide();
+        },
+        show: function () {
+            this.$set('isShow', true);
+        },
+        hide: function () {
+            this.$set('isShow', false);
+        }
+    },
+    ready: function () {
+        var dialog = $('.$__$', this.$el);
+        this.$watch('isShow', function (val) {
+            if (val) {
+                setTimeout(function () {
+                    dialog.addClass('show');
+                }, 20);
+            } else {
+                dialog.removeClass(dialog, 'show');
+            }
+        }, false, true);
+    }
+}
+</third-code>
+<third-markdown>
+##### 效果
+
+* 在页面直接引入`&lt;dialog&gt;`：
+</third-markdown>
+<third-code>
+&lt;dialog id=&quot;my-dialog&quot;&gt;
+    &lt;header&gt;
+        欢迎使用Ques
+    &lt;/header&gt;
+    &lt;article&gt;
+        Hello World!
+    &lt;/article&gt;
+&lt;/dialog&gt;
+</third-code>
+<third-markdown>
+* 则可以在Controller中直接使用，例如拿到其实例，再调用其`show`方法，将其展示：
+</third-markdown>
+<third-code>
+var Q = require('Q');
+
+Q.get('#my-dialog')
+    .show();
+</third-code>
+<ui-content>
+    <click id="click1">点击我查看效果</click>
+</ui-content>
+<dialog id="dialog1">
+    <header>
+        欢迎使用Ques
+    </header>
+    <article>
+        Hello World!
+    </article>
+</dialog>
+<script src="./pages/components/main"></script>
+</body>
+</html>

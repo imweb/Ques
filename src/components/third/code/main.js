@@ -1,3 +1,4 @@
+var _ = require('Q')._;
 
 module.exports = {
     bind: function () {
@@ -5,6 +6,7 @@ module.exports = {
             script = document.createElement('script');
         script.onload = function () {
             hljs.highlightBlock(el);
+            _.addClass(el, 'show');
         }
         script.src = '//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js';
         document.body.appendChild(script);

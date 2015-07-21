@@ -1,5 +1,5 @@
 .$__wrapper {
-    padding: 30px;
+    padding: 10px 30px;
     opacity: 0;
     transition: opacity 300ms;
 }
