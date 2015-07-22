@@ -337,6 +337,337 @@ Q.get('#my-dialog')
         Hello World!
     </article>
 </dialog>
+<third-markdown>
+##### 备注
+
+* 由于CSS没有命名空间，所以我们引入了两个`$__`和`$__$`两个占位符来充当命名空间，系统会自动转换成当前Component的名字，所以CSS最终变成：
+</third-markdown>
+<third-code>
+.dialog__mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    left: 0px;
+    top: 0px;
+    z-index: 999;
+    background-color: #000000 !important;
+    background-color: rgba(0,0,0,.6) !important;
+    display: none;
+}
+
+.dialog__mask.show {
+    display: block;
+}
+
+.dialog {
+    position: fixed;
+    top: 10%;
+    opacity: .5;
+    left: 50%;
+    width: 490px;
+    margin-left: -245px;
+    z-index: 999;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    -webkit-transition: all 200ms ease-in-out;
+            transition: all 200ms ease-in-out;
+}
+
+.dialog__mask .dialog.show {
+    top: 50%;
+    opacity: 1;
+}
+
+.dialog .header {
+    height: 30px;
+    line-height: 30px;
+    text-indent: 12px;
+    background: #039ae3;
+    color: #fff;
+    font-size: 14px;
+}
+
+.dialog .body {
+    padding: 30px 40px;
+    position: relative;
+    line-height: 24px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.dialog .msg {
+    margin-left: 66px;
+    position: relative;
+    top: 10px;
+    word-break: break-all;
+}
+
+.dialog .bottom {
+    margin: 20px;
+    text-align: right;
+}
+
+.icon-info-large {
+    background: url(http://9.url.cn/edu/img/sprite/common.a8642.png) -41px -276px no-repeat;
+    width: 36px;
+    height: 36px;
+    display: block;
+    float: left;
+    margin-top: 4px;
+}
+</third-code>
+<third-markdown>
+可以看见`$__`被转换成了`dialog__`，而`$__$`被转换成了`dialog`。
+
+* 逻辑层我们使用了MVVM库[Q.js](https://github.com/imweb/Q.js)，这里就不细说了。
+
+
+* 这里还用到`&lt;content&gt;`标签的高级功能，`select`属性。select属性是用来选择外部符合选择器的节点进行替换。例如：
+</third-markdown>
+<third-code>
+&lt;content select=&quot;header *&quot;&gt;&lt;/content&gt;
+</third-code>
+<third-markdown>
+的意思是选择外部`&lt;header&gt;`标签内所有东西进行替换，所以“欢迎使用Ques”就被替换进去了。
+
+### 第三方Component
+
+> 第三方Component是一套兼容方案，使得业务方不依赖`Q.js`也能定义一个Component，但是由于系统无法控制第三方组件DOM的作用域，以及实现其扩展似乎没啥意思，所以第三方无法嵌套和扩展。总的来说第三方Component本质上就是系统给第三方一个容器，他在里面干什么，系统就不管了。第三方组件一定以`third-`为前缀。
+
+下面是一个高亮代码`third-code`的例子：
+
+##### 定义
+
+* CSS文件：
+</third-markdown>
+<third-code>
+.$__pre {
+    width: 900px;
+    margin: 10px;
+}
+
+/**  引入hightlight.js的css库  **/
+@import "http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css";
+</third-code>
+<third-markdown>
+* 模版文件：
+</third-markdown>
+<third-code>
+&lt;pre class=&quot;$__pre&quot;&gt;
+    &lt;code&gt;
+        &lt;content&gt;&lt;/content&gt;
+    &lt;/code&gt;
+&lt;/pre&gt;
+</third-code>
+<third-markdown>
+* Javascript文件：
+</third-markdown>
+<third-code>
+module.exports = {
+    bind: function () {
+        var el = this.el,
+            script = document.createElement('script');
+        script.onload = function () {
+            hljs.highlightBlock(el);
+        }
+        script.src = '//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js';
+        document.body.appendChild(script);
+    },
+    unbind: function () {}
+};
+</third-code>
+<third-markdown>
+##### 效果
+
+* 引入`third-code`：
+</third-markdown>
+<third-code>
+&lt;third-code&gt;
+    &amp;lt;ui-button class=&amp;quot;ui-default&amp;quot;&amp;gt;DEFAULT&amp;lt;/ui-button&amp;gt;
+    &amp;lt;ui-button class=&amp;quot;ui-success&amp;quot;&amp;gt;SUCCESS&amp;lt;/ui-button&amp;gt;
+    &amp;lt;ui-button class=&amp;quot;ui-info&amp;quot;&amp;gt;INFO&amp;lt;/ui-button&amp;gt;
+    &amp;lt;ui-button class=&amp;quot;ui-warning&amp;quot;&amp;gt;WARNING&amp;lt;/ui-button&amp;gt;
+    &amp;lt;ui-button class=&amp;quot;ui-danger&amp;quot;&amp;gt;DANGER&amp;lt;/ui-button&amp;gt;
+&lt;/third-code&gt;
+</third-code>
+<third-markdown>
+* 效果：
+</third-markdown>
+<third-code>
+    &lt;ui-button class=&quot;ui-default&quot;&gt;DEFAULT&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-success&quot;&gt;SUCCESS&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-info&quot;&gt;INFO&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-warning&quot;&gt;WARNING&lt;/ui-button&gt;
+    &lt;ui-button class=&quot;ui-danger&quot;&gt;DANGER&lt;/ui-button&gt;
+</third-code>
+<third-markdown>
+##### 备注
+
+* 第三方Component需要实现两个接口`bind`和`unbind`，即在容器创建时需要绑定什么，当容器删除时需要解绑什么。this会带来必要的东西，例如容器、父级ViewModel等等。
+
+### 组件嵌套
+
+> 当组件可以嵌套，组件件可以拆成较小的颗粒，使得复用性大大提升。
+
+下面我们是一个`clickbutton`组件，其用途是显示按钮，点击按钮弹出dialog，也就是说我们准备嵌套上面做出来的`ui-button`和`dialog`组件：
+
+##### 定义
+
+* CSS文件：
+</third-markdown>
+<third-code>
+/** 可以给组件定义一些特殊样式，但为了简单我们什么也不做 **/
+</third-code>
+<third-markdown>
+* 模版文件：
+</third-markdown>
+<third-code>
+&lt;div&gt;
+    &lt;ui-button class=&quot;ui-info&quot; q-on=&quot;click: showDialog&quot;&gt;
+        &lt;content&gt;&lt;/content&gt;
+    &lt;/ui-button&gt;
+    &lt;dialog q-ref=&quot;dialog&quot;&gt;
+        &lt;header&gt;欢迎使用Ques&lt;/header&gt;
+        &lt;article&gt;你点击了按钮&lt;/article&gt;
+    &lt;/dialog&gt;
+&lt;/div&gt;
+</third-code>
+<third-markdown>
+* Javascript文件：
+</third-markdown>
+<third-code>
+var $ = require('jquery');
+
+module.exports = {
+    data: {},
+    methods: {
+        showDialog: function () {
+            this.$.dialog.show();
+        }
+    }
+};
+</third-code>
+<third-markdown>
+##### 效果
+
+* 在页面上引用：
+</third-markdown>
+<third-code>
+&lt;clickbutton&gt;点击按钮&lt;/clickbutton&gt;
+</third-code>
+<third-markdown>
+* 展示：
+</third-markdown>
+<ui-content>
+    <clickbutton>点击按钮</clickbutton>
+</ui-content>
+<third-markdown>
+##### 备注
+
+* 我们看到`&lt;content&gt;`标签另一个神奇的用法是可传递，我们从`ui-button`传递到`clickbutton`，再传递到最外部。使得我们可以在最外部改`ui-button`内部的节点。
+
+
+* 我们注意到`q-ref`本来是`Q.js`用于组件嵌套从母Component(为了和扩展中的父Component其分开来，这里称之为母Component)拿到子Component的引用，同样可以拿到第三方Component的引用。
+
+### 组件扩展
+
+> 组件可扩展，则差别不大的组件可以继承同一个父组件。
+
+下面`dialog`组件扩展的例子，效果是弹出一个dialog，要求输入内容：
+
+##### 定义
+
+* CSS文件：
+</third-markdown>
+<third-code>
+/** 同样为了简单我们什么也不做 **/
+</third-code>
+<third-markdown>
+* 模版文件：
+</third-markdown>
+<third-code>
+&lt;dialog extend&gt;
+    &lt;header&gt;
+        &lt;h2&gt;欢迎使用Ques&lt;/h2&gt;
+    &lt;/header&gt;
+    &lt;article&gt;
+        &lt;p&gt;请输入要设置的值&lt;/p&gt;
+        &lt;ui-input value=&quot;&quot; q-model=&quot;curVal&quot; q-on=&quot;keyup: submit | key enter&quot; q-focus=&quot;focus&quot;&gt;&lt;/ui-input&gt;
+    &lt;/article&gt;
+&lt;/dialog&gt;
+</third-code>
+<third-markdown>
+* Javascript文件：
+</third-markdown>
+<third-code>
+var filters = require('filters');
+
+module.exports = {
+    methods: {
+        submit: function () {
+            if (!this.curVal) {
+                this.$set('focus', true);
+            } else {
+                this.$emit('submit', this.curVal);
+                this.$set('curVal', '');
+                this.hide();
+            }
+        },
+        show: function () {
+            // call super.show
+            this.constructor.super.options.methods.show.call(this);
+            this.$set('focus', true);
+        }
+    },
+    directives: {
+        focus: function (val) {
+            val &amp;&amp; this.el.focus();
+        }
+    },
+    filters: {
+        key: filters.key
+    }
+};
+</third-code>
+<third-markdown>
+##### 效果
+
+* 在页面上引用`inputval`：
+</third-markdown>
+<third-code>
+&lt;inputval id=&quot;my-dialog&quot;&gt;&lt;/inputval&gt;
+</third-code>
+<third-markdown>
+* 在Controller调用其show方法：
+</third-markdown>
+<third-code>
+var Q = require('Q');
+
+Q.get('#my-dialog').show();
+</third-code>
+<third-markdown>
+则页面弹出一个弹出，要求输入值：
+</third-markdown>
+<ui-content>
+    <click id="click2">点击我查看效果</click>
+</ui-content>
+<inputval id="dialog2"></inputval>
+<third-markdown>
+##### 备注
+
+* 这里我们引入`extend`属性，用于表示该组件继承哪个组件。
+
+
+* 我们还复写了`dialog`的`submit`和`show`方法，并且可以调用其父Componnet的方法，如：
+</third-markdown>
+<third-code>
+this.constructor.super.options.methods.show.call(this);
+</third-code>
 <script src="./pages/components/main"></script>
 </body>
 </html>
