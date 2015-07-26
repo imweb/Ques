@@ -2,6 +2,7 @@ Ques
 ====
 
 > An new architecture which deal with how to implement and use a component
+> Website: http://miniflycn.github.io/Ques/
 
 `[Warning] This project is under heavy development. Not ready for primetime.`
 
