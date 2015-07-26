@@ -1,5 +1,5 @@
 /*!
- * Q.js v0.4.8
+ * Q.js v0.5.0
  * Inspired from vue.js
  * (c) 2015 Daniel Yang
  * Released under the MIT License.
@@ -802,11 +802,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        extendOptions
 	    );
 	    Sub['super'] = Super;
-	    Sub.extend = Super.extend;
-	    Sub.get = Super.get;
-	    Sub.all = Super.all;
-	    Sub.require = Super.require;
-	    Sub.define = Super.define;
+	    ['extend', 'get', 'all', 'require', 'define'].forEach(function (key) {
+	        Sub[key] = Super[key];
+	    })
 	    return Sub;
 	}
 
@@ -1061,17 +1059,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    push: function (values) {
 	        values = _.slice.call(arguments, 0);
-	        var args = [];
+	        var res = [];
 	        for (var i = 0, l = values.length; i < l; i++) {
 	            _prefix(this, this.length, values[i]);
 	            this._keys.push(this.length);
-	            args.push(this[this.length]);
+	            res.push(this[this.length]);
 	            this.length++;
 	        }
 	        // value, oldValue, patch
 	        this.$change(this.$namespace(), this, null, {
 	            method: 'push',
-	            args: args
+	            res: res,
+	            args: values
 	        });
 
 	        return this;
@@ -1190,18 +1189,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Data = __webpack_require__(7),
 	    _ = __webpack_require__(1);
 
-
-	// TODO: remove for the present
-	// function _clearWatch(namespace) {
-	//     namespace = namespace + '.';
-	//     var key;
-	//     for (key in this._watchers) {
-	//         if (~key.indexOf(namespace)) {
-	//             this._watchers[key].length = 0;
-	//         }
-	//     }
-	// }
-
 	function _emit(key, args, target) {
 	    // set the trigger target is pass in or this
 	    target = target || this;
@@ -1252,6 +1239,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _ = __webpack_require__(1),
 	    strats = __webpack_require__(6);
+
+	var PROP_REG = /^(.*)\.([\w\-]+)$/
+
+	function _setProp(vm, prop, value) {
+	    if (~prop.indexOf('.')) {
+	        prop = PROP_REG.exec(prop);
+	        vm.data(prop[1]).$set(prop[2], value);
+	    } else {
+	        vm.$set(prop, value);
+	    }
+	}
 
 	module.exports = {
 	    show: function (value) {
@@ -1419,16 +1417,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }();
 
 	            // unidirectional binding
-	            vm.$on('datachange', function (prop, value) {
-	                // stop child vm datachange bubble
-	                if (this !== vm) return;
-	                if (!target || ~prop.indexOf(target)) {
-	                    var start = target.length,
-	                        childProp;
+	            vm.$on('datachange', function (prop, value, oldVal, patch) {
+	                if (this === childVm) {
+	                    if (vm._preventChild) {
+	                        vm._preventChild = false;
+	                    } else {
+	                        // prevent parent datachange
+	                        this._preventParent = true;
+	                        var parentProp = target ? [target, prop].join('.') : prop;
+	                        patch ?
+	                            vm[parentProp][patch.method].apply(vm[parentProp], patch.args) :
+	                            _setProp(vm, parentProp, value);
+	                    }
+	                } else if (this === vm) {
+	                    if (childVm._preventParent) {
+	                        // this prevent this time
+	                        vm._preventParent = false;
+	                    } else if (!target || ~prop.indexOf(target)) {
+	                        // prevent child datachange
+	                        vm._preventChild = true;
 
-	                    start && (start += 1);
-	                    childProp = prop.substring(start, prop.length);
-	                    childVm.$set(childProp, value);
+	                        var start = target.length,
+	                            childProp;
+
+	                        start && (start += 1);
+	                        childProp = prop.substring(start, prop.length);
+	                        patch ?
+	                            childVm[childProp][patch.method].apply(childVm[childProp], patch.args) :
+	                        _setProp(childVm, childProp, value);
+	                    }
 	                }
 	            });
 	        }
@@ -1508,7 +1525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                parentNode.insertBefore(fragment, ref);
 	            },
 	            dp: function (data, patch) {
-	                return patch.args;
+	                return patch.res;
 	            }
 	        },
 	        splice: {
@@ -1678,21 +1695,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var cache = new (__webpack_require__(2))(1000),
 	    tokens = [
-	        ['space', /^ +/],
-	        ['arg', /^([\w\-]+):/, function (captures, status) {
+	        // space
+	        [/^ +/],
+	        // arg
+	        [/^([\w\-]+):/, function (captures, status) {
 	            status.token.arg = captures[1];
 	        }],
-	        ['function', /^([\w]+)\((.+?)\)/, function (captures, status) {
+	        // function
+	        [/^([\w]+)\((.+?)\)/, function (captures, status) {
 	            status.token.target = captures[1];
 	            status.token.param = captures[2].split(/ *, */);
 	        }],
-	        ['target', /^([\w\-]+)/, function (captures, status) {
+	        // target
+	        [/^([\w\-]+)/, function (captures, status) {
 	            status.token.target = captures[1];
 	        }],
-	        ['filter', /^(?=\|)/, function (captures, status) {
+	        // filter
+	        [/^(?=\|)/, function (captures, status) {
 	            status.filter = true;
 	        }],
-	        ['next', /,/, function (captures, status, res) {
+	        // next
+	        [/^,/, function (captures, status, res) {
 	            res.push(status.token);
 	            status.token = {
 	                filters: []
@@ -1701,14 +1724,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ],
 	    filterREG = /^(.+?)(?=,|$)/,
 	    filterTokens = [
-	        ['space', /^ +/],
-	        ['filter', /^\| *([\w\-]+)/, function (captures, filters) {
+	        // space
+	        [/^ +/],
+	        // filter
+	        [/^\| *([\w\-]+)/, function (captures, filters) {
 	            filters.push([captures[1]]);
 	        }],
-	        ['string', /^(['"])(((\\['"])?([^\1])*)+)\1/, function (captures, filters) {
+	        // string
+	        [/^(['"])(((\\['"])?([^\1])*)+)\1/, function (captures, filters) {
 	            filters[filters.length - 1].push(captures[3]);
 	        }],
-	        ['arg', /^([\w\-]+)/, function (captures, filters) {
+	        // arg
+	        [/^([\w\-]+)/, function (captures, filters) {
 	            filters[filters.length - 1].push(captures[1]);
 	        }]
 	    ];
@@ -1742,11 +1769,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    while (str.length) {
 	        for (i = 0; i < l; i++) {
-	            if (captures = tokens[i][1].exec(str)) {
+	            if (captures = tokens[i][0].exec(str)) {
 	                has = true;
-	                foo = tokens[i][2];
+	                foo = tokens[i][1];
 	                foo && foo(captures, status, res);
-	                str = str.replace(tokens[i][1], '');
+	                str = str.replace(tokens[i][0], '');
 	                if (status.filter) {
 	                    captures = filterREG.exec(str);
 	                    parseFilter(captures[0].trim(), status.token);
@@ -1773,11 +1800,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        has = false;
 	    while (str.length) {
 	        for (i = 0; i < l; i++) {
-	            if (captures = filterTokens[i][1].exec(str)) {
+	            if (captures = filterTokens[i][0].exec(str)) {
 	                has = true;
-	                foo = filterTokens[i][2];
+	                foo = filterTokens[i][1];
 	                foo && foo(captures, token.filters);
-	                str = str.replace(filterTokens[i][1], '');
+	                str = str.replace(filterTokens[i][0], '');
 	                break;
 	            }
 	        }
