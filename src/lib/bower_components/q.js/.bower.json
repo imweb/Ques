@@ -1,6 +1,6 @@
 {
   "name": "Q.js",
-  "version": "0.4.4",
+  "version": "0.5.1",
   "main": "dist/Q.js",
   "description": "fake-MVVM library",
   "authors": [
@@ -24,14 +24,14 @@
     "*.md"
   ],
   "homepage": "https://github.com/imweb/Q.js",
-  "_release": "0.4.4",
+  "_release": "0.5.1",
   "_resolution": {
     "type": "version",
-    "tag": "0.4.4",
-    "commit": "91be397a67a492917a6c15adedde33b5b621046e"
+    "tag": "0.5.1",
+    "commit": "0fdd72f3c7b374a1173791bd1a2980f5cdcf65e3"
   },
   "_source": "git://github.com/imweb/Q.js.git",
-  "_target": "0.4.4",
+  "_target": "~0.5.1",
   "_originalSource": "q.js",
   "_direct": true
 }
