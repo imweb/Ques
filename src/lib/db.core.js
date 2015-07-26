@@ -46,8 +46,9 @@ var _noop = function () {},
                         } else {
                             success(xhr.responseText);
                         }
-                    } catch (_) {
+                    } catch (e) {
                         error({ retcode: xhr.status });
+                        console.error(e);
                     }
                 } else {
                     error({ retcode: xhr.status });
