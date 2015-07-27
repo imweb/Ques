@@ -1,5 +1,5 @@
 /*!
- * Q.js v0.5.1
+ * Q.js v0.5.3
  * Inspired from vue.js
  * (c) 2015 Daniel Yang
  * Released under the MIT License.
@@ -175,12 +175,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            el.setAttribute('class', cur.trim());
 	        }
 	    },
-	    noexist: function (name) { throw new Error('Filter ' + name + ' hasn\'t implemented.'); },
-	    warn: function () {
-	        return (window.console && console.error) ? function (msg) {
-	                console.error(msg);
-	            } : noop;
+	    noexist: function (vm, name) {
+	        this.warn(vm);
+	        throw new Error('Filter ' + name + ' hasn\'t implemented.');
 	    },
+	    warn: function () {
+	        return (window.console && console.error) ? function () {
+	                console.error.apply(console, arguments);
+	            } : noop;
+	    }(),
 	    isObject: function (o) {
 	        return typeof o === 'object';
 	    },
@@ -732,7 +735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                // 需要修改args 必须复制
 	                args = [].concat(args);
 	                var name = args.shift();
-	                var reader = (filters[name] ? (filters[name].read || filters[name]) : _.noexist(name));
+	                var reader = (filters[name] ? (filters[name].read || filters[name]) : _.noexist(self, name));
 	                return function (value, oldVal) {
 	                    return args ?
 	                        reader.apply(self, [value].concat(args.push(oldVal) && args)) :
@@ -1203,7 +1206,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	    // emit parent
-	    if (key.indexOf('data:') && this.$parent) {
+	    // prevent data: event and hook: event trigger
+	    if (key.indexOf('data:') && key.indexOf('hook:') && this.$parent) {
 	        _emit.call(this.$parent, key, args, target);
 	    }
 	}
@@ -1498,6 +1502,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }, false, true);
 	        }
 	    },
+	    el: {
+	        bind: function () {
+	            this.vm.$$[this.target] = this.el;
+	        }
+	    },
 	    repeat: __webpack_require__(10)
 	};
 
@@ -1732,7 +1741,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // space
 	        [/^ +/],
 	        // filter
-	        [/^\| *([\w\-]+)/, function (captures, filters) {
+	        [/^\| *([\w\-\!]+)/, function (captures, filters) {
 	            filters.push([captures[1]]);
 	        }],
 	        // string
@@ -1753,7 +1762,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * value - 1 | filter1 | filter2   don't support
 	 */
 	function parse(str) {
-	    var hit = cache.get(str);
+	    var name = str,
+	        hit = cache.get(name);
 	    if (hit) return hit;
 
 	    var res = [],
@@ -1796,7 +1806,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    res.push(status.token);
-	    cache.put(str, res);
+	    cache.put(name, res);
 	    return res;
 	}
 
