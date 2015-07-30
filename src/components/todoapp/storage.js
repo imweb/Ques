@@ -2,7 +2,7 @@ var STORAGE_KEY = 'todos-quesjs';
 
 module.exports = {
     fetch: function () {
-        var res = []
+        var res = [];
         try {
             res = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
         } catch(e) {
@@ -12,6 +12,6 @@ module.exports = {
     },
     save: function (todos) {
         window.JSON &&
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
     }
-}
+};

@@ -3,7 +3,7 @@ var marked = require('marked'),
 
 marked.setOptions({
     gfm: true
-})
+});
 
 module.exports = {
     bind: function () {

@@ -10,11 +10,10 @@ module.exports = function (el, opts) {
         !('data' in opts)
     ) {
         Q._.find(el).forEach(function (el) {
-            new Third(el, opts);
+            return new Third(el, opts);
         });
         return;
     } else {
-        var extend = opts.__extend__;
         if (opts.__extend__) {
             return Q.require(opts.name).all({ el: el });
         } else {

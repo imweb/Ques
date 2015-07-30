@@ -35,4 +35,4 @@ module.exports = {
             this.$emit('delete', obj);
         }
     }
-}
+};

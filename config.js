@@ -34,7 +34,8 @@ module.exports = {
     'db.core': '/lib/db.core',
     'db': '/lib/db',
     'db.feeder': '/lib/feeder',
-    'marked': '/lib/marked'
+    'marked': '/lib/marked',
+    'error.log': '/lib/error.log'
   },
   // loader paths config in real world
   realPaths: {
@@ -48,6 +49,35 @@ module.exports = {
     // for example
     // ttext: true
     // means the ttext component will be disabled
+  },
+
+  // jshint config
+  jshint: {
+    curly: true,
+    eqeqeq: true,
+    forin: true,
+    freeze: true,
+    globals: {},
+    latedef: true,
+    maxerr: 200,
+    nonew: true,
+    shadow: "inner",
+    singleGroups: true,
+    undef: true,
+    unused: true,
+
+    evil: true,
+    expr: true,
+    proto: true,
+    scripturl: true,
+    sub: true,
+
+    devel: true,
+    browser: true,
+    browserify: true,
+    nonstandard: true,
+    typed: true,
+    worker: true
   },
 
   // file config

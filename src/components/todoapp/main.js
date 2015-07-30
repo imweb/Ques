@@ -1,6 +1,5 @@
 var storage = require('./storage'),
-    filters = require('filters'),
-    hasInit = false;
+    filters = require('filters');
 
 function _filterRemaining(todos) {
     return todos.filter(function (todo) {
@@ -41,7 +40,7 @@ module.exports = {
     },
 
     directives: {
-        'todo-focus': function (value, options) {
+        'todo-focus': function (value) {
             if (!value) {
                 return;
             }
@@ -79,7 +78,9 @@ module.exports = {
 
     methods: {
         addTodo: function (e) {
-            if (!e.target.value) return;
+            if (!e.target.value) {
+                return;
+            }
             this.todos.push({ title: e.target.value, completed: false });
             e.target.value = '';
         },
@@ -96,10 +97,12 @@ module.exports = {
         toggleItem: function (obj) {
             obj.$set('completed', !obj.completed);
         },
-        toggleAll: function (obj) {
+        toggleAll: function () {
             var completed = true,
                 todos = this.todos;
-            if (_isAllSelect(todos)) completed = false;
+            if (_isAllSelect(todos)) {
+                completed = false;
+            }
             todos.forEach(function (todo) {
                 todo.completed !== completed &&
                     todo.$set('completed', completed);

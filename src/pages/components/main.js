@@ -1,10 +1,5 @@
 var Q = require('Q');
 
-function init() {
-    demo1();
-    demo2();
-}
-
 function demo1() {
     var click1 = Q.get('#click1'),
         dialog1 = Q.get('#dialog1');
@@ -21,6 +16,11 @@ function demo2() {
     click2.$on('click', function () {
         dialog2.show();
     });
+}
+
+function init() {
+    demo1();
+    demo2();
 }
 
 return {

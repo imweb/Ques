@@ -1,4 +1,4 @@
-
+/* jshint ignore:start */
 
 //
 // Generated on Fri Dec 27 2013 12:02:11 GMT-0500 (EST) by Nodejitsu, Inc (Using Codesurgeon).
@@ -717,3 +717,5 @@ Router.prototype.mount = function(routes, path) {
 
 
 }(typeof exports === "object" ? exports : window));
+
+/* jshint ignore:end */
