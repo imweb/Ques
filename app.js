@@ -64,6 +64,13 @@ app.use(
       .pipe(ques.css())
   )
   .use(
+    middlePipe(src, /^\/\?/, function (url) {
+      return url.replace(/^\/\?/, '/default.html?');
+    })
+      .pipe(ques.control())
+      .pipe(ques.html())
+  )
+  .use(
     middlePipe(src, /(\.html$)|(\.html\?(.+))/, function(url) {
       return url.replace(/\?([\s\S]*)/, '');
     })

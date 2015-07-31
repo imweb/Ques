@@ -1,8 +1,7 @@
 module.exports = {
     data: {},
     methods: {
-        setMessage: function (e) {
-            var self = this;
+        setMessage: function () {
             this.$.input.$once('submit', function (value) {
                 value && this.$emit('change', value);
             });
