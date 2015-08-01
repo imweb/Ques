@@ -64,7 +64,7 @@ app.use(
       .pipe(ques.css())
   )
   .use(
-    middlePipe(src, /^\/\?/, function (url) {
+    middlePipe('./lib/vender', /^\/\?/, function (url) {
       return url.replace(/^\/\?/, '/default.html?');
     })
       .pipe(ques.control())

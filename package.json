@@ -12,6 +12,7 @@
     "dom-serializer": "0.0.1",
     "dom.tpl": "^0.0.9",
     "download": "^4.1.2",
+    "dox": "^0.8.0",
     "each-series": "^1.0.0",
     "esprima": "^2.4.1",
     "esquery": "^0.4.0",
