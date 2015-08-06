@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Ques</title>
+<link rel="stylesheet" href="./pages/reset.css">
+<style>
+.ui-content {
+    width: 50%;
+    float: left;
+}
+#runner {
+    width: 100%;
+}
+</style>
+</head>
+<body>
+<listrunner id="runner"></listrunner>
+<ui-content>
+    <list id="test1">
+        <li q-repeat="list" q-text="msg"></li>
+    </list>
+</ui-content>
+<ui-content>
+    <third-list id="test2">
+        <li q-repeat="list" q-text="msg"></li>
+    </list>
+</ui-content>
+<script src="./pages/list/main"></script>
+</body>
+</html>
