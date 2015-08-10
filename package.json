@@ -35,6 +35,9 @@
   "devDependencies": {
     "gulp": "^3.8.10"
   },
+  "optionalDependencies": {
+    "spritesmith": "^1.3.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

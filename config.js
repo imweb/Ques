@@ -80,6 +80,12 @@ module.exports = {
     worker: true
   },
 
+  // css sprite config
+  sprite: {
+    // relative to source
+    path: './img/flag'
+  },
+
   // file config
   'test.html': {
     loader: '/lib/parallel-require.js'

@@ -5,6 +5,7 @@ var gulp = require('gulp')
   , cssmin = require('gulp-minify-css')
   , fixUrl = require('./lib/fix-url')
   , htmlmin = require('gulp-htmlmin')
+  , sprite = require('./lib/gulp-plugin/sprite')
   , uglify = require('gulp-uglify')
   , Download = require('download');
 
@@ -67,6 +68,7 @@ gulp.task('default', ['distApp'], function () {
   }).output('./dist')
     // gulp stream for css
     .suffix('css')
+    .pipe(sprite(config.sprite))
     .pipe(fixUrl({ cdn: config.cdn }))
     .pipe(cssmin({
       compatibility: 'ie8'
