@@ -12,7 +12,7 @@ var refleshLoginStatus = (function () {
     var times = 0; //重试次数
 
     return {
-        flesh: function (callback) {
+        flesh: function () {
             // TODO login
         },
         reset: function () {
@@ -38,14 +38,7 @@ function handleError(data, options) {
             });
             // stop call error callback
             return false;
-            break;
     }
-    return data;
-}
-
-function handleSucc(data, options) {
-    refleshLoginStatus.reset();
-    options.useLocal && pushData(data, options)
     return data;
 }
 
@@ -54,8 +47,10 @@ function pullData(options) {
         value = localStorage[key],
         self = this;
     // just for first time
-    if (options.localOnce) this.options.useLocal = false;
-    if (value)
+    if (options.localOnce) {
+        this.options.useLocal = false;
+    }
+    if (value) {
         setTimeout(function () {
             try {
                 self._apply(
@@ -68,6 +63,7 @@ function pullData(options) {
         }, 0);
 
     }
+}
 
 function pushData(data, options, isRe) {
     var key = [NAMESPACE, options.url].join('@');
@@ -80,8 +76,18 @@ function pushData(data, options, isRe) {
     }
 }
 
+function handleSucc(data, options) {
+    refleshLoginStatus.reset();
+    options.useLocal && pushData(data, options);
+    return data;
+}
+
+
 function preload(options) {
-    if (!('__PRELOAD__' in window)) throw new Error('please use <diy-preload> first!');
+    if (!('__PRELOAD__' in window)) {
+        throw new Error('please use <diy-preload> first!');
+    }
+    var __PRELOAD__ = window.__PRELOAD__;
     if (__PRELOAD__[options.url]) {
         options.success(__PRELOAD__[options.url]);
     } else {
@@ -104,7 +110,7 @@ DB.options = {
         if (options.preload) {
             preload.call(this, options);
             return true;
-        } else if (useLocal) {
+        } else if (options.useLocal) {
             pullData.call(this, options);
         }
     }

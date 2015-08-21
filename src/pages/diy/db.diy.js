@@ -6,6 +6,6 @@ DB.extend({
         type: 'JSONP',
         preload: true
     })
-})
+});
 
 module.exports = DB;

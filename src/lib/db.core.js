@@ -1,3 +1,4 @@
+/* jshint ignore:start */
 var _noop = function () {},
     _extend = function (target, srcs) {
         if (arguments.length === 1) return _extend(this, target);
@@ -183,3 +184,4 @@ _extend(DB, {
 });
 
 module.exports = DB;
+/* jshint ignore:end */
