@@ -1,5 +1,5 @@
 /*!
- * Q.js v0.5.3
+ * Q.js v1.0.1
  * Inspired from vue.js
  * (c) 2015 Daniel Yang
  * Released under the MIT License.
@@ -107,6 +107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function walk($el, cb, setting) {
+	    setting = setting || {};
 	    var i, j, l, el, atts, res, qtid;
 	    for (i = 0; el = $el[i++];) {
 	        if (el.nodeType === 1) {
@@ -122,11 +123,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            name: atts[j].name,
 	                            value: atts[j].value
 	                        })
-	                }
-	                if (setting.useCache && !qtid) {
-	                    qtid = qtid || ++_qtid;
-	                    el.setAttribute('qtid', qtid);
-	                    cache.put(qtid, res);
 	                }
 	            }
 	            res.length > 0 &&
@@ -191,6 +187,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return ctx ?
 	            defer(function () { cb.call(ctx) }, 0) :
 	            defer(cb, 0);
+	    },
+	    /**
+	     * get
+	     * @param {String} namespace
+	     * @param {String} key
+	     * @returns {String}
+	     */
+	    get: function (namespace, key) {
+	        var arr = [];
+	        namespace && arr.push(namespace);
+	        key && arr.push(key);
+	        return arr.join('.').replace(/^(.+\.)?\$top\./, '');
 	    },
 	    walk: walk
 	};
@@ -405,7 +413,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = function (_) {
 
-	    var Data = __webpack_require__(7),
+	    var Seed = __webpack_require__(7),
 	        events = __webpack_require__(8),
 	        MARK = /\{\{(.+?)\}\}/,
 	        mergeOptions = __webpack_require__(6).mergeOptions,
@@ -416,6 +424,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _.contains(_doc.documentElement, ele);
 	    }
 
+	    // lifecycle: created -> compiled
+
+	    /**
+	     * Q
+	     * @class
+	     * @param {Object} options
+	     */
 	    function Q(options) {
 	        this._init(options);
 	    }
@@ -425,6 +440,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        directives: __webpack_require__(9),
 	        filters: {}
 	    };
+	    /**
+	     * get
+	     * @param {String | Element} selector
+	     * @return {Q}
+	     */
 	    Q.get = function (selector) {
 	        var ele = _.find(selector)[0];
 	        if (ele) {
@@ -433,6 +453,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return new this({ el: selector });
 	        }
 	    };
+	    /**
+	     * all
+	     * @param {Object} options
+	     */
 	    Q.all = function (options) {
 	        var self = this;
 	        return _.find(options.el).map(function (ele) {
@@ -470,7 +494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // components references
 	            this.$ = {};
 
-	            Data.call(this, options);
+	            Seed.call(this, options);
 	            // this._data = options.data;
 	            // initialize data and scope inheritance.
 	            this._initScope();
@@ -482,30 +506,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _.data(this.$el, 'QI', this);
 	                this.$mount(this.$el);
 	            }
-	        },
-
-	        /**
-	         * Set data and Element value
-	         *
-	         * @param {String} key
-	         * @param {*} value
-	         * @returns {Data}
-	         */
-	        data: function (key, value) {
-	            if (key === undefined) return this;
-	            var i = 0, l, data = this;
-	            if (~key.indexOf('.')) {
-	                var keys = key.split('.');
-	                for (l = keys.length; i < l - 1; i++) {
-	                    key = keys[i];
-	                    // key is number
-	                    if (+key + '' === key) key = +key;
-	                    data = data[key];
-	                }
-	            }
-	            l && (key = keys[i]);
-	            if (value === undefined) return key ? data[key] : data;
-	            data.$set(key, value);
 	        },
 	        /**
 	         * Listen on the given `event` with `fn`.
@@ -597,9 +597,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var args = _.slice.call(arguments, 1);
 	            events.emit.call(this, e, _.slice.call(args, 0));
 	            // emit data change
-	            if (e.indexOf('data:') === 0) {
+	            if (!e.indexOf('data:')) {
 	                e = e.substring(5);
-	                events.callDataChange.call(this, e, _.slice.call(args, 0));
+	                events.callChange.call(this, e, _.slice.call(args, 0));
+	            }
+	            if (!e.indexOf('deep:')) {
+	                e = e.substring(5);
+	                events.callDeep.call(this, e, _.slice.call(args, 0));
 	                args.unshift(e);
 	                events.emit.call(this, 'datachange', args);
 	            }
@@ -643,9 +647,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (this._isCompiled) {
 	                return _.warn('$mount() should be called only once');
 	            }
-	            if (typeof el === 'string') {
-	                // TODO for template
-	            }
+	            // TODO for template || we may not do for template
+	            // if (typeof el === 'string') {
+	            //
+	            // }
 	            this._compile(el);
 	            this._isCompiled = true;
 	            this._callHook('compiled');
@@ -689,28 +694,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	         *
 	         * @param {Element} el
 	         * @param {Object} options
-	         * @return {Element|DocumentFragment}
 	         */
 	        transclue: function (el, options) {
-	            // static template bind
-	            if (_.find('.q-mark', el).length) {
-	                this._renderedBind(el, options);
-	            } else {
-	                this._templateBind(el, options);
-	            }
+	            // just bind template
+	            this._templateBind(el, options);
 	        },
 
 	        /**
 	         * bind rendered template
 	         */
 	        _templateBind: __webpack_require__(11),
-
-	        /**
-	         * bind rendered template
-	         */
-	        _renderedBind: function (el, options) {
-	            var self = this;
-	        },
 
 	        /**
 	         * Trigger all handlers for a hook
@@ -727,18 +720,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.$emit('hook:' + hook);
 	        },
 
-	        _makeReadFilters: function (names) {
+	        _makeReadFilters: function (names, $this) {
 	            if (!names.length) return [];
 	            var filters = this.$options.filters,
 	                self = this;
 	            return names.map(function (args) {
-	                // 需要修改args 必须复制
-	                args = [].concat(args);
+	                args = _.slice.call(args, 0);
 	                var name = args.shift();
 	                var reader = (filters[name] ? (filters[name].read || filters[name]) : _.noexist(self, name));
 	                return function (value, oldVal) {
+	                    // don't modify args
+	                    var thisArgs = [value].concat(args || []),
+	                        i = thisArgs.indexOf('$this');
+	                    thisArgs.push(oldVal);
+	                    // replace $this
+	                    if (~i) {
+	                        thisArgs[i] = $this;
+	                    }
 	                    return args ?
-	                        reader.apply(self, [value].concat(args.push(oldVal) && args)) :
+	                        reader.apply(self, thisArgs) :
 	                            reader.call(self, value, oldVal);
 	                };
 	            });
@@ -763,7 +763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    });
 
-	    _.extend(Q.prototype, Data.prototype);
+	    _.extend(Q.prototype, Seed.prototype);
 
 	    return Q;
 	};
@@ -924,20 +924,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * prefix data
+	 * @param {Data || DataArray} up
+	 * @param {String} key
+	 * @param {*} value
+	 * @param {Boolean} trigger or not
 	 */
-	function _prefix(up, key, value) {
-	    var options = {
-	        data: value,
-	        up: up,
-	        top: up._top,
-	        namespace: key + ''
-	    };
+	function _prefix(up, key, value, trigger) {
+	    var top = up._top,
+	        isArray = _isArray(value),
+	        options = {
+	            data: value,
+	            up: up,
+	            top: top,
+	            namespace: key + '',
+	            trigger: isArray ? false : trigger
+	        },
+	        // old value
+	        oldVal = top.data ? top.data(up.$namespace(key)) : undefined;
+
 	    if (typeof value === 'object' && value !== null) {
-	        up[key] =   _isArray(value) ?
+	        up[key] =   isArray ?
 	            new DataArray(options) :
 	                new Data(options);
-	    } else {
+
+	        // trigger data change
+	        trigger && up.$change(up.$namespace(key), up[key], oldVal);
+	    } else if (oldVal !== value) {
 	        up[key] = value;
+	        // trigger data change
+	        trigger && up.$change(up.$namespace(key), value, oldVal);
 	    }
 	    if (!(~up._keys.indexOf(key))) up._keys.push(key);
 	}
@@ -977,10 +992,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // the namespace of data
 	    this._namespace = options.namespace || '';
 	    keys.forEach(function (key) {
-	        _prefix(self, key, data[key]);
+	        _prefix(self, key, data[key], options.trigger);
 	    });
 	    // if it is a array
-	    (Array.isArray(data) || data instanceof DataArray) &&
+	    _isArray(data)  &&
 	        // fix the length
 	        (this.length = _getLength(keys));
 	}
@@ -1017,13 +1032,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    $set: function (key, value) {
 	        if (typeof key === 'object') {
 	            var self = this;
-	            Object.keys(key).forEach(function (k) {
-	                self.$set(k, key[k]);
+	            Object.keys(key).filter(function (k) {
+	                return k.indexOf('_') !== 0;
+	            }).forEach(function (k) {
+	                _prefix(self, k, key[k], true);
 	            });
+	            this.$change(this.$namespace(key), this, undefined, 1);
 	        } else {
 	            var oldValue = this[key];
-	            _prefix(this, key, value);
-	            this.$change(this.$namespace(key), this[key], oldValue);
+	            _prefix(this, key, value, true);
+	            // just bubble
+	            this.$change(this.$namespace(key), this[key], oldValue, undefined, -1);
 	        }
 	        return this;
 	    },
@@ -1038,21 +1057,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	            res = [];
 	        }
 	        keys.forEach(function (key) {
-	            res[key] = self[key].$get ?
-	                self[key].$get() :
-	                self[key];
+	            res[key] = self[key] == null ?
+	                self[key] :
+	                self[key].$get ?
+	                    self[key].$get() :
+	                    self[key];
 	        });
 	        return res;
 	    },
 	    /**
 	     * change
+	     * type = 0 just change
+	     * type = 1 trigger change & deep
+	     * type = -1 just deep
 	     */
-	    $change: function (key, value, oldVal, patch) {
-	        this._top.$emit &&
-	            this._top.$emit('data:' + key, value, oldVal, patch);
+	    $change: function (key, value, oldVal, patch, type) {
+	        type = type || 0;
+	        var top = this._top;
+	        if (top.$emit) {
+	            ~type && this._top.$emit('data:' + key, value, oldVal, patch);
+	            type && this._top.$emit('deep:' + key, value, oldVal, patch);
+	        }
 	    }
 	});
 
+	/**
+	 * DataArray
+	 * Something just like Array
+	 * @class
+	 * @param {Object} options
+	 */
 	function DataArray(options) {
 	    Data.call(this, options);
 	}
@@ -1074,7 +1108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            method: 'push',
 	            res: res,
 	            args: values
-	        });
+	        }, 1);
 
 	        return this;
 	    },
@@ -1085,7 +1119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var res = this[--this.length];
 	        delete this[this.length];
 	        this._keys.pop();
-	        this.$change(this.$namespace(), this);
+	        this.$change(this.$namespace(), this, null, undefined, 1);
 	        return res;
 	    },
 	    /**
@@ -1101,7 +1135,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                (this[l]._namespace = l + '');
 	        }
 	        _prefix(this, 0, value);
-	        this.$change(this.$namespace(), this);
+	        this.$change(this.$namespace(), this, null, undefined, 1);
 	        return this;
 	    },
 	    /**
@@ -1118,14 +1152,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        this._keys.pop();
 	        delete this[this.length];
-	        this.$change(this.$namespace(), this);
+	        this.$change(this.$namespace(), this, null, undefined, 1);
 	        return res;
 	    },
 	    /**
 	     * touch
 	     */
 	    touch: function (key) {
-	        this.$change(this.$namespace(key), this);
+	        this.$change(this.$namespace(key), this, null, undefined, 1);
 	    },
 	    /**
 	     * indexOf
@@ -1160,7 +1194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        this.length -= l;
 	        this._keys.splice(this.length, l);
-	        this.$change(this.$namespace(), this, null, patch);
+	        this.$change(this.$namespace(), this, null, patch, 1);
 	    },
 	    /**
 	     * forEach
@@ -1182,7 +1216,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	});
 
-	module.exports = Data;
+	/**
+	 * Seed
+	 * @param {Object} options
+	 */
+	function Seed(options) {
+	    Data.call(this, options);
+	}
+	_.extend(Seed, {
+	    Data: Data,
+	    DataArray: DataArray
+	});
+	_.extend(Seed.prototype, Data.prototype, {
+	    /**
+	     * Set data and Element value
+	     *
+	     * @param {String} key
+	     * @param {*} value
+	     * @returns {Data}
+	     */
+	    data: function (key, value) {
+	        if (key === undefined) return this;
+	        var i = 0, l, data = this, next;
+	        if (~key.indexOf('.')) {
+	            var keys = key.split('.');
+	            for (l = keys.length; i < l - 1; i++) {
+	                key = keys[i];
+	                // key is number
+	                if (+key + '' === key) key = +key;
+	                if (key in data && data[key] != null) {
+	                    data = data[key];
+	                } else if (value === undefined) {
+	                    // data is undefind
+	                    return undefined;
+	                } else {
+	                    next = keys[i + 1];
+	                    // next is number
+	                    if (+next + '' == next) {
+	                        // set a array
+	                        _prefix(data, key, [], true);
+	                    } else {
+	                        // set a object
+	                        _prefix(data, key, {}, true);
+	                    }
+	                }
+	            }
+	        }
+	        l && (key = keys[i]);
+	        // if data === undefined, just return
+	        if (value === undefined) return data && key ? data[key] : data;
+	        data.$set(key, value);
+	        return data[key];
+	    }
+	});
+
+	module.exports = Seed;
 
 
 /***/ },
@@ -1192,7 +1280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Data = __webpack_require__(7),
 	    _ = __webpack_require__(1);
 
-	function _emit(key, args, target) {
+	function emit(key, args, target) {
 	    // set the trigger target is pass in or this
 	    target = target || this;
 	    var cbs = this._events[key];
@@ -1207,33 +1295,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    // emit parent
 	    // prevent data: event and hook: event trigger
-	    if (key.indexOf('data:') && key.indexOf('hook:') && this.$parent) {
-	        _emit.call(this.$parent, key, args, target);
+	    if (key.indexOf('data:') && key.indexOf('hook:') && key.indexOf('deep:') && this.$parent) {
+	        emit.call(this.$parent, key, args, target);
 	    }
 	}
 
-	function _callDataChange(key, args) {
+	function callChange(key, args) {
+	    var self = {
+	        _events: this._watchers
+	    };
+	    emit.call(self, key, args);
+	    emit.call(self, key + '**deep**', args);
+	}
+
+	function callDeep(key, args) {
 	    var props, nArgs,
 	        keys = key.split('.'),
 	        self = { _events: this._watchers };
 
-	    _emit.call(self, key, args);
-	    for (; keys.length > 0;) {
+	    for (keys.pop(); keys.length > 0; keys.pop()) {
 	        key = keys.join('.');
 	        props = key + '**deep**';
 	        // remove the old value
-	        nArgs = _.slice.call(args, 0, 1);
-	        nArgs[0] = this.data(key);
-	        _emit.call(self, props, nArgs);
-	        keys.pop();
+	        emit.call(self, props, [this.data(key)]);
 	    }
 	    // emit vm is change
-	    _emit.call(self, '**deep**', [this]);
-	};
+	    emit.call(self, '**deep**', [this]);
+	}
 
 	module.exports = {
-	    emit: _emit,
-	    callDataChange: _callDataChange
+	    emit: emit,
+	    callChange: callChange,
+	    callDeep: callDeep
 	};
 
 
@@ -1369,8 +1462,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    vm: {
 	        bind: function () {
-	            // remove q-vm
-	            this.el.removeAttribute('q-vm');
 	            // stop walk
 	            this.setting.stop = true;
 
@@ -1380,33 +1471,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                el = this.el,
 	                // component reference
 	                ref = el.getAttribute('q-ref') || false,
-	                key = el.getAttribute('q-with') || '',
-	                extend = el.getAttribute('q-extend'),
-	                namespace = this.namespace,
-	                target = namespace ? ([namespace, key].join('.')) : key,
-	                data = vm.data(target),
 	                Child = vm.constructor.require(name),
-	                mergeTarget = Child.options.data,
+	                data = Child.options.data,
 	                options,
 	                childVm;
 
-	            // merge data
-	            mergeTarget &&
-	                Object.keys(mergeTarget).forEach(function (key) {
-	                    key in data ||
-	                        data.$set(key, mergeTarget[key]);
-	                });
-
 	            options = {
 	                el: el,
-	                data: data.$get(),
+	                data: data,
 	                _parent: vm
 	            };
-
-	            if (extend && (extend = vm.$options.extend[extend])) {
-	                if (extend.data || extend.el || extend._parent) throw new Error('Extend Error');
-	                options = strats.mergeOptions(options, extend);
-	            }
 
 	            childVm = new Child(options);
 
@@ -1419,44 +1493,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        (vm.$[ref] = [refs, childVm]) :
 	                    (vm.$[ref] = childVm);
 	            }();
-
-	            // prevent child vm data change to trigger parent vm
-	            var _preventChild = false,
-	            // prevent parent vm data change to trigger child vm
-	                _preventParent = false;
-
-	            // unidirectional binding
-	            vm.$on('datachange', function (prop, value, oldVal, patch) {
-	                if (this === childVm) {
-	                    if (_preventChild) {
-	                        _preventChild = false;
-	                    } else {
-	                        // prevent parent datachange
-	                        _preventParent = true;
-	                        var parentProp = target ? [target, prop].join('.') : prop;
-	                        patch ?
-	                            vm[parentProp][patch.method].apply(vm[parentProp], patch.args) :
-	                            _setProp(vm, parentProp, value);
-	                    }
-	                } else if (this === vm) {
-	                    if (_preventParent) {
-	                        // this prevent this time
-	                        _preventParent = false;
-	                    } else if (!target || ~prop.indexOf(target)) {
-	                        // prevent child datachange
-	                        _preventChild = true;
-
-	                        var start = target.length,
-	                            childProp;
-
-	                        start && (start += 1);
-	                        childProp = prop.substring(start, prop.length);
-	                        patch ?
-	                            childVm[childProp][patch.method].apply(childVm[childProp], patch.args) :
-	                        _setProp(childVm, childProp, value);
-	                    }
-	                }
-	            });
 	        }
 	    },
 	    'if': {
@@ -1603,7 +1639,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    key = this.target;
 	    namespace = this.namespace;
-	    target = namespace ? ([namespace, key].join('.')) : key;
+	    target = _.get(namespace, key);
 	    readFilters = this.filters;
 	    repeats = [];
 	    ref = document.createComment('q-repeat');
@@ -1629,13 +1665,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var fragment = document.createDocumentFragment(),
 	            itemNode;
+
 	        value.forEach(function (obj, i) {
 	            itemNode = _.clone(tpl);
 	            vm._templateBind(itemNode, {
 	                data: obj,
 	                namespace: obj.$namespace(),
-	                immediate: true,
-	                useCache: true
+	                immediate: true
 	            });
 	            // TODO this must refactor
 	            repeats.push(itemNode);
@@ -1671,34 +1707,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	                descriptors = parse(obj.value);
 	            directive &&
 	                descriptors.forEach(function (descriptor) {
-	                    var readFilters = self._makeReadFilters(descriptor.filters),
+	                    var readFilters = self._makeReadFilters(descriptor.filters, self.data(namespace)),
 	                        key = descriptor.target,
-	                        target = namespace ? ([namespace, key].join('.')) : key,
+	                        target = _.get(namespace, key),
 	                        update = _.isObject(directive) ? directive.update : directive,
 	                        that = _.extend({
 	                            el: node,
 	                            vm: self,
 	                            data: function (key) {
-	                                var arr = [];
-	                                namespace && arr.push(namespace);
-	                                key && arr.push(key);
-	                                return self.data(arr.join('.'));
+	                                return self.data(_.get(namespace, key));
 	                            },
 	                            namespace: namespace,
 	                            setting: setting
 	                        }, descriptor, {
 	                            filters: readFilters
-	                        });
+	                        }),
+	                        tmp = that.data(key);
 
 	                    update && self.$watch(target, function (value, oldValue) {
 	                        value = self.applyFilters(value, readFilters, oldValue);
 	                        update.call(that, value, oldValue);
-	                    }, typeof data[key] === 'object', typeof options.immediate === 'boolean' ? options.immediate : (data[key] !== undefined));
+	                    }, typeof tmp === 'object', typeof options.immediate === 'boolean' ? options.immediate : (tmp !== undefined));
 	                    if (_.isObject(directive) && directive.bind) directive.bind.call(that);
 	                });
 	        });
-	    }, {
-	        useCache: options.useCache
 	    });
 	};
 
@@ -1721,7 +1753,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            status.token.param = captures[2].split(/ *, */);
 	        }],
 	        // target
-	        [/^([\w\-]+)/, function (captures, status) {
+	        [/^([\w\-\.\$]+)/, function (captures, status) {
 	            status.token.target = captures[1];
 	        }],
 	        // filter
@@ -1749,7 +1781,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            filters[filters.length - 1].push(captures[3]);
 	        }],
 	        // arg
-	        [/^([\w\-]+)/, function (captures, filters) {
+	        [/^([\w\-\$]+)/, function (captures, filters) {
 	            filters[filters.length - 1].push(captures[1]);
 	        }]
 	    ];
