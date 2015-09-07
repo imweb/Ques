@@ -1,3 +1,32 @@
+function formatObject(decl) {
+    if (decl.type !== 'ObjectExpression') return;
+    var data = {},
+        properties = decl.properties;
+    properties.forEach(function (prop) {
+        data[prop.key.name] = (prop.value.type && prop.value.type === 'ObjectExpression') ?
+            formatObject(prop.value) : prop.value.value;
+    });
+    return data;
+}
+
+function formatUrl(url, data, params) {
+    params = params || [];
+
+    typeof data === 'object' && Object.keys(data).forEach(function (key) {
+        params.push(key + '=' + data[key]);
+    });
+
+    return url + '?' + params.join('&');
+}
+
+function isQuery(obj) {
+    var flag = false;
+    Object.keys(obj).forEach(function (key) {
+        !obj[key].indexOf('$') && (flag = true);
+    });
+    return flag;
+}
+
 module.exports = function (opts) {
     var fs = require('fs'),
         path = require('path'),
@@ -36,17 +65,13 @@ module.exports = function (opts) {
         });
 
         if (DBRef) {
-            // find DB.httpMethod
-            matches = esquery(ast, '[type="CallExpression"][callee.object.name="' + DBRef + '"][callee.property.name="httpMethod"]');
-
+            matches = esquery(ast, '[type="ObjectExpression"]');
             matches.forEach(function (decl) {
-                var data = {},
-                    properties = decl.arguments[0].properties;
-                properties.forEach(function (prop) {
-                    data[prop.key.name] = prop.value.value;
-                });
-                // if need preload
-                if (data.preload) needPreload.push(data);
+                var _matches = esquery(decl, '[key.name="preload"]');
+                if (_matches.length) {
+                    var data = formatObject(decl);
+                    if (data.preload && data.url) needPreload.push(data);
+                }
             });
         } else {
             self.logError('you should require db in ' + mainPath + ' first');
@@ -79,13 +104,34 @@ module.exports = function (opts) {
                     '}',
                 '};'
             ];
-            var tags = [], result;
+            var tags = [],
+                docWrites = [],
+                result,
+                // use query or not
+                useQuery = false;
             needPreload.forEach(function (preload, i) {
                 if (preload.type.toLowerCase() === 'jsonp') {
                     script.push(
                         "var __PRELOAD__CB__" + i + " = __PRELOAD__.makeCb('" + preload.url + "');"
                     );
-                    tags.push(preload.url + '?callback=__PRELOAD__CB__' + i);
+                    if (isQuery(preload.preload)) {
+                        if (!useQuery) {
+                            script.push([
+                                '__PRELOAD__.query = function (key) {',
+                                    'var r = new RegExp("[\\\&|\\\?|\\\#]" + key + "\\\\=([\\\\\\w|\\\\\\\\]+?)(\\\$|\\\\\&)");',
+                                    'try {',
+                                        'return location.href.match(r)[1];',
+                                    '} catch(e) {',
+                                        'return "";',
+                                    '}',
+                                '}',
+                            ].join('\n'));
+                        }
+                        preload.callback = '__PRELOAD__CB__' + i;
+                        docWrites.push(preload);
+                    } else {
+                        tags.push(formatUrl(preload.url, preload.preload, ['callback=__PRELOAD__CB__' + i]));
+                    }
                 }
             });
 
@@ -95,10 +141,23 @@ module.exports = function (opts) {
                 '</script>'
             ];
 
-            if (tags) {
+            if (tags.length) {
                 tags.forEach(function (tag) {
                     result.push('<script src="' + tag + '" async></script>');
                 });
+            }
+
+            if (docWrites.length) {
+                var tmp = ['<script>'];
+                docWrites.forEach(function (preload) {
+                    tmp.push([
+                        'document.write((\'<script async src="' + formatUrl(preload.url, preload.preload, ['callback=' + preload.callback]) + '"></scr\' + \'ipt>\').replace(/\\\$\\\{(\.+?)\\\}/g, function (all, str) { return __PRELOAD__.query(str);}));'
+                    ].join('\n'));
+                });
+
+                tmp.push('</script>');
+                result.push.apply(result, tmp);
+                tmp = null;
             }
 
             container.replaceWith(result.join('\n'));

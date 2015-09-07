@@ -29,7 +29,7 @@ var _noop = function () {},
         if (para.xhrFields && 'withCredentials' in para.xhrFields) {
             xhr.withCredentials = para.xhrFields.withCredentials;
         }
-        if (method === 'GET') {
+        if (method.toLocaleLowerCase() === 'get') {
             if (~url.indexOf('?')) {
                 url += '&' + _encode(data);
             } else {
@@ -71,6 +71,7 @@ var _noop = function () {},
         } else {
             url += '?jsoncallback=define&callback=define';
         }
+        url += '&_t=' + new Date;
 
         if (data) {
             for (key in data) {

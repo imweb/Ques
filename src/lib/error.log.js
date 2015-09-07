@@ -1,8 +1,16 @@
+var hasLog = false;
+
 function log(e) {
+  if (hasLog) {
+    return;
+  } else {
+    hasLog = true;
+  }
+
   var style = document.createElement('style');
 
   style.textContent = [
-    'html::before {',
+    '.error-log-block::before {',
       'display: block;',
       'white-space: pre-wrap;',
       'position: fixed;',
@@ -20,11 +28,19 @@ function log(e) {
       'border-bottom: 4px solid #318edf;',
       'box-shadow: 0 0 .6em rgba(0,0,0, .25);',
       'font-family: Menlo, Monaco, monospace;',
-      'content: "\203' + unescape(e) + '";',
+      'content: "\203' + unescape(e).replace(/\\/g, '\\\\') + '";',
     '}'
   ].join('\n');
 
+  var block = document.createElement('div');
+  block.className = 'error-log-block';
+
+  block.ondblclick = function () {
+    document.body.removeChild(block);
+  };
+
   document.head.appendChild(style);
+  document.body.appendChild(block);
 }
 
 module.exports = log;
