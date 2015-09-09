@@ -1,11 +1,23 @@
 <div id="$__container">
     <div class="$__block">
         <div class="title">
-            <span data-index="0">火爆直播</span>
+            <span>火爆直播</span>
             <div class="line"></div>
         </div>
-        <div class="$__list" data-index="0">
-            <div class="$__item" tabindex="" data-category="火爆直播" data-type="0" data-short-id="21992" data-link="200300">
+        <div class="$__list">
+            <div class="$__item" q-repeat="list">
+                <div class="image" q-attr="style: image | toBackground"></div>
+                <div class="message">
+                    <div class="base-message">
+                        <div class="name" q-text="name"></div>
+                    </div>
+                    <div class="room" q-text="room"></div>
+                    <div class="tags">
+                        <div class="tag" q-text="tag"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="$__item" tabindex="" data-category="火爆直播" data-type="0" data-short-id="21992" data-link="200300">
                 <div class="image" style="background-image:url(http://gg.ewang.com/group1/M00/3B/34/wKgDM1Prtn2AW97TAAAjahi-ayo860.jpg);"></div>
                 <div class="message">
                     <div class="base-message">
@@ -26,7 +38,7 @@
                         <div class="tag">女神</div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

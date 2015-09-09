@@ -95,6 +95,16 @@ function preload(options) {
     }
 }
 
+function cgi(options) {
+    if (!('__CGI__' in window)) {
+        throw new Error('please use <diy-cgi> first!');
+    }
+    options.success({
+        retcode: 0,
+        result: window.__CGI__[options.cgi.split('=>')[0].trim()]
+    });
+}
+
 // just set DB options
 DB.options = {
     errHandles: [handleError],
@@ -109,6 +119,9 @@ DB.options = {
     beforeAjax: function (options) {
         if (options.preload) {
             preload.call(this, options);
+            return true;
+        } else if (options.cgi) {
+            cgi.call(this, options);
             return true;
         } else if (options.useLocal) {
             pullData.call(this, options);
