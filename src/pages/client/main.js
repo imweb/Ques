@@ -1,7 +1,5 @@
 var Q = require('Q');
 
-let a = 'asdf';
-
 function init() {
     var anchorList = Q.get('#anchor_list'),
         roomList = Q.get('#room_list');
