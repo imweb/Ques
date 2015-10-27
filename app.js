@@ -1,6 +1,7 @@
 var connect = require('connect')
   , middlePipe = require('middleware-pipe')
   , path = require('path')
+  , fs = require('fs')
   , ques = require('./lib/ques')
   , config = require('./lib/appConfig')(require('./config'))
   , src = path.resolve(config.src)
@@ -36,8 +37,14 @@ app.use(
   )
   .use(
     '/components',
-    middlePipe(src + '/components', /\.js$/)
-      .pipe(typescript(config.typescript))
+    middlePipe(src + '/components', /\.js$/, function (p) {
+      var tsf = p.replace(/\.js$/, '.ts');
+      if (fs.existsSync(src + '/pages' + tsf)) {
+        return tsf;
+      } else {
+        return p;
+      }
+    }).pipe(typescript(config.typescript))
       .pipe(ques.js(false, true))
   )
   .use(
@@ -57,8 +64,14 @@ app.use(
   )
   .use(
     '/pages',
-    middlePipe(src + '/pages', /\.js$/)
-      .pipe(typescript(config.typescript))
+    middlePipe(src + '/pages', /\.js$/, function (p) {
+      var tsf = p.replace(/\.js$/, '.ts');
+      if (fs.existsSync(src + '/pages' + tsf)) {
+        return tsf;
+      } else {
+        return p;
+      }
+    }).pipe(typescript(config.typescript))
       .pipe(ques.js())
   )
   .use(
