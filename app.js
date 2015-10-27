@@ -5,7 +5,7 @@ var connect = require('connect')
   , config = require('./lib/appConfig')(require('./config'))
   , src = path.resolve(config.src)
   , proxy = require('proxy-middleware')
-  , babel = require('./lib/gulp-plugin/babel');
+  , typescript = require('./lib/gulp-plugin/typescript');
 
 var app = connect();
 
@@ -37,8 +37,8 @@ app.use(
   .use(
     '/components',
     middlePipe(src + '/components', /\.js$/)
+      .pipe(typescript(config.typescript))
       .pipe(ques.js(false, true))
-      .pipe(babel(config.babel))
   )
   .use(
     '/components',
@@ -58,8 +58,8 @@ app.use(
   .use(
     '/pages',
     middlePipe(src + '/pages', /\.js$/)
+      .pipe(typescript(config.typescript))
       .pipe(ques.js())
-      .pipe(babel(config.babel))
   )
   .use(
     '/pages',

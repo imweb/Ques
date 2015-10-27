@@ -3,8 +3,8 @@ module.exports = {
   port: 80,
   // dist app listen port
   distPort: 3000,
-  // use babel to support es6
-  babel: false,
+  // use typescript to support es6 & typescript
+  typescript: true,
   // source path
   src: './src',
   // web server proxy path: so you can use http://localhost/dev
