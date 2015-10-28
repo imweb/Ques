@@ -12,6 +12,9 @@ class AA extends A {
 	}
 }
 
+/**
+ * create a AA instance
+ */
 let createAA: (name: string) => AA = function (name) {
 	let aa = new AA();
 	aa.log(name);
