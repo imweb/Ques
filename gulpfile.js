@@ -1,4 +1,5 @@
-var gulp = require('gulp')
+var fs = require('fs')
+  , gulp = require('gulp')
   , spawn = require('child_process').spawn
   , grab = require('./lib/grab')
   , config = require('./config')
@@ -8,6 +9,38 @@ var gulp = require('gulp')
   , sprite = require('./lib/gulp-plugin/sprite')
   , uglify = require('gulp-uglify')
   , Download = require('download');
+
+var rmdirSync = (function(){
+  function iterator(url,dirs){
+    var stat = fs.statSync(url);
+    if(stat.isDirectory()){
+      dirs.unshift(url);
+      inner(url,dirs);
+    }else if(stat.isFile()){
+      fs.unlinkSync(url);
+    }
+  }
+  function inner(path,dirs){
+    var arr = fs.readdirSync(path);
+    for(var i = 0, el ; el = arr[i++];){
+      iterator(path+"/"+el,dirs);
+    }
+  }
+  return function(dir,cb){
+    cb = cb || function(){};
+    var dirs = [];
+
+    try{
+      iterator(dir,dirs);
+      for(var i = 0, el ; el = dirs[i++];){
+        fs.rmdirSync(el);//一次性删除所有收集到的目录
+      }
+      cb()
+    }catch(e){//如果文件或目录本来就不存在，fs.statSync会报错，不过我们还是当成没有异常发生
+      e.code === "ENOENT" ? cb() : cb(e);
+    }
+  }
+})();
 
 var app;
 
@@ -49,6 +82,9 @@ gulp.task('app', function (done) {
 // dist app task
 gulp.task('distApp', function (done) {
   createApp(done, config.distPort);
+  rmdirSync('./dist', function (e) {
+    if (e) console.error(e);
+  });
 });
 
 gulp.task('learn', function (done) {
