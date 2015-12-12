@@ -1,7 +1,11 @@
 {
     "compilerOptions": {
-        "module": "commonjs"
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true
     },
-    "filesGlob": [
+    "files": [
+        "src/pages/typescript.ts"
     ]
 }
