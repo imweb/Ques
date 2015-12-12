@@ -7,7 +7,6 @@
     "cheerio": "^0.18.0",
     "commander": "^2.6.0",
     "connect": "^3.3.3",
-    "cssgrace": "^2.0.2",
     "cssnext": "^1.8.4",
     "dom-serializer": "0.0.1",
     "dom.tpl": "^0.0.9",
