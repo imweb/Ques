@@ -66,11 +66,25 @@ h1 {
     background-color: #286090;
     border-color: #204d74;
 }
+
+#tree-container {
+    position: absolute;
+    top: 0px;
+    width: 500px;
+    background: #fff;
+    border: 1px solid #dddddd;
+    z-index: 9999;
+    display: none;
+}
 </style>
+<link href="./jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 <h1>Learn Ques</h1>
 
+<div id="tree-container">
+    <div id="fileTree"></div>
+</div>
 <div class="clearfix">
     <div class="container" id="editor"></div>
 
@@ -82,11 +96,14 @@ h1 {
 <div>
 <button id="submit">Save</button>
 </div>
-<script src="http://ace.c9.io/build/src/ace.js" data-ace-base="src" type="text/javascript" charset="utf-8"></script>
-<script src="http://ace.c9.io/build/src/worker-html.js" type="text/javascript" charset="utf-8"></script>
-<script src="http://ace.c9.io/build/src/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
-<script src="http://ace.c9.io/build/src/mode-html.js" type="text/javascript" charset="utf-8"></script>
-<script src="http://ace.c9.io/build/src/ext-searchbox.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/ace.js" data-ace-base="src" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/worker-html.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/mode-html.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/ext-searchbox.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min.js"></script>
+<script src="./jquery.easing.js"></script>
+<script src="./jqueryFileTree.js"></script>
 <script>
 var editor = ace.edit("editor"),
     htmlMode = require('ace/mode/html').Mode,
@@ -108,12 +125,9 @@ function ajax(url, data, succ, fail) {
     xhr.send(data);
 }
 
+var _curFile = localStorage['curFile'] || '/test.html'
 function _reload() {
-    var file = location.search.match(/path\=(.+?)(\&|$)/);
-    file ?
-        (file = '/' + file[1]) :
-        (file = '/test.html');
-    preview.src = file;
+    preview.src = _curFile;
 }
 _reload();
 
@@ -130,19 +144,26 @@ function _save() {
     );
 }
 
-function _open() {
-    var value = prompt('打开文件', 'test.html');
+function _open(value) {
     if (value) {
+        if (!/\/(.*?)\//.test(value)) {
+            localStorage['curFile'] = value.substring(1);
+        }
         location.search = '?path=' + value;
     }
 }
 
+function _show() {
+    $('#tree-container').show();
+}
+
 require('ace/config')
-    .setModuleUrl('ace/mode/html_worker', 'http://ace.c9.io/build/src/worker-html.js');
+    .setModuleUrl('ace/mode/html_worker', './ace/worker-html.js');
 
 editor.setTheme('ace/theme/tomorrow_night_bright');
 editor.getSession().setMode(new htmlMode);
 editor.setValue('{{result}}');
+editor.setFontSize(24);
 
 editor.commands.addCommand({
     name: 'savePreview',
@@ -156,7 +177,7 @@ editor.commands.addCommand({
     name: 'openFile',
     bindKey: { win: 'Ctrl-o', mac: 'Command-o' },
     exec: function (editor) {
-        _open();
+        _show();
     }
 });
 
@@ -165,6 +186,11 @@ submit.addEventListener('click', _save);
 setTimeout(function () {
     editor.focus();
 }, 200);
+
+$('#fileTree').fileTree({ root: './', script: './file', folderEvent: 'click', expandSpeed: 750, collapseSpeed: 750, multiFolder: false }, function(file) {
+                    _open(file);
+                    $('#tree-container').hide();
+                });
 </script>
 </body>
 </html>
