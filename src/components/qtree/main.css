@@ -5,13 +5,6 @@
     padding-left: 10px;
     user-select: none;
 }
-.qtree__title {
-    margin: 0 auto;
-    font-size: 14px;
-    cursor: default;
-    padding-left: 10px;
-    user-select: none;
-}
 .$__triangle {
     display: inline-block;
     width: 0;
