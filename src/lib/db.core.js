@@ -2,7 +2,7 @@
 var _noop = function () {},
     _extend = function (target, srcs) {
         if (arguments.length === 1) return _extend(this, target);
-        srcs = [].splice.call(arguments, 1);
+        srcs = [].slice.call(arguments, 1);
         var i = 0, l = srcs.length, src, key;
         for (; i < l; i++) {
             src = srcs[i];
