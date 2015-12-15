@@ -164,6 +164,7 @@ editor.setTheme('ace/theme/tomorrow_night_bright');
 editor.getSession().setMode(new htmlMode);
 editor.setValue('{{result}}');
 editor.setFontSize(24);
+editor.setOption('wrap', 50);
 
 editor.commands.addCommand({
     name: 'savePreview',
