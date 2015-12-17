@@ -98,8 +98,12 @@ h1 {
 </div>
 <script src="./ace/ace.js" data-ace-base="src" type="text/javascript" charset="utf-8"></script>
 <script src="./ace/worker-html.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/worker-javascript.js"></script>
+<script src="./ace/worker-css.js"></script>
 <script src="./ace/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
 <script src="./ace/mode-html.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/mode-javascript.js"></script>
+<script src="./ace/mode-css.js"></script>
 <script src="./ace/ext-searchbox.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://pub.idqqimg.com/guagua/qiqiclient/js/lib/jquery-1.11.0.min.js"></script>
 <script src="./jquery.easing.js"></script>
@@ -107,8 +111,11 @@ h1 {
 <script>
 var editor = ace.edit("editor"),
     htmlMode = require('ace/mode/html').Mode,
+    jsMode = require('ace/mode/javascript').Mode,
+    cssMode = require('ace/mode/css').Mode,
     submit = document.getElementById('submit'),
-    preview = document.getElementById('preview');
+    preview = document.getElementById('preview'),
+    Modes = { html: htmlMode, js: jsMode, css: cssMode };
 
 function ajax(url, data, succ, fail) {
     var xhr = new XMLHttpRequest();
@@ -125,7 +132,7 @@ function ajax(url, data, succ, fail) {
     xhr.send(data);
 }
 
-var _curFile = localStorage['curFile'] || '/test.html'
+var _curFile = localStorage['curFile'] || '/test.html';
 function _reload() {
     preview.src = _curFile;
 }
@@ -157,11 +164,14 @@ function _show() {
     $('#tree-container').show();
 }
 
+var _fileType = location.search.match(/path\=(.+)\.(\w+)$/);
+_fileType = _fileType ? _fileType[2] : 'html';
+
 require('ace/config')
     .setModuleUrl('ace/mode/html_worker', './ace/worker-html.js');
 
 editor.setTheme('ace/theme/tomorrow_night_bright');
-editor.getSession().setMode(new htmlMode);
+editor.getSession().setMode(new Modes[_fileType]);
 editor.setValue('{{result}}');
 editor.setFontSize(24);
 editor.setOption('wrap', 50);

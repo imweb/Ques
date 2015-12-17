@@ -1,13 +1,13 @@
-.ui-card {
+.$__$ {
     list-style-type: none;
     position: relative;
     padding-left: 10px;
     outline: 0;
     display: -webkit-box;
 }
-.ui-card:focus,
-.ui-card:hover,
-.ui-card:visited {
+.$__$:focus,
+.$__$:hover,
+.$__$:visited {
     background-color: #FCF0C1;
 }
 
@@ -32,16 +32,16 @@
 }
 
 .$__name {
-    font-size: 14px;
+    font-size: 1.8em;
     padding-bottom: 4px;
 }
 
 .$__intro {
     color: gray;
-    font-size: 12px;
+    font-size: 1.5em;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    /*white-space: nowrap;
+    text-overflow: ellipsis;*/
 }
 
 .ui-card:hover{

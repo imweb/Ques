@@ -4,7 +4,7 @@ DB.extend({
     ke: DB.httpMethod({
         url: 'http://ke.qq.com/cgi-bin/index_json',
         type: 'JSONP',
-        preload: true
+        // preload: true
     })
 });
 
