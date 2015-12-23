@@ -24,7 +24,7 @@ Ques
 > gulp learn
 
 * 浏览DEMO
-打开浏览器，打开页面：http://localhost:3000/learn
+打开浏览器，打开页面：http://localhost:3000/learn/
 
 ### 基本命令
 
@@ -32,7 +32,7 @@ Ques
 
 > gulp lean
 
-打开浏览器，打开页面：http://localhost:3000/learn
+打开浏览器，打开页面：http://localhost:3000/learn/
 
 * 启动开发环境
 
