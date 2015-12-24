@@ -80,6 +80,13 @@ function file(req, res, next, urlObj) {
 var defaultMiddle = middlewarePipe(path.join(__dirname, './learn'));
 
 function middleware(req, res, next) {
+  // Moved Permanently
+  if (req.originalUrl === '/learn' || req.originalUrl === '/learn/index.html') {
+    res.writeHead(301, { 'Location': 'http://localhost:3000/learn/' });
+    res.end();
+    return;
+  }
+
   var urlObj = url.parse(req.url);
   switch (urlObj.pathname) {
     case '/':
