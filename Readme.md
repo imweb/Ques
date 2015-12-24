@@ -30,7 +30,7 @@ Ques
 
 * 启动学习环境
 
-> gulp lean
+> gulp learn
 
 打开浏览器，打开页面：http://localhost:3000/learn
 
